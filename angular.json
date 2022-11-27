@@ -31,6 +31,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -107,5 +108,8 @@
       }
     }
   },
-  "defaultProject": "tikettera"
+  "defaultProject": "tikettera",
+  "cli": {
+    "analytics": "e28edb32-66ac-4fe1-b3f2-df3cf31b545f"
+  }
 }

@@ -1,0 +1,77 @@
+version: '3.8'
+services:
+  tikettera_php:
+    container_name: tikettera-php
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    restart: on-failure
+    environment:
+      XDEBUG_CONFIG: remote_connect_back=1 remote_port=9000 remote_enable=1 remote_autostart=1
+      XDEBUG_KEY: pub
+      PHP_IDE_CONFIG: serverName=DOCKER
+    expose:
+      - 9000
+    volumes:
+      - ./server:/usr/src/app:cached
+      - ~/.ssh:/root/.ssh:ro
+      - ~/.composer:/root/.composer
+    depends_on:
+      - db
+    networks:
+      - tikettera-network
+  nginx:
+    container_name: tikettera-nginx
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - './server/public:/usr/src/app:cached'
+    ports:
+      - "80:80"
+    depends_on:
+      - tikettera_php
+    environment:
+      NGINX_FPM_HOST: tikettera_php
+      NGINX_ROOT: /usr/src/app/public
+    networks:
+      - tikettera-network
+  db:
+    image: mysql:latest
+    container_name: tikettera-db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: tikettera
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: tikettera
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "33060:3306"
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    networks:
+      - tikettera-network
+  phpmyadmin:
+    container_name: tikettera-phpmyadmin
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on:
+      - db
+    networks:
+      - tikettera-network
+  tikettera-redis:
+    container_name: tikettera-redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - tikettera-network
+networks:
+    tikettera-network:
+        external: true
+        name: tikettera-network

@@ -25,8 +25,8 @@ return new class extends Migration
             $table->integer('user_id')->nullable()->default(null)->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('user_admin')->nullable()->default(null)->unsigned();
-            $table->foreign('user_admin')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('user_admin_id')->nullable()->default(null)->unsigned();
+            $table->foreign('user_admin_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('locality_id')->nullable()->default(null)->unsigned();
             $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');

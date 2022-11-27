@@ -22,7 +22,7 @@ return new class extends Migration
             $table->double('price',5,2)->nullable()->default(null);
             $table->double('x',5,5)->nullable()->default(null);
             $table->double('y',5,5)->nullable()->default(null);
-            $table->string('child')->nullable()->default(null);
+            $table->string('chaild')->nullable()->default(null);
             $table->integer('sold')->nullable()->default(0);
             $table->integer('avaliable')->nullable()->default(1);
             $table->integer('type')->nullable()->default(1);

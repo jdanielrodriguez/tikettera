@@ -1,0 +1,398 @@
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Router } from "@angular/router";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { UsuariosService } from "./../../services/usuarios.service";
+import { AuthServices } from "./../../services/auth.service";
+import { NotificationsService } from 'angular2-notifications';
+import { Menus, Socialusers, Cliente, Proveedor, Perfil, Imagen } from "./../../interfaces";
+import { Modal } from "./../modal.component";
+import { LocalStorageService } from 'ngx-webstorage';
+import { Sesion, Formatos } from "./../../metodos";
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+declare var $: any
+@Component({
+  selector: 'app-register-form',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
+})
+export class RegisterComponent implements OnInit, OnDestroy {
+  today: any
+  nacimientoToday: any
+  @ViewChild(Modal) registerModal!: Modal
+  @BlockUI() blockUI!: NgBlockUI;
+  private _component: EventEmitter<string> = new EventEmitter<string>();
+  private _componentStr!: string
+  private _esModal!: boolean;
+  private _userAcepted: boolean = false;
+  private _tipo!: boolean;
+  private _muestraTexto!: boolean;
+  private _cliente!: Cliente;
+  private _proveedor!: Proveedor;
+  private _perfil!: Perfil;
+  private _titulo: string = "";
+  private _dinamicLink: string = "";
+  constructor(
+    private router: Router,
+    public userServices: UsuariosService,
+    private modalService: NgbModal,
+    private authServices: AuthServices,
+    private config: NgbModalConfig,
+    private _service: NotificationsService,
+    private storage: LocalStorageService,
+    private mySesion: Sesion,
+    private formatear: Formatos
+  ) {
+    config.backdrop = 'static';
+    config.keyboard = true;
+    config.size = 'lg'
+  }
+  ngOnInit() {
+    $('html, body').animate({ scrollTop: 0 }, '300');
+    if (this.esModal) {
+      let temp = Modal
+      if (this.titulo) {
+        if (this.registerModal) {
+          this.registerModal.titulo = this.titulo;
+        }
+      }
+      temp.prototype.titulo = this.titulo
+      this.modalService.open(temp);
+    }
+    setTimeout(() => {
+      $(".grecaptcha-badge").removeClass("visible");
+      $(".grecaptcha-badge").addClass("visible");
+    }, 1000);
+  }
+  async aceptarUsuario(value: boolean, form?: any) {
+    let token = await this.mySesion.validateCaptcha('register');
+    let Fresponse: { status: number, objeto: any }
+    if (token) {
+      let dat = {
+        token: btoa(token)
+      }
+      this.blockUI.start();
+      await this.authServices.validarCaptcha(dat)
+        .then((response: { status: number, objeto: any }) => {
+          Fresponse = response
+          this.blockUI.stop();
+          if (Fresponse && Fresponse.objeto.success) {
+            this.blockUI.start();
+            if (!value) {
+              this.blockUI.stop();
+              this.userAcepted = value
+              if (form) {
+                this.createError("Compruebe que sus contraseñas sean iguales")
+              }
+              return;
+            }
+            // if (this.perfil.email.length >= 5 && this.validarEmail(this.perfil.email)) {
+            //   if (this.perfil.password.length <= 3 || this.perfil.password.length <= 3 || (this.perfil.password != this.perfil.password_rep)) {
+            //     this.createError("Compruebe que sus contraseñas esten ingresadas correctamente")
+            //   } else {
+            //     this.userAcepted = (value && (this.perfil ? true : false))
+            //   }
+            // } else {
+            //   this.createError("Su email no es valido")
+            // }
+            this.blockUI.stop();
+          }
+        }).catch(error => {
+          console.log(error);
+        })
+    } else {
+      token = await this.mySesion.validateCaptcha('register');
+      this.aceptarUsuario(value, form);
+    }
+
+  }
+  cancelar(value: boolean) {
+    if (!value) {
+      this.blockUI.stop();
+      this.userAcepted = value
+      this.perfil.email = ""
+      this.perfil.password = ""
+      this.perfil.password_rep = ""
+      $("#email").val("d");
+      $("#password").val("d");
+      $("#password_rep").val("d");
+      $("#email").val("");
+      $("#password").val("");
+      $("#password_rep").val("");
+      $("#email").focus();
+    }
+  }
+  validarEmail(valor: string): boolean {
+    return (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor))
+  }
+
+  public socialSignIn(socialProvider: string) {
+    // this.blockUI.start();
+    // let socialPlatformProvider;
+    // if (socialProvider === 'facebook') {
+    //   socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+    // } else if (socialProvider === 'google') {
+    //   socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
+    // }
+    // this.OAuth.signIn(socialPlatformProvider).then((socialusers: Socialusers) => {
+    //   let perfil = new Perfil();
+    //   let cliente = new Cliente();
+    //   perfil.codigo = socialusers.id
+    //   perfil.password = btoa(socialusers.id)
+    //   perfil.google = socialProvider
+    //   perfil.idToken = socialusers.idToken ? socialusers.idToken : ''
+    //   perfil.nombre = socialusers.name
+    //   cliente.nombre = socialusers.firstName
+    //   cliente.apellido = socialusers.lastName
+    //   if (socialProvider === 'facebook') {
+    //     perfil.google_id = socialusers.id
+    //     perfil.facebook_id = socialusers.id
+    //     perfil.google_token = socialusers.authToken
+    //   } else if (socialProvider === 'google') {
+    //     perfil.google_id = socialusers.id
+    //     perfil.google_token = socialusers.authToken
+    //     perfil.idToken = socialusers.authToken
+    //   }
+    //   perfil.google_idToken = socialusers.idToken ? socialusers.idToken : ''
+    //   perfil.email = socialusers.email
+    //   perfil.username = socialusers.email.split('@')[0]
+    //   perfil.picture = socialusers.photoUrl
+    //   cliente.estado = 1
+    //   perfil.estado = 1
+    //   cliente.nombre_a_facturar = socialusers.name
+    //   let img = new Imagen()
+    //   img.url = socialusers.photoUrl
+    //   perfil.imagenes = [img]
+    //   this.perfil = perfil
+    //   this.obtenerCliente(cliente)
+    //   this.registrar(true)
+    // }).catch(error => {
+    //   this.blockUI.stop();
+    //   console.log(error);
+    // });
+  }
+  registrar(social: boolean = false) {
+    if (!social) {
+      this.blockUI.start();
+    }
+    this.perfil.picture = this.perfil.picture ? this.perfil.picture : 'https://robohash.org/68.186.255.198.png';
+    if (this.proveedor) {
+      // this.proveedor.nombre = this.formatear.getCleanedString(this.proveedor.nombre)
+      // this.proveedor.apellido = this.formatear.getCleanedString(this.proveedor.apellido)
+      this._proveedor.nacimiento = this._proveedor.nacimiento ? btoa(this._proveedor.nacimiento) : btoa(new Date().toISOString())
+      this.proveedor.estado = 3
+    }
+    if (this.cliente) {
+      // this.cliente.nombre = this.formatear.getCleanedString(this.cliente.nombre)
+      // this.cliente.apellido = this.formatear.getCleanedString(this.cliente.apellido)
+      // this.cliente.nombre_a_facturar = this.formatear.getCleanedString(this.cliente.nombre_a_facturar)
+    }
+    let data = {
+      // cliente: this.perfil.clientes?.length > 0 ? null : (this.cliente ? this.mySesion.encriptar(JSON.stringify(this.cliente)) : null),
+      proveedor: this.proveedor ? this.mySesion.encriptar(JSON.stringify(this.proveedor)) : null,
+      usuario: this.perfil ? this.mySesion.encriptar(JSON.stringify(this.perfil)) : null
+    }
+    let data1 = {
+      // cliente: this.perfil.clientes?.length > 0 ? null : this.cliente,
+      proveedor: this.proveedor,
+      usuario: this.perfil
+    }
+    this.userServices.create(data)
+      .then((response: { status: number, objeto: Perfil, msg?: string }) => {
+        if (response.status >= 400) {
+          this.createError(response.msg ? response.msg : '')
+        } else {
+          this.mySesion.actualizaPerfil(response.objeto);
+          if (this.mySesion.validarSesion()) {
+            $(".grecaptcha-badge").removeClass("visible");
+            // if (this.modalService.hasOpenModals) {
+            //   this.closeModal()
+            // }
+            if (this.mySesion.lastLink) {
+              this.blockUI.stop();
+              let linkURL = "./dashboard/inicio";
+              if (this.mySesion.lastLink.length > 3) {
+                let urls = this.mySesion.lastLink
+                linkURL = urls
+              }
+              if (linkURL) {
+                this.mySesion.lastLink = null
+                this.router.navigate([`${linkURL}`])
+              } else {
+                this.router.navigate([`./dashboard/inicio`])
+              }
+            } else {
+              this.router.navigate([`./dashboard/inicio`])
+            }
+          } else {
+            this.createError("Error iniciando sesion")
+          }
+        }
+        this.blockUI.stop();
+      }).catch((error) => {
+        if (error.msg) {
+          this.createError(error.msg)
+        } else {
+          this.createError("Error desconocido, por favor trate otra vez")
+        }
+        console.log(error);
+        this.blockUI.stop();
+      })
+  }
+  obtenerCliente(value: Cliente) {
+    if (value) {
+      this._cliente = value;
+    }
+  }
+  obtenerProveedor(value: Proveedor) {
+    if (value) {
+      this._proveedor = value;
+    }
+  }
+  cargar(form: any) {
+    let perfil: Perfil = new Perfil();
+    perfil = form.value
+    if (perfil) {
+      // perfil.username = perfil.email.split("@")[0];
+      perfil.estado = 1;
+      perfil.google_id = "";
+      perfil.facebook_id = "";
+      perfil.google_token = "";
+      perfil.google_idToken = "";
+      this._perfil = perfil;
+    }
+  }
+  closeModal() {
+    this.modalService.dismissAll();
+  }
+  navegar(data: Menus, evento?: MouseEvent) {
+    if (evento) {
+      evento.stopPropagation();
+    }
+    if (this.modalService.hasOpenModals()) {
+      this._componentStr = data.url
+      this._component.emit(this._componentStr);
+    } else {
+      this.router.navigate([`${data.url}`])
+    }
+  }
+  public options = {
+    position: ["bottom", "right"],
+    timeOut: 3000,
+    lastOnBottom: false,
+    animate: "scale",
+    showProgressBar: false,
+    pauseOnHover: true,
+    clickToClose: true,
+    maxLength: 200
+  };
+  createSuccess(success: string) {
+    this._service.success('¡Éxito!', success)
+  }
+  createError(error: string) {
+    this._service.error('¡Error!', error)
+  }
+  @Input()
+  set esModal(value: boolean) {
+    this._esModal = value
+  }
+  get esModal(): boolean {
+    return this._esModal;
+  }
+  @Input()
+  set muestraTexto(value: boolean) {
+    this._muestraTexto = value
+  }
+  get muestraTexto(): boolean {
+    return this._muestraTexto;
+  }
+  set userAcepted(value: boolean) {
+    this._userAcepted = value
+  }
+  get userAcepted(): boolean {
+    return this._userAcepted;
+  }
+  @Input()
+  set titulo(value: string) {
+    this._titulo = value
+  }
+  get titulo(): string {
+    return this._titulo;
+  }
+  @Input()
+  set dinamicLink(value: string) {
+    if (value) {
+      this.mySesion.lastLink = value
+    }
+    this._dinamicLink = value
+  }
+  @Output()
+  get component(): EventEmitter<string> {
+    this._component.emit(this._componentStr);
+    return this._component;
+  }
+  get componentStr(): string {
+    return this._componentStr;
+  }
+  @Input()
+  set esProv(value: boolean) {
+    this._tipo = value
+  }
+  get esProveedor(): boolean {
+    return this._tipo
+  }
+  get esCliente(): boolean {
+    return this._tipo != true
+  }
+  set cliente(value: Cliente) {
+    this._cliente = value
+  }
+  get cliente(): Cliente {
+    return this._cliente;
+  }
+  set proveedor(value: Proveedor) {
+    this._proveedor = value
+  }
+  get proveedor(): Proveedor {
+    return this._proveedor;
+  }
+  set perfil(value: Perfil) {
+    this._perfil = value
+  }
+  get perfil(): Perfil {
+    if (this.mySesion.validarSesion()) {
+      this._perfil = this.mySesion.perfil
+      this.userAcepted = true
+      $("#email").val(this._perfil.email);
+      $("#password").val("***********");
+      $("#password_rep").val("**********");
+    }
+    return this._perfil;
+  }
+  get mostrarNotificacion(): boolean {
+    if (this.perfil) {
+      // if (this.perfil.password && this.perfil.password.length >= 1 && (this.perfil.password_rep.length >= 1)) {
+      //   return true;
+      // }
+    }
+    return false
+  }
+  get contraValida(): boolean {
+    if (this.perfil) {
+      if (this.perfil.password && this.perfil.password.length >= 1 && (this.perfil.password == this.perfil.password_rep)) {
+        return true;
+      }
+    }
+    return false
+  }
+  get contraMinima(): boolean {
+    // if (this.perfil.password.length >= 3 && (this.perfil.password != this.perfil.password_rep)) {
+    //   return false;
+    // }
+    return true
+  }
+  public ngOnDestroy() {
+    if (this.mySesion.captchaSubscription) {
+      this.mySesion.captchaSubscription.unsubscribe();
+    }
+  }
+}

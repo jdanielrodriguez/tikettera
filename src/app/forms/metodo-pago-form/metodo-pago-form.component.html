@@ -1,0 +1,87 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 mx-auto text-left ">
+  <div class="contenedor-h">
+    <!-- Tarjeta -->
+    <app-tarjeta class="contenedor w-100" [data]="data" [isCollapsed]="isCollapsed" [frente]="frente"></app-tarjeta>
+    <!-- Contenedor Boton Abrir Formulario -->
+    <div class="contenedor-btn">
+      <button class="btn-abrir-formulario" *ngIf="isCollapsed" id="btn-abrir-formulario" (click)="addNew()">
+        <i class="fa fa-plus"></i>
+      </button>
+      <button class="btn-abrir-formulario bg-danger" *ngIf="!isCollapsed" id="btn-abrir-formulario"
+        (click)="isCollapsed=true">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+    <form class="form-signin w-100 mp-0" autocomplete="off" #MetodoPagoForm="ngForm" id="MetodoPagoForm"
+      (ngSubmit)="agregar(MetodoPagoForm)" [ngbCollapse]="isCollapsed">
+      <div class="row w-100 mp-0">
+        <input type="hidden" class="form-control" *ngIf="data.id" [(ngModel)]="data.id" name="id" required ngModel
+          #id="ngModel">
+        <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-1">
+          <input type="text" class="form-control" [ngModel]="data.numeroTC | numTC"
+            (ngModelChange)="data.numeroTC=$event" name="numeroTC" required ngModel #numeroTC="ngModel"
+            placeholder="xxxx xxxx xxxx xxxx" (keyup)="girarTarjeta(false,$event)" maxlength="19">
+        </div>
+        <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-6 mb-1">
+          <select class="form-control" [(ngModel)]="data.exp_montTC" name="exp_montTC" required ngModel
+            #exp_montTC="ngModel" placeholder="01" (change)="girarTarjeta(false)">
+            <option [value]="item" *ngFor="let item of expDate.months">{{item}}</option>
+          </select>
+        </div>
+        <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-6 mb-1">
+          <select class="form-control" [(ngModel)]="data.exp_yearTC" name="exp_yearTC" required ngModel
+            #exp_yearTC="ngModel" placeholder="21" (change)="girarTarjeta(false)">
+            <option [value]="item" *ngFor="let item of expDate.years">{{item}}</option>
+          </select>
+        </div>
+        <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-9 mx-auto mb-1">
+          <input type="text" class="form-control" name="nombreTC" [ngModel]="data.nombreTC | justText"
+            (ngModelChange)="data.nombreTC=$event" required ngModel #nombreTC="ngModel" placeholder="Jhon Doe"
+            (keyup)="girarTarjeta(false)">
+        </div>
+        <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-3 mx-auto mb-1">
+          <input type="text" class="form-control" name="cvvTC" [ngModel]="data.cvvTC | cvvTC"
+            (ngModelChange)="data.cvvTC=$event" required ngModel #cvvTC="ngModel" placeholder="123"
+            (keyup)="girarTarjeta(true)" maxlength="3">
+        </div>
+      </div>
+
+      <div class="row w-100 mp-0">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 ml-auto">
+          <button class=" btn btn-lg btn-outline-success btn-block ml-auto badge-pill" type="submit">
+            <i class="fa fa-save"></i> Guardar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row w-100 my-2 p-0 mx-0" *ngIf="isCollapsed">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 ml-auto">
+      <button class=" btn btn-lg btn-outline-primary btn-block ml-auto badge-pill" (click)="guardar()" type="button">
+        <i class="fa fa-save"></i> Guardar Cambios
+      </button>
+    </div>
+  </div>
+  <div class="list-group w-100 " [class.contenedorAlertasActivo]="!isCollapsed"
+    [class.contenedorAlertasDeac]="isCollapsed">
+    <a class="list-group-item list-group-item-action flex-column align-items-start mt-1"
+      [class.active]="alert.default==1" [class.text-light]="alert.default==1" *ngFor="let alert of lista"
+      (click)="seleccionar(alert,$event)">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{(alert.nombre)}}</h5>
+        <small>
+          <button type="button" class="btn btn-warning badge-pill text-center ml-2" title="Marcar como Principal"
+          (click)="marcarDefault(alert,$event)">
+          <i class="fa fa-hand-pointer-o pointer"></i>
+        </button>
+        <button type="button" class="btn btn-danger badge-pill text-center ml-2" (click)="eliminarMetodo(alert)"
+          title="Eliminar">
+          <i class="fa fa-times pointer"></i>
+        </button>
+        </small>
+      </div>
+      <p class="mb-1">{{alert.nombreTC}}</p>
+      <small>{{desencripta(alert.exp_dateTC)}}</small>
+    </a>
+  </div>
+</div>

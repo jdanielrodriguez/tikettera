@@ -1,0 +1,7 @@
+<app-busqueda [lista]="proveedoresListaAuxiliar" titulo="Proveedores" (seleccionador)="cargarProveedor($event)"
+  [seleccion]="proveedor"></app-busqueda>
+<div class="w-100 d-flex">
+  <app-galeria class="w-100" [lista]="proveedoresLista" titulo="Proveedores" [adminProv]="true" [page]="page"
+    [numReg]="numReg" [size]="limit" (paginaActual)="cambioPagina($event)" (proveedorAut)="autorizar($event)">
+  </app-galeria>
+</div>

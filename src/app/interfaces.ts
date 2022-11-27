@@ -106,7 +106,7 @@ export class Comentario {
   recive?: boolean | null;
   usuario?: number | null;
   usuario_obj?: Perfil;
-  id?: number | null;
+  id?: number | null | undefined;
   comment?: number | null;
   comment_obj?: Perfil;
   inventario?: number | null;
@@ -130,7 +130,7 @@ export class Reaccion {
   orden?: string;
   path?: string | null;
   estado?: number | null;
-  id?: number | null;
+  id?: number | null | undefined;
   usuario?: number | null;
   usuario_obj?: Perfil;
   proveedor?: number;
@@ -174,7 +174,7 @@ export class ChangePasswordForm {
     this.new_pass_rep = '';
     this.perfil = new Perfil();
   }
-  id?: number | null;
+  id?: number | null | undefined;
   old_pass?: string;
   new_pass?: string;
   new_pass_rep?: string;
@@ -193,7 +193,7 @@ export class Proveedor {
     this.imagenes = [];
     this.configuraciones = [];
   }
-  id?: number | null;
+  id?: number | null | undefined;
   direccion?: string;
   telefono?: string;
   nacimiento?: string;
@@ -226,7 +226,7 @@ export class Cliente {
     this.usuario = new Perfil();
     this.imagenes = [];
   }
-  id?: number | null;
+  id?: number | null | undefined;
   direccion?: string;
   cuenta?: string;
   nombre?: string;
@@ -247,7 +247,7 @@ export class Rol {
     this.nombre = '';
     this.estado = 1;
   }
-  id?: number | null;
+  id?: number | null | undefined;
   nombre?: string;
   estado?: number;
 }
@@ -275,7 +275,7 @@ export class Factura {
   fecha_aprobacionT?: string;
   forma_pago?: any;
   formas_pago?: MetodoPago;
-  id?: number | null;
+  id?: number | null | undefined;
   latitud?: number;
   longitud?: number;
   proveedor?: Proveedor;
@@ -358,7 +358,7 @@ export class ListaBusqueda {
     this.validacion = 5;
     this.inventario = new Inventario();
   }
-  id?: number | null;
+  id?: number | null | undefined;
   nombre?: string;
   imagen?: string;
   imagenes?: Imagen[];
@@ -379,7 +379,7 @@ export class Producto {
     this.estilo = '';
     this.imagenes = [];
   }
-  id?: number | null;
+  id?: number | null | undefined;
   codigo?: string;
   estilo?: string;
   cantidad?: number;
@@ -408,7 +408,7 @@ export class Inventario {
     this.iva = 0;
     this.retiro = 0;
   }
-  id?: number | null;
+  id?: number | null | undefined;
   portada?: string;
   nombre?: string;
   descripcion?: string;
@@ -443,7 +443,7 @@ export class Item {
     this.tipo_item = new TipoItem();
     this.proveedor = new Proveedor();
   }
-  id?: number | null;
+  id?: number | null | undefined;
   nombre?: string;
   descripcion?: string;
   estado?: number;
@@ -458,7 +458,7 @@ export class TipoItem {
     this.estado = 1;
     this.imagenes = [];
   }
-  id?: number | null;
+  id?: number | null | undefined;
   nombre?: string;
   descripcion?: string;
   portada?: string;
@@ -477,7 +477,7 @@ export class Carrito {
     this.leido = false;
   }
   inventario?: Inventario;
-  id?: number | null;
+  id?: number | null | undefined;
   cantidad?: number;
   nombre?: string;
   leido?: boolean;
@@ -500,7 +500,7 @@ export class Configuracion {
     this.estado = 1;
     this.default = 1;
   }
-  id?: number | null;
+  id?: number | null | undefined;
   logo?: string;
   color_nav?: string;
   carrousel?: string;
@@ -525,7 +525,7 @@ export class Imagen {
     this.descripcion = '';
     this.estado = 1;
   }
-  id?: number | null;
+  id?: number | null | undefined;
   url: string;
   default?: string;
   orden?: string;
@@ -553,7 +553,7 @@ export class Direccion {
     this.direccion_envio = '';
     this.usuario = new Perfil();
   }
-  id?: number | null;
+  id?: number | null | undefined;
   calle?: string;
   casa?: string;
   pais?: string;
@@ -575,7 +575,7 @@ export class FilterGET {
     this.estado = '0';
     this.filter = 'nada';
   }
-  id: number;
+  id: number | null | undefined;
   estado: string;
   filter: string;
 }

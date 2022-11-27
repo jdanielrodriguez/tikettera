@@ -32,9 +32,19 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.scss"
+              "src/assets/css/bootstrap.css",
+              "src/assets/css/font-awesome.css",
+              "src/assets/css/loaders.min.css",
+              "src/styles.scss",
+              "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+              "./node_modules/froala-editor/css/froala_style.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/jquery.js",
+              "src/assets/js/jquery-ui.js",
+              "src/assets/js/bootstrap.js",
+              "src/assets/js/2co.js"
+            ]
           },
           "configurations": {
             "production": {

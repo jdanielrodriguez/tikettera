@@ -30,7 +30,7 @@
           </div>
         </div>
         <button class=" btn btn-lg btn-danger btn-block w-50 mr-auto" type="button" *ngIf="userAcepted"
-          (click)="cancelar(false,RegisterForm)"><i class="fa fa-times"></i> Cancelar</button>
+          (click)="cancelar(false)"><i class="fa fa-times"></i> Cancelar</button>
         <button class=" btn btn-lg btn-primary btn-block w-50 ml-auto" type="button"
           [disabled]="(email && password_rep && password) && (email.value=='' || password_rep.value=='' || password.value=='') || RegisterForm.invalid"
           *ngIf="!userAcepted" (click)="aceptarUsuario((password.value==password_rep.value),RegisterForm)"><i

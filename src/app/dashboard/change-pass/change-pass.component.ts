@@ -51,10 +51,8 @@ export class ChangePassComponent implements OnInit {
   private _muestraTexto = false;
   private _titulo = '';
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

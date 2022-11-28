@@ -67,6 +67,7 @@ export class BusquedaComponent implements OnInit {
       } catch (error) {
       }
     }
+    return '';
 
 
   }

@@ -1,56 +1,47 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { NgxWebstorageModule } from 'ngx-webstorage';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 
-import { NgbModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-// import { AngularFireModule } from '@angular/fire';
-// import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { BlockUIModule } from 'ng-block-ui';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { BlockUIModule } from 'ng-block-ui';
+import { ComponentesModule } from '../components/componentes.module';
 
-import { Modal } from './modal.component';
-import { LoginFormComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { RecoveryComponent } from './recovery/recovery.component';
 import { ClienteComponent } from './cliente/cliente.component';
-import { ProveedorComponent } from './proveedor/proveedor.component';
-import { DireccionesComponent } from './direcciones/direcciones.component';
-import { PerfilComponent } from './perfil/perfil.component';
 import { CorreosComponent } from './correos/correos.component';
+import { DireccionesComponent } from './direcciones/direcciones.component';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
+import { LoginFormComponent } from './login/login.component';
 import { MetodoPagoFormComponent } from './metodo-pago-form/metodo-pago-form.component';
+import { Modal } from './modal.component';
+import { PerfilComponent } from './perfil/perfil.component';
+import { ProveedorComponent } from './proveedor/proveedor.component';
+import { RecoveryComponent } from './recovery/recovery.component';
+import { RegisterComponent } from './register/register.component';
 import { SlidersFormComponent } from './sliders-form/sliders-form.component';
-
-import { NumTCPipe } from '../pipes/num-tc.pipe';
-import { JustTextPipe } from '../pipes/just-text.pipe';
-import { CvvTCPipe } from '../pipes/cvv-tc.pipe';
-
-import { environment } from '../../environments/environment';
+const modules = [
+  LoginFormComponent,
+  Modal,
+  RegisterComponent,
+  RecoveryComponent,
+  ClienteComponent,
+  ProveedorComponent,
+  DireccionesComponent,
+  PerfilComponent,
+  CorreosComponent,
+  EncabezadoComponent,
+  MetodoPagoFormComponent,
+  SlidersFormComponent,
+]
 @NgModule({
-  declarations: [
-    LoginFormComponent,
-    Modal,
-    RegisterComponent,
-    RecoveryComponent,
-    ClienteComponent,
-    ProveedorComponent,
-    NumTCPipe,
-    JustTextPipe,
-    CvvTCPipe,
-    DireccionesComponent,
-    PerfilComponent,
-    CorreosComponent,
-    EncabezadoComponent,
-    MetodoPagoFormComponent,
-    SlidersFormComponent,
-  ],
+  declarations: modules,
   imports: [
     CommonModule,
     FormsModule,
@@ -58,29 +49,15 @@ import { environment } from '../../environments/environment';
     HttpClientModule,
     NgbModule,
     ColorPickerModule,
+    ComponentesModule,
     SweetAlert2Module.forRoot(),
     NgxWebstorageModule.forRoot(),
-    // AngularFireModule.initializeApp(environment.firebaseConfig),
-    // AngularFirestoreModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     NgbDropdownModule,
     RouterModule,
     SimpleNotificationsModule.forRoot(),
   ],
-  exports: [
-    LoginFormComponent,
-    Modal,
-    RegisterComponent,
-    RecoveryComponent,
-    ClienteComponent,
-    ProveedorComponent,
-    DireccionesComponent,
-    PerfilComponent,
-    CorreosComponent,
-    EncabezadoComponent,
-    MetodoPagoFormComponent,
-    SlidersFormComponent,
-  ]
+  exports: modules
 })
 export class FormModule { }

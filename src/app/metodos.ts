@@ -1,18 +1,19 @@
-import { OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
-import { LocalStorageService, LocalStorage } from 'ngx-webstorage';
-import { Perfil, Carrito, Inventario, Proveedor, Menus, Producto } from './interfaces';
+import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { environment } from './../environments/environment';
-export class Sesion implements OnInit {
+import { Menus, Perfil } from './interfaces';
+export class Sesion {
   constructor(
     private localSt: LocalStorageService,
     private cripto: Encript,
     private recaptchaV3Service: ReCaptchaV3Service,
     private router: Router
-  ) { }
+  ) {
+    this.actualizaPerfil();
+  }
   get perfil(): Perfil {
     return this._perfil;
   }
@@ -53,9 +54,6 @@ export class Sesion implements OnInit {
   private _headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json; charset=UTF-8'
   });
-  ngOnInit(): void {
-    this.actualizaPerfil();
-  }
   encriptar(value: string | null): string | null {
     let newLetter: string | null = '';
     if(value){
@@ -156,10 +154,7 @@ export class Sesion implements OnInit {
 
 }
 
-export class Encript implements OnInit {
-  ngOnInit(): void {
-
-  }
+export class Encript {
   a2hex(str: string) {
     const arr = [];
     for (let i = 0, l = str.length; i < l; i++) {
@@ -247,12 +242,9 @@ export class Encript implements OnInit {
     return compare ? newLetter : null;
   }
 }
-
-export class Formatos implements OnInit {
+export class Formatos {
   constructor(
   ) { }
-  ngOnInit(): void {
-  }
   getCleanedString(cadena: string) {
     // Definimos los caracteres que queremos eliminar
     const specialChars = '!@#$^&%*()+=-[]\/{}|:<>?,.';
@@ -279,13 +271,11 @@ export class Formatos implements OnInit {
   }
 }
 
-export class Constantes implements OnInit {
+export class Constantes {
   constructor(
   ) { }
   get tasaIva() {
     return this._tasaIva;
   }
   private _tasaIva = 0.12;
-  ngOnInit(): void {
-  }
 }

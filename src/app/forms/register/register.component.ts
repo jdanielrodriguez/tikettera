@@ -276,10 +276,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
   public options = {
-    position: ["bottom", "right"],
     timeOut: 3000,
     lastOnBottom: false,
-    animate: "scale",
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

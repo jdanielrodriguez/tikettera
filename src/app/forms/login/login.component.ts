@@ -77,10 +77,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   private _titulo = '';
   private _dinamicLink = '';
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

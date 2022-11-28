@@ -67,22 +67,20 @@ export class ImagenesComponent implements OnInit {
   get imagen(): Imagen {
     return this._imagen;
   }
-  @BlockUI() blockUI: NgBlockUI;
+  @BlockUI() blockUI!: NgBlockUI;
   private _imagenPrincipal: EventEmitter<Imagen> = new EventEmitter<Imagen>();
   private _imagenEliminar: EventEmitter<Imagen> = new EventEmitter<Imagen>();
   private _lista: Imagen[] = [];
   private _imagen: Imagen = new Imagen();
-  private _imagenElimina: Imagen;
+  private _imagenElimina!: Imagen;
   private _carpeta = '';
   private _avance = 0;
   private _mostrarProgreso = false;
   private _esAdmin = false;
   private basePath: string = environment.url;
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,
@@ -91,7 +89,7 @@ export class ImagenesComponent implements OnInit {
   ngOnInit(): void {
     this._imagenPrincipal.emit(this._imagen);
   }
-  subirImagenes(archivo?, form?, id?) {
+  subirImagenes(archivo?: any, form?: any, id?: any) {
     const archivos = archivo.srcElement.files;
     const url = `${this.basePath}/api/upload`;
     const i = 0;
@@ -104,7 +102,7 @@ export class ImagenesComponent implements OnInit {
             avatar: archivos[i],
             carpeta: this._carpeta
           },
-          (respuesta) => {
+          (respuesta: any) => {
             this._imagen = respuesta.objeto;
             $('#' + id).val('');
             $('.barra_de_progreso').val(0);
@@ -115,12 +113,12 @@ export class ImagenesComponent implements OnInit {
             this.blockUI.stop();
             this.createSuccess('Se a subido la imagen Exitosamente!');
           },
-          (progreso, valor) => {
+          (progreso: any, valor: any) => {
             this._mostrarProgreso = true;
             this._avance = valor;
             $('.barra_de_progreso').val(valor);
           },
-          (error) => {
+          (error: any) => {
             console.log(error);
           }
         );
@@ -143,10 +141,10 @@ export class ImagenesComponent implements OnInit {
   enviarImagen() {
     this._imagenPrincipal.emit(this._imagen);
   }
-  createSuccess(success) {
+  createSuccess(success: any) {
     this._service.success('¡Éxito!', success);
   }
-  createError(error) {
+  createError(error: any) {
     this._service.error('¡Error!', error);
   }
 }

@@ -47,10 +47,8 @@ export class ComentariosComponent implements OnInit {
   private _perfilActual!: Perfil;
   private _conversacion: Comentario[] = [];
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

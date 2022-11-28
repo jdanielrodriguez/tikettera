@@ -92,7 +92,7 @@ export class SlidersFormComponent implements OnInit {
     });
     if (index >= 0) {
       this.authService
-        .deleteImage(value.id)
+        .deleteImage(Number(value.id))
         .then((element: Imagen) => {
           if (value) {
             this.createSuccess("Se elimino la imagen correctamente");
@@ -113,10 +113,8 @@ export class SlidersFormComponent implements OnInit {
     this.blockUI.stop();
   }
   public options = {
-    position: ["bottom", "right"],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: "scale",
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter }
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Inventario, ListaBusqueda, Menus, Proveedor } from '../../interfaces';
-import { Carritos, Proveedores } from '../../metodos';
 @Component({
   selector: 'app-galeria',
   templateUrl: './galeria.component.html',
@@ -10,20 +9,16 @@ import { Carritos, Proveedores } from '../../metodos';
 })
 export class GaleriaComponent implements OnInit {
   private _proveedorEvent: EventEmitter<ListaBusqueda> = new EventEmitter<ListaBusqueda>();
-  private _proveedorStr: ListaBusqueda;
   constructor(
     private router: Router,
-    private myCarrito: Carritos,
-    private myProveedor: Proveedores,
     private localSt: LocalStorageService,
   ) { }
-  @ViewChild('resetCarritoAlert') resetCarritoAlert: ElementRef;
   private _lista: ListaBusqueda[] = [];
   private _page = 1;
   private _size = 100;
   private _numReg = 50;
   private _tieneDetalle = false;
-  private _editar: boolean;
+  private _editar!: boolean;
   private _eliminarCarrito = false;
   private _agregaCarrito = false;
   private _categorias = false;
@@ -47,18 +42,15 @@ export class GaleriaComponent implements OnInit {
     this._autorizaNav = true;
   }
   agregarCarrito(producto: Inventario) {
-    this.myCarrito.agregarCarrito(producto);
   }
   removerCarrito(data: Inventario) {
-    this.myCarrito.removeCarrito(data);
   }
   navegar(data: Menus, id?: number, info?: ListaBusqueda) {
     if (data.evento) {
-      eval.call(data.evento);
+      eval.call(data.evento, '');
     }
     if (info && this.resetCarrito(info)) {
       this._autorizaNav = false;
-      this.resetCarritoAlert.nativeElement.click();
     } else
       if (this._autorizaNav) {
         this.router.navigate([data.url]);
@@ -70,9 +62,6 @@ export class GaleriaComponent implements OnInit {
   resetCarrito(value?: ListaBusqueda): boolean {
     let ret = false;
     if (!this.agregaCarrito && !this.eliminarCarrito && !this.esAdmin) {
-      this.myProveedor.actualizar();
-      const temp: Proveedor = this.myProveedor.provs;
-      ret = ((temp.id !== value.id) && this.myCarrito.carros.length > 0);
     }
     return ret;
   }
@@ -81,21 +70,14 @@ export class GaleriaComponent implements OnInit {
     this._paginaActual.emit(this.page);
   }
   autorizarProveedor(value?: ListaBusqueda) {
-    this._proveedorStr = value;
-    this._proveedorEvent.emit(this._proveedorStr);
   }
   getPrecio(data: ListaBusqueda): string {
     let total = 0.0;
-    total = data.inventario.precio_venta;
     const num = new Number(total);
     return num.toFixed(2);
   }
   getTotal(data: ListaBusqueda): string {
     let total = 0.0;
-    data.inventario.productos.forEach(element => {
-      total = total + (data.inventario.precio_venta * element.cantidad);
-
-    });
     const num = new Number(total);
     return num.toFixed(2);
   }
@@ -191,11 +173,10 @@ export class GaleriaComponent implements OnInit {
   }
   @Output()
   get proveedorAut(): EventEmitter<ListaBusqueda> {
-    this._proveedorEvent.emit(this._proveedorStr);
     return this._proveedorEvent;
   }
   get proveedorAutStr(): ListaBusqueda {
-    return this._proveedorStr;
+    return new ListaBusqueda();
   }
   @Input()
   set editar(value: boolean) {

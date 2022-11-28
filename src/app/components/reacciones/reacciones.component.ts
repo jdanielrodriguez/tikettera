@@ -37,10 +37,8 @@ export class ReaccionesComponent implements OnInit {
   private _producto!: Inventario;
   private _reaccion!: Reaccion;
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,
@@ -97,13 +95,13 @@ export class ReaccionesComponent implements OnInit {
     if (value.id) {
       this.blockUI.start();
       const data: Reaccion = value;
-      this.mainService.delete(data.id)
-        .then((element: Reaccion) => {
-          this._reaccion = new Reaccion();
-          this.blockUI.stop();
-        }).catch(error => {
-          this.blockUI.stop();
-        });
+      // this.mainService.delete(data.id)
+      //   .then((element: Reaccion) => {
+      //     this._reaccion = new Reaccion();
+      //     this.blockUI.stop();
+      //   }).catch(error => {
+      //     this.blockUI.stop();
+      //   });
     }
   }
   createSuccess(success: string) {

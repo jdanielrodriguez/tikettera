@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-  private _proveedor: string;
+  private _proveedor!: string;
   constructor() { }
   private _year = new Date().getUTCFullYear();
 

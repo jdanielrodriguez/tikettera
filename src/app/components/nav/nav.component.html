@@ -44,10 +44,8 @@
             </div>
           </div>
         </li>
-        <app-carrito [lista]="carrito"></app-carrito>
       </ul>
     </div>
-    <app-carrito [lista]="carrito" *ngIf="!isFullScreeen"></app-carrito>
     <a class="navbar-toggler ml-auto " [class.text-light]="!color" [ngStyle]="getColor()"
       (click)="isMenuCollapsed = !isMenuCollapsed">
       <i class="fa fa-list"></i>
@@ -143,10 +141,8 @@
             </div>
           </div>
         </li>
-        <app-carrito [lista]="carrito"></app-carrito>
       </ul>
     </div>
-    <app-carrito [lista]="carrito" *ngIf="!isFullScreeen"></app-carrito>
     <a class="navbar-toggler ml-auto " [class.text-light]="!color" [ngStyle]="getColor()"
       (click)="isMenuCollapsed = !isMenuCollapsed">
       <i class="fa fa-list"></i>
@@ -196,8 +192,7 @@
   </div>
 </nav>
 <router-outlet></router-outlet>
-<app-tour></app-tour>
 <app-footer *ngIf="proveedores" [proveedor]="proveedores"></app-footer>
 <app-footer *ngIf="!proveedores"></app-footer>
 <app-chat></app-chat>
-<app-change-pass [esModal]="true" *ngIf="actualizarPass" titulo="Cambiar Contraseña Automatica"></app-change-pass>
+<!-- <app-change-pass [esModal]="true" *ngIf="actualizarPass" titulo="Cambiar Contraseña Automatica"></app-change-pass> -->

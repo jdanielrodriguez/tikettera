@@ -77,10 +77,8 @@ export class ClasificacionesComponent implements OnInit {
   private _categoriasListaAuxiliar: TipoItem[] = [];
   private _categoria: ListaBusqueda = new ListaBusqueda();
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

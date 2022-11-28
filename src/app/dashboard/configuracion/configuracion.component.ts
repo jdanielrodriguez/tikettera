@@ -25,10 +25,8 @@ export class ConfiguracionComponent implements OnInit {
   }
   private _type:string | null = '';
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

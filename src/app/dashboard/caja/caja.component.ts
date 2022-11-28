@@ -16,10 +16,8 @@ export class CajaComponent implements OnInit {
     return this.mySesion.perfil;
   }
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

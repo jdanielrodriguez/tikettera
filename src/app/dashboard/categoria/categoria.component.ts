@@ -33,10 +33,8 @@ export class CategoriaComponent implements OnInit {
   sliders: Imagen[] = [
   ];
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

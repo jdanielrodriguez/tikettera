@@ -33,9 +33,6 @@
               [class.text-left]="(!esAdmin && !categorias)">
               <ngb-rating class="mx-auto" max="5" [(rate)]="data.validacion" [readonly]="false"></ngb-rating>
             </small>
-            <app-lista-producto class="col-xs-12 col-sm-12 col-md-12 row mx-0 p-0 mb-2" [inventario]="data.inventario"
-              [productos]="data.inventario.productos" *ngIf="eliminarCarrito || pagar" [editar]="editar">
-            </app-lista-producto>
             <div class="btn-group w-100 mp-0 col-xs-12 col-sm-12 col-md-12 col-lg-12 my-2"
               *ngIf="eliminarCarrito || pagar">
               <span>

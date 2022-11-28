@@ -56,24 +56,24 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   }
   validarImagenes(value?: Imagen) {
     if (this.sliders.length > 1) {
-      this.authService.deleteImage(this.sliders[0].id).then((element: Imagen) => {
-        if (value) {
-          this._perfil.imagenes = [value]
-          this.sliders = this._perfil.imagenes
-        }
-        this.mySesion.actualizaPerfil(this._perfil);
-      }).catch(error => {
-        console.log(error);
-      })
+      // this.authService.deleteImage(this.sliders[0].id).then((element: Imagen) => {
+      //   if (value) {
+      //     this._perfil.imagenes = [value]
+      //     this.sliders = this._perfil.imagenes
+      //   }
+      //   this.mySesion.actualizaPerfil(this._perfil);
+      // }).catch(error => {
+      //   console.log(error);
+      // })
     } else {
       if (value) {
         if (this.sliders.length > 0) {
-          this.authService.deleteImage(this.sliders[0].id).then((element: Imagen) => {
-            // console.log(element);
-            this.createWarning("Se cargo su nueva imagen de perfil, guarde sus cambios.")
-          }).catch(error => {
-            console.log(error);
-          })
+          // this.authService.deleteImage(this.sliders[0].id).then((element: Imagen) => {
+          //   // console.log(element);
+          //   this.createWarning("Se cargo su nueva imagen de perfil, guarde sus cambios.")
+          // }).catch(error => {
+          //   console.log(error);
+          // })
         }
         this._perfil.imagenes = [value]
         this.sliders = this._perfil.imagenes
@@ -138,10 +138,8 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   }
 
   public options = {
-    position: ["bottom", "right"],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: "scale",
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

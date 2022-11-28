@@ -7,11 +7,11 @@ import { Imagen } from 'src/app/interfaces';
   styleUrls: ['./sliders.component.css'],
 })
 export class SlidersComponent implements OnInit {
-  @BlockUI() blockUI: NgBlockUI;
+  @BlockUI() blockUI!: NgBlockUI;
   private _imagenEliminar: EventEmitter<Imagen> = new EventEmitter<Imagen>();
-  private _imagen: Imagen;
-  private _sliders: Imagen[];
-  private _esAdmin: boolean;
+  private _imagen!: Imagen;
+  private _sliders!: Imagen[];
+  private _esAdmin!: boolean;
   constructor() { }
   ngOnInit(): void { }
   handleRefusal(value: any) {

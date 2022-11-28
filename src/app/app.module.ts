@@ -14,6 +14,7 @@ import { BlockUIModule } from 'ng-block-ui';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentesModule } from './components/componentes.module';
+import { FormModule } from './forms/forms.module';
 import { LoginComponent } from './login/login.component';
 import { Constantes, Encript, Formatos, Sesion } from './metodos';
 import { InicioComponent } from './pages/inicio/inicio.component';
@@ -44,7 +45,6 @@ import { ProveedoresService } from './services/proveedores.service';
     FormsModule,
     BlockUIModule.forRoot(),
     HttpClientModule,
-    ComponentesModule,
     BrowserAnimationsModule,
     SweetAlert2Module.forRoot(),
     NgbModule,
@@ -54,6 +54,8 @@ import { ProveedoresService } from './services/proveedores.service';
     SocialLoginModule,
     RecaptchaV3Module,
     RouterModule,
+    ComponentesModule,
+    FormModule,
     SimpleNotificationsModule.forRoot(),
     AppRoutingModule
   ],

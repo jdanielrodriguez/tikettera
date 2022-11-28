@@ -11,14 +11,16 @@
       </div>
     </div>
     <input type="hidden" class="form-control" *ngIf="data.id" [(ngModel)]="data.id" name="id" ngModel #id="ngModel">
-    <input type="hidden" class="form-control" *ngIf="data.estado" [(ngModel)]="data.estado" name="estado" ngModel #estado="ngModel">
+    <input type="hidden" class="form-control" *ngIf="data.estado" [(ngModel)]="data.estado" name="estado" ngModel
+      #estado="ngModel">
     <div class="input-group mb-1">
-      <input type="text" class="form-control" name="nombre" [(ngModel)]="data.nombre" [disabled]="data.id" required
-        ngModel #nombre="ngModel" placeholder="Nombre (legal)" autofocus (keyup)="cargar(ProveedorForm)">
+      <input type="text" class="form-control" name="nombre" [(ngModel)]="data.nombre" [disabled]="data.id?true:false"
+        required ngModel #nombre="ngModel" placeholder="Nombre (legal)" autofocus (keyup)="cargar(ProveedorForm)">
     </div>
     <div class="input-group mb-1">
-      <input type="text" class="form-control" name="apellido" [(ngModel)]="data.apellido" [disabled]="data.id" required
-        ngModel #apellido="ngModel" placeholder="Apellido (legal,opcional)" (keyup)="cargar(ProveedorForm)">
+      <input type="text" class="form-control" name="apellido" [(ngModel)]="data.apellido"
+        [disabled]="data.id?true:false" required ngModel #apellido="ngModel" placeholder="Apellido (legal,opcional)"
+        (keyup)="cargar(ProveedorForm)">
     </div>
     <div class="input-group mb-1">
       <input type="text" class="form-control" name="nit" [(ngModel)]="data.nit" required ngModel #nit="ngModel"

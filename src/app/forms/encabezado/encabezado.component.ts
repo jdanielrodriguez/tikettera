@@ -49,10 +49,8 @@ export class EncabezadoComponent implements OnInit, AfterViewInit {
   private _titulo!: string;
   private _muestraTexto!: boolean;
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,
@@ -68,17 +66,17 @@ export class EncabezadoComponent implements OnInit, AfterViewInit {
   eliminarImagenes() {
     this.blockUI.start();
     if (this.sliders.length > 0) {
-      this.authService
-        .deleteImage(this.sliders[0].id)
-        .then((element: Imagen) => {
-          this.sliders = [];
-          this.blockUI.stop();
-          this.guardar();
-        })
-        .catch((error) => {
-          console.log(error);
-          this.blockUI.stop();
-        });
+      // this.authService
+      //   .deleteImage(this.sliders[0].id)
+      //   .then((element: Imagen) => {
+      //     this.sliders = [];
+      //     this.blockUI.stop();
+      //     this.guardar();
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     this.blockUI.stop();
+      //   });
     } else {
       this.blockUI.stop();
     }
@@ -111,30 +109,30 @@ export class EncabezadoComponent implements OnInit, AfterViewInit {
   }
   validarImagenes(value?: Imagen) {
     if (this.sliders.length > 1) {
-      this.authService
-        .deleteImage(this.sliders[0].id)
-        .then((element: Imagen) => {
-          if (value) {
-            this.sliders = [value];
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // this.authService
+      //   .deleteImage(this.sliders[0].id)
+      //   .then((element: Imagen) => {
+      //     if (value) {
+      //       this.sliders = [value];
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     } else {
       if (value) {
         if (this.sliders.length > 0) {
-          this.authService
-            .deleteImage(this.sliders[0].id)
-            .then((element: Imagen) => {
-              // console.log(element);
-              this.createWarning(
-                'Se cargo su nueva imagen de perfil, guarde sus cambios.'
-              );
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          // this.authService
+          //   .deleteImage(this.sliders[0].id)
+          //   .then((element: Imagen) => {
+          //     // console.log(element);
+          //     this.createWarning(
+          //       'Se cargo su nueva imagen de perfil, guarde sus cambios.'
+          //     );
+          //   })
+          //   .catch((error) => {
+          //     console.log(error);
+          //   });
         }
         this.sliders = [value];
       }

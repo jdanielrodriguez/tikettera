@@ -123,10 +123,8 @@ export class RecoveryComponent implements OnInit, OnDestroy {
     this.modalService.dismissAll();
   }
   public options = {
-    position: ["bottom", "right"],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: "scale",
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

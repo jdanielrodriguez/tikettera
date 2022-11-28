@@ -83,10 +83,8 @@ export class InicioComponent implements OnInit {
   ];
   private _proveedoresListaAuxiliar: ListaBusqueda[] = this._proveedoresLista;
   public options = {
-    position: ['bottom', 'right'],
     timeOut: 2000,
     lastOnBottom: false,
-    animate: 'scale',
     showProgressBar: false,
     pauseOnHover: true,
     clickToClose: true,

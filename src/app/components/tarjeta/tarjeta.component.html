@@ -1,0 +1,48 @@
+<section class="tarjeta" id="tarjeta" [class.hidde]="!isCollapsed" [class.active]="frente"
+  (click)="girarTarjeta(!frente)">
+  <div class="delantera">
+    <div class="logo-marca" id="logo-marca">
+      <img [src]="tipoTarjeta" alt="">
+    </div>
+    <img src="./../../../assets/images/tarjeta/chip-tarjeta.png" class="chip" alt="">
+    <div class="datos" *ngIf="data">
+      <div class="grupo" id="numero">
+        <p class="label">Número Tarjeta</p>
+        <p class="numero">{{(data.numeroTC!=''?data.numeroTC:'#### #### #### ####') | numTC}}</p>
+      </div>
+      <div class="flexbox">
+        <div class="grupo" id="nombre">
+          <p class="label">Nombre Tarjeta</p>
+          <p class="nombre">{{(data.nombreTC!=''?data.nombreTC:'Jhon Doe') | justText}}</p>
+        </div>
+
+        <div class="grupo" id="expiracion">
+          <p class="label">Expiracion</p>
+          <p class="expiracion"><span class="mes">{{data.exp_montTC!=''?data.exp_montTC:'MM'}}</span> / <span
+              class="year">{{(data.exp_yearTC && data.exp_yearTC!='')?data.exp_yearTC.slice(2):'AA'}}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trasera">
+    <div class="barra-magnetica"></div>
+    <div class="datos">
+      <div class="grupo" id="firma">
+        <p class="label">Firma</p>
+        <div class="firma">
+          <p>
+            {{data.nombreTC!=''?data.nombreTC:'Jhon Doe'}}
+          </p>
+        </div>
+      </div>
+      <div class="grupo" id="ccv">
+        <p class="label">CCV</p>
+        <p class="ccv">{{(data.cvvTC!=''?data.cvvTC:'') | cvvTC}}</p>
+      </div>
+    </div>
+    <p class="leyenda">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus exercitationem,
+      voluptates illo.</p>
+    <a href="#" class="link-banco">https://www.tuBanco.com</a>
+  </div>
+</section>

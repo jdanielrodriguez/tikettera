@@ -1,0 +1,83 @@
+<div class="w-100 p-0 row mx-auto border-bottom border-dark mt-3 px-lg-3" *ngIf="historico && historico.length>0">
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ml-auto mr-0 px-0">
+    <span>
+      <h5>
+        <strong>
+          Transaccion
+        </strong>
+      </h5>
+    </span>
+  </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mx-0 px-0">
+    <span>
+      <h5>
+        <strong>
+          Fecha
+        </strong>
+      </h5>
+    </span>
+  </div>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 mx-0 px-0">
+    <span>
+      <h5>
+        <strong>
+          Credito
+        </strong>
+      </h5>
+    </span>
+  </div>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ml-0 mr-auto px-0">
+    <span>
+      <h5>
+        <strong>
+          Debito
+        </strong>
+      </h5>
+    </span>
+  </div>
+</div>
+<div class="historial mx-auto px-lg-3" *ngIf="historico && historico.length>0">
+  <div class="w-100" *ngFor="let data of historico">
+    <div class="w-100 mp-0 row" *ngIf="data.tipo == 3">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ml-0 mr-auto px-0 text-left">
+        Credito{{data.impuesto==1?" Impuesto ":""}}{{data.comision==1?" Plataforma ":""}}{{data.pasarela!==null?" Pasarela ":""}}{{data.token!==null?" por Compra ":""}}:
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mx-0 px-0">
+        {{data.fecha}}
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 mx-0 px-0 text-right">
+        Q {{parseDecimal(data.total)}}
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 mr-0 ml-auto px-0 text-right">
+      </div>
+    </div>
+    <div class="w-100 mp-0 row" *ngIf="data.tipo == 2">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ml-0 mr-auto px-0 text-left">
+        Debito{{data.impuesto==1?" Impuesto ":""}}{{data.comision==1?" Plataforma ":""}}{{data.pasarela!==null?" Pasarela ":""}}{{data.token!==null?" por Compra ":""}}:
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mx-0 px-0">
+        {{data.fecha}}
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 mx-0 px-0 text-right">
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 mr-0 ml-auto px-0 text-right">
+        Q {{parseDecimal(data.total)}}
+      </div>
+    </div>
+  </div>
+  <div class="w-100" *ngIf="impuestoHistorico!='0.00'">
+    <div class="w-100 mp-0 row">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ml-0 mr-auto px-0 text-left">
+        Debito Impuesto :
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mx-0 px-0">
+        -
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 mx-0 px-0 text-right">
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 mr-0 ml-auto px-0 text-right">
+        Q {{impuestoHistorico}}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="w-100 mp-0 d-flex" *ngIf="getActivo('texto')">
+  <span class="pointer mx-auto" [style.color]="color" [cpPosition]="'bottom'" [cpPositionRelativeToArrow]="true"
+    [(colorPicker)]="color" (colorPickerSelect)="getColor($event)" [cpSaveClickOutside]="true">
+    <h3>Color de Texto <i class="fa fa-hand-pointer-o pointer mr-3"></i></h3>
+  </span>
+</div>
+<div class="w-100 mp-0 d-flex" *ngIf="getActivo('background')">
+  <span class="pointer mx-auto" [style.color]="color" [style.background-color]="color" [cpPosition]="'bottom'"
+    [cpPositionRelativeToArrow]="true" [(colorPicker)]="color" (colorPickerSelect)="getColor($event)"
+    [cpSaveClickOutside]="true">
+    <h3>Color de Fondo <i class="fa fa-hand-pointer-o pointer mr-3"></i></h3>
+  </span>
+</div>
+<div class="w-100 mp-0 d-flex" *ngIf="getActivo('color')">
+  <span class="pointer mx-auto mt-4" [style.color]="color" [cpPosition]="'bottom'" [cpPositionRelativeToArrow]="true"
+    [(colorPicker)]="color" (colorPickerSelect)="getColor($event)" [cpSaveClickOutside]="true">
+    <h5>Color <i class="fa fa-hand-pointer-o pointer ml-3"></i></h5>
+  </span>
+</div>

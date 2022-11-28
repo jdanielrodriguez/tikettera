@@ -1,0 +1,35 @@
+<div class="w-m-25 w-m-100 d-flex position-fixed fixed-bottom h-auto mb-0 mr-0 ml-auto mt-auto">
+  <div class="ml-auto list-group" [class.d-none]="!chatAbierto" [class.chats-container]="chatAbierto">
+    <div class="list-group-item row w-100 mp-0 d-flex" *ngFor="let data of conversaciones" (click)="seleccionar(data)">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mp-0 d-flex">
+        <img class="card-img-top badge-pill m-auto"
+          [src]="data.imagenes.length>0?data.imagenes[0].url:(data.picture?data.picture:'https://robohash.org/68.186.255.198.png')"
+          alt="Card image cap">
+      </div>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 mr-auto ml-0 my-0 p-0">
+        <div class="card-body text-left ml-0 px-0">
+          <p>
+            {{data.nombre}}
+          </p>
+          <p>
+            {{data.username}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="w-m-50 w-m-100 d-flex position-fixed fixed-bottom h-auto mb-0 mr-0 ml-auto" (blur)="abrirChat(chatAbierto)">
+  <app-send [conversacionActual]="conversacionActual"
+    (cerrar)="$event?conversacionActual=null:conversacionActual=conversacionActual" class="ml-auto mr-2"
+    *ngIf="conversacionActual"></app-send>
+  <span class="badge badge-info badge-chat p-2 ml-m-auto" [class.ml-auto]="!chatAbierto" [class.active]="chatAbierto"
+    (click)="abrirChat(chatAbierto)">
+    <h3>
+      <i class="fa fa-commenting" [class.mr-3]="chatAbierto"></i>
+      <span [class.d-none]="!chatAbierto">
+        Chats
+      </span>
+    </h3>
+  </span>
+</div>

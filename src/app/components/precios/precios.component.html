@@ -1,0 +1,23 @@
+<ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-pills border-info mt-5 ml-3" orientation="vertical">
+  <li [ngbNavItem]="1" (click)="muestraProducto(1)">
+    <a ngbNavLink class="btn-outline-info btn border-info">Precios</a>
+    <ng-template ngbNavContent class="w-100" *ngIf="active==1">
+      <app-calculadora class="w-100" [producto]="producto" [afectaData]="true"></app-calculadora>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="2" (click)="muestraProducto(2)">
+    <a ngbNavLink class="btn-outline-info btn border-info">Calculadora de Precios</a>
+    <ng-template ngbNavContent class="w-100" *ngIf="active==2">
+      <app-calculadora class="w-100" [producto]="producto" [afectaData]="false"></app-calculadora>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="3" (click)="muestraProducto(3)">
+    <a ngbNavLink class="btn-outline-info btn border-info">Calculadora de Retiros</a>
+    <ng-template ngbNavContent class="w-100" *ngIf="active==3">
+      <app-calculadora class="w-100" [producto]="producto" [afectaData]="false" [afectaComision]="true">
+      </app-calculadora>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav" class="w-100"></div>
+<simple-notifications [options]="options"></simple-notifications>

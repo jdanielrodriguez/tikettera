@@ -1,0 +1,15 @@
+<ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-tabs">
+  <li [ngbNavItem]="1" (click)="active=1">
+    <a ngbNavLink>Deposito</a>
+    <ng-template ngbNavContent class="w-100 d-flex mp-0">
+      <app-retiro-view [caja]="caja" [retiro]="retiro" [pasarela]="pasarela" [comision]="comision"></app-retiro-view>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="2" (click)="active=2">
+    <a ngbNavLink>Transferencia Mobile</a>
+    <ng-template ngbNavContent class="w-100 d-flex mp-0">
+      <app-retiro-view></app-retiro-view>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav" class="w-100 d-flex mp-0"></div>

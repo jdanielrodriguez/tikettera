@@ -1,0 +1,18 @@
+<ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-tabs">
+  <li [ngbNavItem]="1" (click)="active=1">
+    <a ngbNavLink>Transacciones</a>
+    <ng-template ngbNavContent class="w-100 d-flex mp-0">
+      <div class="alert alert-info" *ngIf="!historico">
+        <strong><i class="fa fa-spinner"></i></strong> Cargando...
+      </div>
+      <app-historial-view [historico]="historico"></app-historial-view>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="2" (click)="active=2">
+    <a ngbNavLink>Ventas</a>
+    <ng-template ngbNavContent class="w-100 d-flex mp-0">
+      <app-historial-view></app-historial-view>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav" class="w-100 d-flex mp-0"></div>

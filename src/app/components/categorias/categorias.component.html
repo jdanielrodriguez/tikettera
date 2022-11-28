@@ -1,0 +1,33 @@
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 mx-auto">
+  <div id="formEditar">
+    <div class="card-body">
+      <form class="form-signin" autocomplete="off" id="editar-form" *ngIf="producto" #editarForm="ngForm"
+        (ngSubmit)="update(editarForm)">
+        <h1 class="h3 mb-3 font-weight-normal">{{titulo}}</h1>
+        <input type="hidden" class="form-control" name="id" required ngModel #id="ngModel" placeholder="id"
+          [(ngModel)]="producto.id" *ngIf="producto.id">
+        <div class="row w-100">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" name="nombre" required ngModel #nombre="ngModel"
+                placeholder="nombre" [(ngModel)]="producto.nombre">
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" name="descripcion" required ngModel #descripcion="ngModel"
+                placeholder="descripcion" [(ngModel)]="producto.descripcion">
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 row mx-auto">
+            <button class="btn btn-lg btn-primary btn-block col-xs-12 col-sm-12 col-md-12 col-lg-4 mr-auto mt-auto"
+              (click)="navegar({url:'./../dashboard/categorias',nombre:'back'})" type="button">Regresar</button>
+            <button class="btn btn-lg btn-primary btn-block col-xs-12 col-sm-12 col-md-12 col-lg-4 ml-auto"
+              [disabled]="producto.nombre==''" type="submit">{{producto.id?"Actualizar":"Ingresar"}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<simple-notifications [options]="options"></simple-notifications>

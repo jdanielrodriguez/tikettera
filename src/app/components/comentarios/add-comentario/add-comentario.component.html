@@ -1,0 +1,8 @@
+<form class="chat-input input-group" #comentarioForm (ngSubmit)="crear(mensaje.value,comentarioForm)">
+  <input type="text" #mensaje class="form-control mensaje-send" placeholder="Escribe un Comentario!" />
+  <div class="input-group-append">
+    <button type="submit" class="btn btn-primary mensaje-send-btn">
+      <i class="fa fa-send"></i>
+    </button>
+  </div>
+</form>

@@ -1,54 +1,82 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NotificationsService } from 'angular2-notifications';
-import { Perfil } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Perfil, Proveedor, Cliente, Menus } from 'src/app/interfaces';
+import { Sesion } from 'src/app/metodos';
 @Component({
-  selector: 'app-configuracion',
+  selector: 'app-configuraciones',
   templateUrl: './configuracion.component.html',
-  styleUrls: []
+  styleUrls: ['./configuracion.component.css']
 })
 export class ConfiguracionComponent implements OnInit {
+  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  private _perfil: Perfil = new Perfil();
+  private _type!: string;
   constructor(
-    private route: ActivatedRoute,
-    private _service: NotificationsService,
     private mySesion: Sesion
   ) { }
+  ngOnInit(): void {
+  }
+  navegar(data: Menus) {
+    this.mySesion.navegar(data);
+  }
+  obtenerPerfilConf(value: Perfil) {
+    this._perfil = value;
+    this._perfilEmit.emit(this._perfil);
+  }
+  @Output()
+  get obtenerPerfil(): EventEmitter<Perfil> {
+    this._perfilEmit.emit(this._perfil);
+    return this._perfilEmit;
+  }
+  @Input()
+  set perfil(value: Perfil) {
+    this._perfil = value;
+  }
   get perfil(): Perfil {
-    return this.mySesion.perfil;
+    return this._perfil;
   }
-  get type(): string | null {
-    return this._type;
+  get proveedor(): Proveedor {
+    return new Proveedor();
   }
-  set type(value: string | null) {
+  get cliente(): Cliente {
+    return new Cliente();
+  }
+  @Input()
+  set type(value: string) {
     this._type = value;
   }
-  private _type:string | null = '';
-  public options = {
-    timeOut: 2000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200
-  };
-  ngOnInit(): void {
-    this.getParams();
+  get type(): string {
+    return this._type;
   }
-  getParams() {
-    this._type = this.route.snapshot.paramMap.get('tipo');
-  }
-  obtenerPerfil(value: Perfil) {
-    this.mySesion.actualizaPerfil(value);
-    this.mySesion.actualizaPerfil();
-    if (this.mySesion.validarSesion()) {
-      this.createSuccess('Se actualizo su informacion');
+
+  get active(): number {
+    switch (this._type) {
+      case 'perfil': {
+        return 1;
+      }
+      case 'sliders': {
+        return 2;
+      }
+      case 'direcciones': {
+        return 3;
+      }
+      case 'metodos-pago': {
+        return 4;
+      }
+      case 'encabezado': {
+        return 5;
+      }
+      case 'correos': {
+        return 6;
+      }
+      case 'password': {
+        return 7;
+      }
+      case 'cuentas': {
+        return 8;
+      }
+      default: {
+        return 1;
+      }
     }
-  }
-  public createSuccess(success: string) {
-    this._service.success('¡Éxito!', success);
-  }
-  public createError(error: string) {
-    this._service.error('¡Error!', error);
   }
 }

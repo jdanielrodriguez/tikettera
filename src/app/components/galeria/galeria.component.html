@@ -4,16 +4,14 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 mp-0-mini mb-3 service-card" style="cursor: pointer"
       *ngFor="let data of lista">
       <div class="card mb-4 shadow-sm" style="height: auto; width: auto;">
-        <span class="fa fa-times eliminarCarrito" *ngIf="eliminarCarrito"
-          (click)="removerCarrito(data.inventario)"></span>
-        <div class="card-title" style="height:200px;width: 100%;display: flex;padding-top:5%;"
+        <!-- <div class="card-title" style="height:200px;width: 100%;display: flex;padding-top:5%;"
           (click)="tieneDetalle?(esAdmin?navegar({url:'../dashboard/inventario/'+data.nombre,nombre:data.nombre},null,data):navegar({url:'../'+proveedor+'/resultado/'+data.nombre,nombre:data.nombre},null,null)):categorias?(esAdmin?navegar({url:'../dashboard/categorias/'+data.nombre,nombre:data.nombre},null,data):navegar({url:'../'+proveedor+'/categorias/'+data.nombre,nombre:data.nombre},null,data)):navegar({url:'../'+data.nombre+'/inicio',nombre:data.nombre},null,data)">
           <img loading="lazy" class="bd-placeholder-img card-img-top"
             style="margin-top: auto;margin-left: auto;margin-right: auto;max-height: 200px;height: auto;margin-bottom: auto;width: auto;max-width: 100%;"
             src="{{((data.imagenes!=null && data.imagenes.length>0)?data.imagenes[0].url:data.imagen?data.imagen:((data.inventario.imagenes!=null && data.inventario.imagenes.length>0)?data.inventario.imagenes[0].url:'https://placehold.it/250X200?text=X'))}}">
-        </div>
+        </div> -->
         <div class="card-body" style="height:auto;">
-          <p class="card-text text-primary" [class.buscando]="data.id==null"
+          <!-- <p class="card-text text-primary" [class.buscando]="data.id==null"
             (click)="tieneDetalle?(esAdmin?navegar({url:'../dashboard/inventario/'+data.nombre,nombre:data.nombre},null,data):navegar({url:'../'+proveedor+'/resultado/'+data.nombre,nombre:data.nombre},null,data)):categorias?(esAdmin?navegar({url:'../dashboard/categorias/'+data.nombre,nombre:data.nombre},null,data):navegar({url:'../'+proveedor+'/categorias/'+data.nombre,nombre:data.nombre},null,data)):navegar({url:'../'+data.nombre+'/inicio',nombre:data.nombre},null,data)">
             {{((data.nombre!=null)?data.nombre:'')}}
             <button [swal]="{
@@ -70,14 +68,14 @@
                 (click)="agregarCarrito(data.inventario)"> <i class="fa fa-plus"></i><i
                   class="fa fa-shopping-cart ml-2"></i></button>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
   <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3 d-flex" *ngIf="numReg>size">
-    <ngb-pagination class="mx-auto" [(collectionSize)]="numReg" (pageChange)="cambioPagina($event)" [(pageSize)]="size"
-      [(page)]="page"></ngb-pagination>
+    <ngb-pagination class="mx-auto" [collectionSize]="numReg" (pageChange)="cambioPagina($event)" [pageSize]="size"
+      [page]="page"></ngb-pagination>
   </div>
 
 </div>

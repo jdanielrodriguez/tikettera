@@ -80,7 +80,7 @@ export class ProveedorComponent implements OnInit, AfterViewInit {
   get data(): Proveedor {
     return this._data;
   }
-  get year(): string {
-    return (new Date().getFullYear()).toString()
+  get year(): number {
+    return (new Date().getFullYear())
   }
 }

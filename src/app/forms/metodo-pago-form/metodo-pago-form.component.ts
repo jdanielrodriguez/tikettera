@@ -105,7 +105,7 @@ export class MetodoPagoFormComponent implements OnInit {
     // data.exp_montTC = data.exp_montTC ? this.encrypt.desencriptar(data.exp_montTC) : '10';
     // data.numeroTC = this.encrypt.desencriptar(data.numeroTC)
     // data.cvvTC = this.encrypt.desencriptar(data.cvvTC)
-    this._data = data
+    // this._data = data
     this._isCollapsed = false
   }
   agregar(form: any) {
@@ -184,6 +184,9 @@ export class MetodoPagoFormComponent implements OnInit {
     return this._data;
   }
   set data(value: MetodoPago) {
+    if(!value){
+      value = new MetodoPago();
+    }
     this._data = value;
   }
 

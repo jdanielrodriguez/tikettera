@@ -1,10 +1,12 @@
 import { HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { environment } from './../environments/environment';
 import { Menus, Perfil } from './interfaces';
+@Injectable()
 export class Sesion {
   constructor(
     private localSt: LocalStorageService,
@@ -154,6 +156,7 @@ export class Sesion {
 
 }
 
+@Injectable()
 export class Encript {
   a2hex(str: string) {
     const arr = [];
@@ -242,6 +245,7 @@ export class Encript {
     return compare ? newLetter : null;
   }
 }
+@Injectable()
 export class Formatos {
   constructor(
   ) { }
@@ -271,6 +275,7 @@ export class Formatos {
   }
 }
 
+@Injectable()
 export class Constantes {
   constructor(
   ) { }

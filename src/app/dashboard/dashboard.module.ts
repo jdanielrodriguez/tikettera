@@ -9,6 +9,7 @@ import { AutorizarProveedoresComponent } from './autorizar-proveedores/autorizar
 import { CajaComponent } from './caja/caja.component';
 import { CategoriaComponent } from './categoria/categoria.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
+import { ChangePassFormulario } from './change-pass/change-pass-form.component';
 import { ClasificacionesComponent } from './clasificaciones/clasificaciones.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -26,6 +27,7 @@ import { ValidarCuentaComponent } from './validar-cuenta/validar-cuenta.componen
     AutorizarProveedoresComponent,
     CajaComponent,
     ChangePassComponent,
+    ChangePassFormulario,
     ValidarCuentaComponent
   ],
   imports: [

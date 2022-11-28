@@ -54,7 +54,7 @@
 
 .tarjeta .delantera {
   width: 100%;
-  background: url(./../../../../assets/images/tarjeta/bg-tarjeta/bg-tarjeta-02.jpg);
+  background: url(./../../../assets/images/tarjeta/bg-tarjeta/bg-tarjeta-02.jpg);
   background-size: cover;
 }
 
@@ -109,7 +109,7 @@
 /* ---------- Tarjeta Trasera ----------*/
 
 .trasera {
-  background: url(./../../../../assets/images/tarjeta/bg-tarjeta/bg-tarjeta-02.jpg);
+  background: url(./../../../assets/images/tarjeta/bg-tarjeta/bg-tarjeta-02.jpg);
   background-size: cover;
   position: absolute;
   top: 0;

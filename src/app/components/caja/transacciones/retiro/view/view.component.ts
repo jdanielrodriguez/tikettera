@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Pasarela, Comision, Caja } from 'src/app/interfaces';
+import { Component, Input, OnInit } from '@angular/core';
+import { Caja, Comision, Pasarela } from 'src/app/interfaces';
 import { Constantes } from 'src/app/metodos';
 
 @Component({
@@ -64,12 +64,12 @@ export class ViewRetiroComponent implements OnInit {
   }
   get totalRetiro(): string {
     const num = this.retiro ?
-      new Number((parseFloat(this.precioSIva) * (this.retiro.porcentaje / 100)) + (this.retiro.plus * this.retiro.cambio)) : 0;
+      new Number((parseFloat(this.precioSIva) * ((this.retiro.porcentaje ? this.retiro.porcentaje : 1) / 100)) + ((this.retiro.plus ? this.retiro.plus : 1) * (this.retiro.cambio ? this.retiro.cambio : 1))) : 0;
     return num.toFixed(2);
   }
   get totalSinRetiro(): string {
     let count = 0;
-    count = this.caja.saldo - parseFloat(this.totalRetiro);
+    count = (this.caja.saldo ? this.caja.saldo : parseFloat(this.totalRetiro)) - parseFloat(this.totalRetiro);
     const num = new Number(count);
     return num.toFixed(2);
   }

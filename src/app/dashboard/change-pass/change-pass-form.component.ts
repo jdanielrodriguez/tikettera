@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './change-pass-modal.component.html'
 })
 export class ChangePassFormulario implements OnInit {
-  private _titulo: string;
+  private _titulo!: string;
   constructor(
     private modalService: NgbModal,
   ) { }

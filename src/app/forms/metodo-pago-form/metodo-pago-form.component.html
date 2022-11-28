@@ -18,9 +18,9 @@
         <input type="hidden" class="form-control" *ngIf="data.id" [(ngModel)]="data.id" name="id" required ngModel
           #id="ngModel">
         <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-1">
-          <input type="text" class="form-control" [ngModel]="data.numeroTC | numTC"
+          <input type="text" class="form-control" [ngModel]="(data.numeroTC?data.numeroTC:'') | numTC"
             (ngModelChange)="data.numeroTC=$event" name="numeroTC" required ngModel #numeroTC="ngModel"
-            placeholder="xxxx xxxx xxxx xxxx" (keyup)="girarTarjeta(false,$event)" maxlength="19">
+            placeholder="xxxx xxxx xxxx xxxx" (keyup)="girarTarjeta(false)" maxlength="19">
         </div>
         <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-6 mb-1">
           <select class="form-control" [(ngModel)]="data.exp_montTC" name="exp_montTC" required ngModel
@@ -35,12 +35,12 @@
           </select>
         </div>
         <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-9 mx-auto mb-1">
-          <input type="text" class="form-control" name="nombreTC" [ngModel]="data.nombreTC | justText"
+          <input type="text" class="form-control" name="nombreTC" [value]="(data.nombreTC?data.nombreTC:'') | justText"
             (ngModelChange)="data.nombreTC=$event" required ngModel #nombreTC="ngModel" placeholder="Jhon Doe"
             (keyup)="girarTarjeta(false)">
         </div>
         <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-3 mx-auto mb-1">
-          <input type="text" class="form-control" name="cvvTC" [ngModel]="data.cvvTC | cvvTC"
+          <input type="text" class="form-control" name="cvvTC" [value]="(data.cvvTC ? data.cvvTC : '') | cvvTC"
             (ngModelChange)="data.cvvTC=$event" required ngModel #cvvTC="ngModel" placeholder="123"
             (keyup)="girarTarjeta(true)" maxlength="3">
         </div>
@@ -71,13 +71,13 @@
         <h5 class="mb-1">{{(alert.nombre)}}</h5>
         <small>
           <button type="button" class="btn btn-warning badge-pill text-center ml-2" title="Marcar como Principal"
-          (click)="marcarDefault(alert,$event)">
-          <i class="fa fa-hand-pointer-o pointer"></i>
-        </button>
-        <button type="button" class="btn btn-danger badge-pill text-center ml-2" (click)="eliminarMetodo(alert)"
-          title="Eliminar">
-          <i class="fa fa-times pointer"></i>
-        </button>
+            (click)="marcarDefault(alert,$event)">
+            <i class="fa fa-hand-pointer-o pointer"></i>
+          </button>
+          <button type="button" class="btn btn-danger badge-pill text-center ml-2" (click)="eliminarMetodo(alert)"
+            title="Eliminar">
+            <i class="fa fa-times pointer"></i>
+          </button>
         </small>
       </div>
       <p class="mb-1">{{alert.nombreTC}}</p>

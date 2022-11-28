@@ -7,11 +7,11 @@
     </ng-template>
     <label for="typeahead-template" class="text-primary">Buscar {{titulo}}:</label>
     <form class="input-group">
-      <input id="typeahead-template" #buscando type="text" class="form-control" [(ngModel)]="seleccion"
+      <!-- <input id="typeahead-template" #buscando type="text" class="form-control" [(ngModel)]="seleccion"
         [ngbTypeahead]="search" [resultTemplate]="ResultadoPlantilla" [inputFormatter]="inputFormatBandListValue"
         [resultFormatter]="resultFormatBandListValue" (focus)="focus$.next($any($event).target.value)"
         #instance="ngbTypeahead" (click)="seleccionarValor(buscando.value,click$)"
-        (keyup)="limpiarValor(buscando.value,click$)" [ngModelOptions]="{standalone: true}" />
+        (keyup)="limpiarValor(buscando.value,click$)" [ngModelOptions]="{standalone: true}" /> -->
       <div class="input-group-append">
         <button class="btn btn-outline-primary" type="button" (click)="seleccionarValor(buscando.value,click$)">
           <i class="fa fa-search"></i>

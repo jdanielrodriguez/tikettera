@@ -16,7 +16,6 @@ import { BlockUIModule } from 'ng-block-ui';
 
 import { ChatComponent } from './chat/chat.component';
 import { ColorBackgroundComponent } from './color-background/color-background.component';
-import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { FooterComponent } from './footer/footer.component';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { ImagenesComponent } from './imagenes/imagenes.component';
@@ -57,7 +56,6 @@ const modules = [
   ImagenesComponent,
   JustTextPipe,
   CvvTCPipe,
-  ConfiguracionComponent,
   PerfilViewComponent,
   ColorBackgroundComponent,
   TarjetaComponent,

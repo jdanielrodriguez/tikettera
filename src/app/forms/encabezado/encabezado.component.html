@@ -5,10 +5,10 @@
     </h1>
     <input type="hidden" class="form-control" name="id" id="id" *ngIf="perfil" [(ngModel)]="perfil.id" ngModel
       #id="ngModel" />
-    <app-nav [esAdmin]="true" *ngIf="sliders.length == 0 && configuracion" [proveedores]="configuracion.footer"
-      [color]="configuracion.css" [background]="configuracion.color_nav"></app-nav>
+    <app-nav [esAdmin]="true" *ngIf="sliders.length == 0 && configuracion" [proveedores]="configuracion.footer?configuracion.footer:''"
+      [color]="configuracion.css?configuracion.css:''" [background]="configuracion.color_nav?configuracion.color_nav:''"></app-nav>
     <app-nav [esAdmin]="true" *ngIf="sliders.length > 0 && configuracion" [logo]="sliders[0].url"
-      [proveedores]="configuracion.footer" [color]="configuracion.css" [background]="configuracion.color_nav"></app-nav>
+      [proveedores]="configuracion.footer?configuracion.footer:''" [color]="configuracion.css?configuracion.css:''" [background]="configuracion.color_nav?configuracion.color_nav:''"></app-nav>
 
     <div class="row mt-3 w-100 mp-0">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
@@ -17,7 +17,7 @@
         </label>
         <button type="button" class="btn btn-info badge-pill cancelarColor" (click)="configuracion.css=''"
           alt="Resetear Texto"><i class="fa fa-refresh"></i></button>
-        <app-color-background tipo="texto" *ngIf="configuracion" [color]="configuracion.css"
+        <app-color-background tipo="texto" *ngIf="configuracion" [color]="configuracion.css?configuracion.css:''"
           (obtenerColor)="obtenerColorTexto($event)"></app-color-background>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
@@ -26,7 +26,7 @@
         </label>
         <button type="button" class="btn btn-info badge-pill cancelarColor" (click)="configuracion.color_nav=''"
           alt="Resetear Fondo"><i class="fa fa-refresh"></i></button>
-        <app-color-background tipo="background" *ngIf="configuracion" [color]="configuracion.color_nav"
+        <app-color-background tipo="background" *ngIf="configuracion" [color]="configuracion.color_nav?configuracion.color_nav:''"
           (obtenerColor)="obtenerColorBackground($event)"></app-color-background>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto">

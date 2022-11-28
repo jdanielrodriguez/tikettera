@@ -23,7 +23,7 @@ export class CajaComponent implements OnInit {
   modelInicial!: NgbDateStruct;
   date!: { year: number, month: number, day: number };
   dateMin: { year: number, month: number, day: number } = {
-    year: parseInt(this.year, 10),
+    year: this.year,
     month: (new Date()).getMonth() + 1,
     day: 1
   };
@@ -107,8 +107,8 @@ export class CajaComponent implements OnInit {
     // this.modelInicial = this.calendar.getToday();
     this.modelFinal = this.calendar.getToday();
   }
-  get year(): string {
-    return (new Date().getFullYear()).toString();
+  get year(): number {
+    return (new Date().getFullYear());
   }
   @Input()
   set perfil(value: Perfil) {

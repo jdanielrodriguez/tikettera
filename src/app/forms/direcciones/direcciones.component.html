@@ -10,7 +10,7 @@
         #id="ngModel">
       <input type="hidden" class="form-control" *ngIf="data.pais" [(ngModel)]="data.pais" name="pais" required ngModel
         #pais="ngModel">
-      <input type="hidden" class="form-control" *ngIf="data.default>=0" [(ngModel)]="data.default" name="default"
+      <input type="hidden" class="form-control" *ngIf="data.default && data.default>=0" [(ngModel)]="data.default" name="default"
         required ngModel #default="ngModel">
       <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-1">
         <input type="text" autofocus class="form-control" [(ngModel)]="data.calle" name="calle" required ngModel

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { AuthServices } from './../../services/auth.service';
+import { AuthServices } from '../../services/auth.service';
 import { NotificationsService } from 'angular2-notifications';
-import { ChangePasswordForm } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { ChangePasswordForm } from '../../interfaces';
+import { Sesion } from '../../metodos';
 import { ChangePassFormulario } from './change-pass-form.component';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';

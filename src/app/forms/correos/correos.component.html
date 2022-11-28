@@ -12,7 +12,7 @@
         </label>
         <button type="button" class="btn btn-info badge-pill cancelarColor" (click)="configuracion.css=''"
           alt="Resetear Texto"><i class="fa fa-refresh"></i></button>
-        <app-color-background tipo="texto" *ngIf="configuracion" [color]="configuracion.css"
+        <app-color-background tipo="texto" *ngIf="configuracion" [color]="configuracion.css?configuracion.css:''"
           (obtenerColor)="obtenerColorTexto($event)"></app-color-background>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
@@ -21,7 +21,7 @@
         </label>
         <button type="button" class="btn btn-info badge-pill cancelarColor" (click)="configuracion.color_nav=''"
           alt="Resetear Fondo"><i class="fa fa-refresh"></i></button>
-        <app-color-background tipo="background" *ngIf="configuracion" [color]="configuracion.color_nav"
+        <app-color-background tipo="background" *ngIf="configuracion" [color]="configuracion.color_nav?configuracion.color_nav:''"
           (obtenerColor)="obtenerColorBackground($event)"></app-color-background>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto">

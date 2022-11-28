@@ -5,7 +5,7 @@ import { HomeGuard } from './guards/home.guard';
 
 import { LogoutComponent } from './components/logout/logout.component';
 import { NavComponent } from './components/nav/nav.component';
-import { ChangePassComponent } from './dashboard/change-pass/change-pass.component';
+import { ChangePassComponent } from './components/change-pass/change-pass.component';
 import { LoginComponent } from './login/login.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { NosotrosComponent } from './pages/nosotros/nosotros.component';
@@ -20,8 +20,8 @@ const routes: Routes = [
       { path: 'nosotros', component: NosotrosComponent },
       { path: 'chage-pass', component: ChangePassComponent },
       { path: 'recovery', component: RecoveryComponent },
-      { path: 'login', component: LoginComponent, canActivate: [HomeGuard] },
-      { path: 'register', component: RegisterComponent, canActivate: [HomeGuard] },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
       { path: 'logout', component: LogoutComponent },
       { path: '**', redirectTo: 'inicio' }
     ]

@@ -14,6 +14,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { BlockUIModule } from 'ng-block-ui';
 
+import { ChangePassFormulario } from './change-pass/change-pass-form.component';
+import { ChangePassComponent } from './change-pass/change-pass.component';
 import { ChatComponent } from './chat/chat.component';
 import { ColorBackgroundComponent } from './color-background/color-background.component';
 import { FooterComponent } from './footer/footer.component';
@@ -55,6 +57,8 @@ const modules = [
   NumTCPipe,
   ImagenesComponent,
   JustTextPipe,
+  ChangePassComponent,
+  ChangePassFormulario,
   CvvTCPipe,
   PerfilViewComponent,
   ColorBackgroundComponent,

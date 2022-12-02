@@ -669,3 +669,37 @@ export class HistoricoCaja {
   tipo_forma_pago?: number;
   tipo_transaccion?: number;
 }
+// Tikettera
+
+
+export class Locality {
+  constructor() {
+    this.id = null;
+    this.name = '';
+    this.picture = '';
+    this.description = '';
+    this.address = '';
+    this.event = {};
+  }
+  id?: number | null | undefined;
+  name?: string;
+  picture?: string;
+  description?: string;
+  address?: string;
+  time_start?: Date;
+  time_end?: Date;
+  date_start?: Date;
+  date_end?: Date;
+  start?: Date;
+  end?: Date;
+
+  lat?: number;
+  lng?: number;
+  type?: number;
+  state?: number;
+
+  event_id?: number;
+  event?: Configuracion;
+  created_at!: Date;
+  updated_at!: Date;
+}

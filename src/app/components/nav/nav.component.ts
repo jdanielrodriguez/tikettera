@@ -153,18 +153,18 @@ export class NavComponent implements OnInit, AfterViewInit {
       {
         sesion: false,
         select: false,
-        url: '../vender',
+        url: '../event-create',
         evento: null,
-        nombre: 'Vender'
+        nombre: 'Crea tu evento'
       },
       {
         sesion: true,
         select: false,
-        url: '../vender',
+        url: '../event-create',
         evento: null,
         clienteOnly: true,
         rol: 2,
-        nombre: 'Vender'
+        nombre: 'Crea tu evento'
       },
       {
         sesion: true,

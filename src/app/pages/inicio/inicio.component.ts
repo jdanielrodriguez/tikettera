@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Proveedor, ListaBusqueda } from './../../interfaces';
+import { Locality, ListaBusqueda } from './../../interfaces';
+import { LocalitiesService } from './../../services/localities.service';
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
@@ -10,6 +11,7 @@ import { Proveedor, ListaBusqueda } from './../../interfaces';
 export class InicioComponent implements OnInit {
   constructor(
     private _service: NotificationsService,
+    private localitiesService: LocalitiesService
   ) { }
   set numReg(value: number) {
     this._numReg = value;
@@ -38,13 +40,13 @@ export class InicioComponent implements OnInit {
     return this._page;
   }
   set proveedoresLista(value: ListaBusqueda[]) {
-    this._proveedoresLista = value;
+    this._localitiesList = value;
   }
   get proveedoresLista(): ListaBusqueda[] {
-    return this._proveedoresLista;
+    return this._localitiesList;
   }
   get proveedoresListaAuxiliar(): ListaBusqueda[] {
-    return this._proveedoresLista;
+    return this._localitiesList;
   }
   set proveedor(value: ListaBusqueda) {
     this._proveedor = value;
@@ -59,29 +61,29 @@ export class InicioComponent implements OnInit {
   private _offset = 0;
   private _page = 1;
   active = 1;
-  sliders = [{ url: 'https://placehold.it/500x250?text=Cargando...', titulo: '', descripcion: '' }];
-  private _proveedoresLista: ListaBusqueda[] = [
+  sliders = [{ url: 'https://via.placeholder.com/500x250.png?text=Cagando...', titulo: '', descripcion: '' }];
+  private _localitiesList: ListaBusqueda[] = [
     {
       id: 1,
       nombre: 'Cargando...',
-      imagen: 'https://placehold.it/500x250?text=Cargando...',
+      imagen: 'https://via.placeholder.com/500x250.png?text=Cagando...',
     },
     {
       id: 1,
       nombre: 'Cargando...',
-      imagen: 'https://placehold.it/500x250?text=Cargando...',
+      imagen: 'https://via.placeholder.com/500x250.png?text=Cagando...',
     },
     {
       id: 1,
       nombre: 'Cargando...',
-      imagen: 'https://placehold.it/500x250?text=Cargando...',
+      imagen: 'https://via.placeholder.com/500x250.png?text=Cagando...',
     }, {
       id: 1,
       nombre: 'Cargando...',
-      imagen: 'https://placehold.it/500x250?text=Cargando...',
+      imagen: 'https://via.placeholder.com/500x250.png?text=Cagando...',
     }
   ];
-  private _proveedoresListaAuxiliar: ListaBusqueda[] = this._proveedoresLista;
+  private _localitiesListAuxiliar: ListaBusqueda[] = this._localitiesList;
   public options = {
     timeOut: 2000,
     lastOnBottom: false,
@@ -92,64 +94,61 @@ export class InicioComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.getMainList();
   }
 
   cargarProveedor(value: ListaBusqueda) {
     if (value.id) {
       // this._proveedor = value;
-      // this._proveedoresLista = this._proveedoresLista.filter((v: ListaBusqueda) =>
+      // this._localitiesList = this._localitiesList.filter((v: ListaBusqueda) =>
       //   v.nombre.toLowerCase().indexOf(value.nombre.toLowerCase()) > -1);
     } else {
       this._proveedor = new ListaBusqueda();
-      this._proveedoresLista = this._proveedoresListaAuxiliar;
+      this._localitiesList = this._localitiesListAuxiliar;
     }
   }
 
-  cargarProveedores() {
+  getMainList() {
     this.blockUI.start();
     const data = {
       id: 0,
       estado: 0,
       filter: 'proveedor&limit=' + this.limit + '&offset=' + this.offset + '&estado=1'
     };
-    // this.proveedorService.getAll(data)
-    //   .then((response: { status: number, numReg: number, objeto: Proveedor[] }) => {
-    //     this._numReg = response.numReg;
-    //     this._proveedoresLista.length = 0;
-    //     this._proveedoresListaAuxiliar.length = 0;
-    //     try {
-    //       response.objeto.forEach((element: Proveedor) => {
-    //         const datas: ListaBusqueda = {
-    //           imagen: (element.imagenes && element.imagenes.length > 0) ? element.imagenes[0].url
-    //             : ((element.usuario.imagenes && element.usuario.imagenes.length > 0) ? element.usuario.imagenes[0].url
-    //               : 'https://placehold.it/250x200'),
-    //           nombre: element.nombre ? element.nombre : 'No Name',
-    //           id: element.id,
-    //           validacion: 5,
-    //           inventario: null
-    //         };
-    //         this._proveedoresLista.push(datas);
-    //       });
-    //       const prov = new ListaBusqueda();
-    //       prov.nombre = '';
-    //       this.cargarProveedor(prov);
-    //       this._proveedoresListaAuxiliar = this._proveedoresLista;
-    //       this.sliders.length = 0;
-    //     } catch (exception) {
-    //       console.log(exception);
-    //     } finally {
-    //       this.blockUI.stop();
-    //     }
-    //   })
-    //   .catch(error => {
-    //     this.blockUI.stop();
-    //     this.createError(error);
-    //   });
+    this.localitiesService.getAllActive()
+      .subscribe((response: { status: number, count: number, data: Locality[] }) => {
+        this._numReg = response.count;
+        this._localitiesList.length = 0;
+        this._localitiesListAuxiliar.length = 0;
+        try {
+          response.data.forEach((element: Locality) => {
+            const datas: ListaBusqueda = {
+              imagen: ('https://via.placeholder.com/250x200'),
+              nombre: element.name ? element.name : 'No Name',
+              id: element.id,
+              validacion: 5,
+            };
+            this._localitiesList.push(datas);
+          });
+          const prov = new ListaBusqueda();
+          prov.nombre = '';
+          this.cargarProveedor(prov);
+          this._localitiesListAuxiliar = this._localitiesList;
+          this.sliders.length = 0;
+        } catch (exception) {
+          console.log(exception);
+        } finally {
+          this.blockUI.stop();
+        }
+      }, (error) => {
+        this.blockUI.stop();
+        this.createError(error);
+      });
   }
 
   cambioPagina(value: any) {
     this._page = value;
-    this.cargarProveedores();
+    this.getMainList();
   }
   createSuccess(success: string) {
     this._service.success('¡Éxito!', success);

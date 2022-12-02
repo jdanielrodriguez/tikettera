@@ -30,6 +30,7 @@ import { AuthServices } from './services/auth.service';
 import { CategoriasService } from './services/categorias.service';
 import { ComisionesService } from './services/comisiones.service';
 import { ProveedoresService } from './services/proveedores.service';
+import { LocalitiesService } from './services/localities.service';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ProveedoresService } from './services/proveedores.service';
     Encript,
     Constantes,
     Formatos,
+    LocalitiesService,
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: '6LfW5vgUAAAAAFMhgbCPIkZHjH9tq95IYX4aIZSn'

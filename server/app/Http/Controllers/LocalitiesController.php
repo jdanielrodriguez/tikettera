@@ -14,7 +14,18 @@ class LocalitiesController extends Controller
      */
     public function index()
     {
-        //
+        $objectList = Locality::all();
+        $count = count($objectList);
+        if ($objectList) {
+            $returnData = array(
+                'status' => 200,
+                'msg' => 'Localities Returned',
+                'count' => $count,
+                'data' => $objectList
+            );
+            return new Response($returnData, $returnData['status']);
+        }
+
     }
 
     /**
@@ -27,11 +38,13 @@ class LocalitiesController extends Controller
         $nowDate = date('Y-m-d');
         $nowTime = date('H:i:s');
         $objectSee = Locality::whereRaw("date_start >= ? and time_start > ? and state = 1",[$nowDate, $nowTime])->get();
+        $count = count(Locality::all());
         if ($objectSee) {
             $returnData = array(
                 'status' => 200,
                 'msg' => 'Localities Returned',
-                'objReturn' => $objectSee
+                'count' => $count,
+                'data' => $objectSee
             );
             return new Response($returnData, $returnData['status']);
         }
@@ -78,7 +91,7 @@ class LocalitiesController extends Controller
             $returnData = array(
                 'status' => 200,
                 'msg' => 'Locality Returned',
-                'objReturn' => $objectSee
+                'data' => $objectSee
             );
             return new Response($returnData, $returnData['status']);
 

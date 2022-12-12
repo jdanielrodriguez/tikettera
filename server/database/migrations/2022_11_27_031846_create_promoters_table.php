@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('promoters', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
+            $table->string('slug')->nullable()->default(null);
             $table->double('porcent')->nullable()->default(null);
             $table->double('qty')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);

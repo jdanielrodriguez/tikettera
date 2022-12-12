@@ -17,6 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('picture')->nullable()->default(null);
+            $table->string('slug')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
             $table->string('address')->nullable()->default(null);
             $table->time('time_start')->nullable()->default(null);

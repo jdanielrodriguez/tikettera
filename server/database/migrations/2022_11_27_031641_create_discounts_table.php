@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('porcent')->nullable()->default(null);
             $table->double('qty')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
+            $table->string('slug')->nullable()->default(null);
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 

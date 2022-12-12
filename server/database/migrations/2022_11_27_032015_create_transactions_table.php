@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('place')->nullable()->default(null);
@@ -23,6 +23,9 @@ return new class extends Migration
             $table->double('total')->nullable()->default(null);
             $table->string('token')->nullable()->default(null);
             $table->string('ern')->nullable()->default(null);
+            $table->text('crypto_id')->nullable()->default(null);
+            $table->text('hash')->nullable()->default(null);
+            $table->text('salt')->nullable()->default(null);
             $table->timestamp('aprovDate')->nullable()->default(null);
             $table->string('aprovDateString')->nullable()->default(null);
             $table->string('aprov')->nullable()->default(null);
@@ -32,8 +35,11 @@ return new class extends Migration
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
-            $table->integer('user_id')->nullable()->default(null)->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('seller_id')->nullable()->default(null)->unsigned();
+            $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->integer('buyer_id')->nullable()->default(null)->unsigned();
+            $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('event_id')->nullable()->default(null)->unsigned();
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
@@ -61,6 +67,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('transactions');
     }
 };

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('checkout_details', function (Blueprint $table) {
+        Schema::create('cash_details', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
@@ -36,8 +36,8 @@ return new class extends Migration
             $table->integer('buyer_id')->nullable()->default(null)->unsigned();
             $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('checkout_id')->nullable()->default(null)->unsigned();
-            $table->foreign('checkout_id')->references('id')->on('checkout')->onDelete('cascade');
+            $table->integer('cash_id')->nullable()->default(null)->unsigned();
+            $table->foreign('cash_id')->references('id')->on('cash')->onDelete('cascade');
 
             $table->integer('place')->nullable()->default(null)->unsigned();
             $table->foreign('place')->references('id')->on('places')->onDelete('cascade');
@@ -53,6 +53,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checkout_details');
+        Schema::dropIfExists('cash_details');
     }
 };

@@ -28,9 +28,6 @@ return new class extends Migration
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
-            $table->integer('creator')->nullable()->default(null)->unsigned();
-            $table->foreign('creator')->references('id')->on('users')->onDelete('cascade');
-
             $table->integer('policy_id')->nullable()->default(null)->unsigned();
             $table->foreign('policy_id')->references('id')->on('policies')->onDelete('cascade');
 

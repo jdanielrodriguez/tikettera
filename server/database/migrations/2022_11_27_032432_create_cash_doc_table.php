@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('checkout_doc', function (Blueprint $table) {
+        Schema::create('cash_doc', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
@@ -31,8 +31,8 @@ return new class extends Migration
             $table->integer('creator_id')->nullable()->default(null)->unsigned();
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('checkout_id')->nullable()->default(null)->unsigned();
-            $table->foreign('checkout_id')->references('id')->on('checkout')->onDelete('cascade');
+            $table->integer('cash_id')->nullable()->default(null)->unsigned();
+            $table->foreign('cash_id')->references('id')->on('cash')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -45,6 +45,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checkout_doc');
+        Schema::dropIfExists('cash_doc');
     }
 };

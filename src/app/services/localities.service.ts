@@ -19,7 +19,7 @@ export class LocalitiesService {
   }
   getAll(): Observable<any> {
     this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/localities`;
+    const url = `${this.basePath}/api/events`;
     try {
       const response = this.http.get(url, { headers: this.mySesion.headers });
       return response;
@@ -29,7 +29,7 @@ export class LocalitiesService {
   }
   getAllActive(): Observable<any> {
     this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/localities/active`;
+    const url = `${this.basePath}/api/events/active`;
     try {
       const response = this.http.get(url, { headers: this.mySesion.headers });
       return response;

@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\Locality;
-class LocalitiesController extends Controller
+use App\Models\Event;
+
+class EventsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +15,12 @@ class LocalitiesController extends Controller
      */
     public function index()
     {
-        $objectList = Locality::all();
+        $objectList = Event::all();
         $count = count($objectList);
         if ($objectList) {
             $returnData = array(
                 'status' => 200,
-                'msg' => 'Localities Returned',
+                'msg' => 'Events Returned',
                 'count' => $count,
                 'data' => $objectList
             );
@@ -33,16 +34,16 @@ class LocalitiesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getActiveLocatilties()
+    public function getActives()
     {
         $nowDate = date('Y-m-d');
         $nowTime = date('H:i:s');
-        $objectSee = Locality::whereRaw("date_start >= ? and time_start > ? and state = 1",[$nowDate, $nowTime])->get();
-        $count = count(Locality::all());
+        $objectSee = Event::whereRaw("date_start > ? or (date_start = ? and time_start > ?) and state = 1",[$nowDate, $nowDate, $nowTime])->get();
+        $count = count(Event::all());
         if ($objectSee) {
             $returnData = array(
                 'status' => 200,
-                'msg' => 'Localities Returned',
+                'msg' => 'Events Returned',
                 'count' => $count,
                 'data' => $objectSee
             );
@@ -86,11 +87,11 @@ class LocalitiesController extends Controller
      */
     public function show($id)
     {
-        $objectSee = Locality::find($id);
+        $objectSee = Event::find($id);
         if ($objectSee) {
             $returnData = array(
                 'status' => 200,
-                'msg' => 'Locality Returned',
+                'msg' => 'Event Returned',
                 'data' => $objectSee
             );
             return new Response($returnData, $returnData['status']);

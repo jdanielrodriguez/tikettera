@@ -13,23 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('localities_discounts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
             $table->string('slug')->nullable()->default(null);
-            $table->double('tasa_cambio')->nullable()->default(null);
-            $table->double('iva')->nullable()->default(null);
-            $table->double('tasa_iva')->nullable()->default(null);
-            $table->double('comision')->nullable()->default(null);
-            $table->double('price')->nullable()->default(null);
-            $table->double('total')->nullable()->default(null);
-            $table->double('sold')->nullable()->default(null);
+            $table->double('cantidad')->nullable()->default(null);
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
-            $table->integer('event_type_id')->nullable()->default(null)->unsigned();
-            $table->foreign('event_type_id')->references('id')->on('events_type')->onDelete('cascade');
+            $table->integer('discount_id')->nullable()->default(null)->unsigned();
+            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
 
             $table->integer('locality_id')->nullable()->default(null)->unsigned();
             $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');
@@ -45,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('localities_discounts');
     }
 };

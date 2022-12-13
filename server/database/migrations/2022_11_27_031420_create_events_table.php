@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('localities', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('picture')->nullable()->default(null);
@@ -32,8 +32,8 @@ return new class extends Migration
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
-            $table->integer('event_id')->nullable()->default(null)->unsigned();
-            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
+            $table->integer('reason_id')->nullable()->default(null)->unsigned();
+            $table->foreign('reason_id')->references('id')->on('events_reason')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -46,6 +46,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('localities');
+        Schema::dropIfExists('events');
     }
 };

@@ -29,8 +29,8 @@ return new class extends Migration
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
-            $table->integer('area_id')->nullable()->default(null)->unsigned();
-            $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
+            $table->integer('locality_id')->nullable()->default(null)->unsigned();
+            $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');
 
             $table->timestamps();
         });

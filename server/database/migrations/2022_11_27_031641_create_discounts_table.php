@@ -26,8 +26,8 @@ return new class extends Migration
             $table->integer('user_id')->nullable()->default(null)->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('locality_id')->nullable()->default(null)->unsigned();
-            $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');
+            $table->integer('event_id')->nullable()->default(null)->unsigned();
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
 
             $table->timestamps();
         });

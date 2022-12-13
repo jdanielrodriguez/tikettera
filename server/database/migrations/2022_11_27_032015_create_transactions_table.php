@@ -35,26 +35,17 @@ return new class extends Migration
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
+            $table->integer('promoter_id')->nullable()->default(null)->unsigned();
+            $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');
+
+            $table->integer('event_id')->nullable()->default(null)->unsigned();
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
+
             $table->integer('seller_id')->nullable()->default(null)->unsigned();
             $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('buyer_id')->nullable()->default(null)->unsigned();
             $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->integer('event_id')->nullable()->default(null)->unsigned();
-            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-
-            $table->integer('locality_id')->nullable()->default(null)->unsigned();
-            $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');
-
-            $table->integer('place_id')->nullable()->default(null)->unsigned();
-            $table->foreign('place_id')->references('id')->on('places')->onDelete('cascade');
-
-            $table->integer('promoter_id')->nullable()->default(null)->unsigned();
-            $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');
-
-            $table->integer('discount_id')->nullable()->default(null)->unsigned();
-            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
-            $table->integer('area_discount_id')->nullable()->default(null)->unsigned();
-            $table->foreign('area_discount_id')->references('id')->on('areas_discounts')->onDelete('cascade');
+            $table->integer('locality_discount_id')->nullable()->default(null)->unsigned();
+            $table->foreign('locality_discount_id')->references('id')->on('localities_discounts')->onDelete('cascade');
 
             $table->integer('promoter_id')->nullable()->default(null)->unsigned();
             $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');

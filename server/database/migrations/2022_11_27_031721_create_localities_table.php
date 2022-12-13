@@ -13,18 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('votings', function (Blueprint $table) {
+        Schema::create('localities', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
-            $table->double('value')->nullable()->default(null);
-            $table->timestamp('date')->useCurrent();
-            $table->string('comment')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
+            $table->string('slug')->nullable()->default(null);
+            $table->double('tasa_cambio')->nullable()->default(null);
+            $table->double('iva')->nullable()->default(null);
+            $table->double('tasa_iva')->nullable()->default(null);
+            $table->double('comision')->nullable()->default(null);
+            $table->double('price')->nullable()->default(null);
+            $table->double('total')->nullable()->default(null);
+            $table->double('sold')->nullable()->default(null);
             $table->integer('type')->nullable()->default(1);
+            $table->integer('withdrawall')->nullable()->default(0);
             $table->integer('state')->nullable()->default(1);
-
-            $table->integer('user_id')->nullable()->default(null)->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('event_id')->nullable()->default(null)->unsigned();
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
@@ -40,6 +43,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('votings');
+        Schema::dropIfExists('localities');
     }
 };

@@ -28,7 +28,6 @@ return new class extends Migration
             $table->double('total',5,2)->nullable()->default(null);
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
-            $table->integer('withdrawal')->nullable()->default(1);
 
             $table->integer('cupon_discount_id')->nullable()->default(null)->unsigned();
             $table->foreign('cupon_discount_id')->references('id')->on('users')->onDelete('cascade');

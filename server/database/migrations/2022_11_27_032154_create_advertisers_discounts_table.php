@@ -23,8 +23,8 @@ return new class extends Migration
             $table->integer('advertiser_id')->nullable()->default(null)->unsigned();
             $table->foreign('advertiser_id')->references('id')->on('advertisers')->onDelete('cascade');
 
-            $table->integer('area_discount_id')->nullable()->default(null)->unsigned();
-            $table->foreign('area_discount_id')->references('id')->on('areas_discounts')->onDelete('cascade');
+            $table->integer('locality_discount_id')->nullable()->default(null)->unsigned();
+            $table->foreign('locality_discount_id')->references('id')->on('localities_discounts')->onDelete('cascade');
 
             $table->timestamps();
         });

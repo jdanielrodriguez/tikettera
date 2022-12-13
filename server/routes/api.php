@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('localities/active', [App\Http\Controllers\LocalitiesController::class,'getActiveLocatilties']);
-Route::resource('localities', App\Http\Controllers\LocalitiesController::class);
+Route::get('events/active', [App\Http\Controllers\EventsController::class,'getActives']);
+Route::resource('events', App\Http\Controllers\EventsController::class);
+Route::get('advertisers/active', [App\Http\Controllers\AdvertisersController::class,'getActives']);
+Route::resource('advertisers', App\Http\Controllers\AdvertisersController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

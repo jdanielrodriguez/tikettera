@@ -33,17 +33,20 @@ return new class extends Migration
             $table->integer('transaction_id')->nullable()->default(null)->unsigned();
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
 
+            $table->integer('discount_id')->nullable()->default(null)->unsigned();
+            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
+
             $table->integer('locality_id')->nullable()->default(null)->unsigned();
             $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');
 
             $table->integer('place_id')->nullable()->default(null)->unsigned();
             $table->foreign('place_id')->references('id')->on('places')->onDelete('cascade');
 
-            $table->integer('promoter_id')->nullable()->default(null)->unsigned();
-            $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');
+            $table->integer('cost_id')->nullable()->default(null)->unsigned();
+            $table->foreign('cost_id')->references('id')->on('costs')->onDelete('cascade');
 
-            $table->integer('discount_id')->nullable()->default(null)->unsigned();
-            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
+            $table->integer('comision_id')->nullable()->default(null)->unsigned();
+            $table->foreign('comision_id')->references('id')->on('comisions')->onDelete('cascade');
 
             $table->timestamps();
         });

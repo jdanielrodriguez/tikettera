@@ -30,8 +30,11 @@ return new class extends Migration
             $table->integer('creator')->nullable()->default(null)->unsigned();
             $table->foreign('creator')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('locality_id')->nullable()->default(null)->unsigned();
-            $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');
+            $table->integer('event_id')->nullable()->default(null)->unsigned();
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
+
+            $table->integer('reason_id')->nullable()->default(null)->unsigned();
+            $table->foreign('reason_id')->references('id')->on('events_reason')->onDelete('cascade');
 
             $table->timestamps();
         });

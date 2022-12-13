@@ -31,6 +31,12 @@ import { CategoriasService } from './services/categorias.service';
 import { ComisionesService } from './services/comisiones.service';
 import { ProveedoresService } from './services/proveedores.service';
 import { LocalitiesService } from './services/localities.service';
+import { BoletosComponent } from './pages/boletos/boletos.component';
+import { PagoComponent } from './pages/pago/pago.component';
+import { ComprarComponent } from './pages/comprar/comprar.component';
+import { FacturaComponent } from './pages/factura/factura.component';
+import { BuscarEventoComponent } from './pages/buscar-evento/buscar-evento.component';
+import { PresentacionesComponent } from './pages/presentaciones/presentaciones.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +46,12 @@ import { LocalitiesService } from './services/localities.service';
     RecoveryComponent,
     InicioComponent,
     NosotrosComponent,
+    BoletosComponent,
+    PagoComponent,
+    ComprarComponent,
+    FacturaComponent,
+    BuscarEventoComponent,
+    PresentacionesComponent,
   ],
   imports: [
     BrowserModule,

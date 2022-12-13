@@ -107,7 +107,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       {
         sesion: false,
         select: false,
-        url: '../inicio',
+        url: '../',
         inicio: true,
         evento: null,
         nombre: 'Inicio'
@@ -115,7 +115,7 @@ export class NavComponent implements OnInit, AfterViewInit {
       {
         sesion: true,
         select: false,
-        url: '../inicio',
+        url: '../',
         inicio: true,
         evento: null,
         nombre: 'Inicio'

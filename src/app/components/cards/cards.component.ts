@@ -2,21 +2,17 @@ import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter }
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Inventario, ListaBusqueda, Menus, Proveedor } from '../../interfaces';
+
 @Component({
-  selector: 'app-galeria',
-  templateUrl: './galeria.component.html',
-  styleUrls: ['./galeria.component.css']
+  selector: 'app-cards',
+  templateUrl: './cards.component.html',
+  styleUrls: ['./cards.component.scss']
 })
-export class GaleriaComponent implements OnInit {
-  private _proveedorEvent: EventEmitter<ListaBusqueda> = new EventEmitter<ListaBusqueda>();
-  constructor(
-    private router: Router,
-    private localSt: LocalStorageService,
-  ) { }
+export class CardsComponent implements OnInit {
+
+  constructor() { }
+  private _data: ListaBusqueda = new ListaBusqueda();
   private _lista: ListaBusqueda[] = [];
-  private _page = 1;
-  private _size = 100;
-  private _numReg = 50;
   private _tieneDetalle = false;
   private _editar!: boolean;
   private _eliminarCarrito = false;
@@ -27,47 +23,23 @@ export class GaleriaComponent implements OnInit {
   private _autorizaNav = true;
   private _pagar = false;
   private _proveedor = '';
-  private _paginaActual: EventEmitter<number> = new EventEmitter<number>();
+
   ngOnInit(): void {
   }
 
-  public saveConfirm(data: Menus, id?: number): void {
-    this._autorizaNav = true;
-    if (this._autorizaNav) {
-      this.router.navigate([data.url]);
-    }
+  getUrl(data: ListaBusqueda): string {
+    return ((data.imagenes!=null && data.imagenes.length>0)?data.imagenes[0].url:data.imagen?data.imagen:'https://via.placeholder.com/250X200?text=X');
   }
 
-  public handleRefusal(dismissMethod?: any): void {
-    this._autorizaNav = true;
-  }
-  agregarCarrito(producto: Inventario) {
-  }
-  removerCarrito(data: Inventario) {
-  }
-  navegar(data: Menus, id?: number, info?: ListaBusqueda) {
-    if (data.evento) {
-      eval.call(data.evento, '');
-    }
-    if (info && this.resetCarrito(info)) {
-      this._autorizaNav = false;
-    } else
-      if (this._autorizaNav) {
-        this.router.navigate([data.url]);
-      }
-    if (id && id > 0) {
-      this.localSt.store('currentSelectedId', btoa(id + ''));
-    }
-  }
   resetCarrito(value?: ListaBusqueda): boolean {
     let ret = false;
     if (!this.agregaCarrito && !this.eliminarCarrito && !this.esAdmin) {
     }
     return ret;
   }
-  cambioPagina(value: any) {
-    this._page = value;
-    this._paginaActual.emit(this.page);
+
+  public handleRefusal(dismissMethod?: any): void {
+    this._autorizaNav = true;
   }
   autorizarProveedor(value?: ListaBusqueda) {
   }
@@ -84,37 +56,7 @@ export class GaleriaComponent implements OnInit {
   pruebaConfirm(){
 
   }
-  abrir(data: ListaBusqueda): void {
-      this.router.navigate([`./presentaciones/${data.slug}`]);
-  }
-  @Input()
-  set page(value: number) {
-    this._page = value;
-  }
-  get page(): number {
-    return this._page;
-  }
-  @Input()
-  set numReg(value: number) {
-    this._numReg = value;
-  }
-  get numReg(): number {
-    return this._numReg;
-  }
-  @Input()
-  set size(value: number) {
-    this._size = value;
-  }
-  get size(): number {
-    return this._size;
-  }
-  @Input()
-  set proveedor(value: string) {
-    this._proveedor = value;
-  }
-  get proveedor(): string {
-    return this._proveedor;
-  }
+
   @Input()
   set esAdmin(value: boolean) {
     this._esAdmin = value === true;
@@ -171,14 +113,12 @@ export class GaleriaComponent implements OnInit {
   get lista(): ListaBusqueda[] {
     return this._lista;
   }
-  @Output()
-  get paginaActual(): EventEmitter<number> {
-    this._paginaActual.emit(this.page);
-    return this._paginaActual;
+  @Input()
+  set data(value: ListaBusqueda) {
+    this._data = value;
   }
-  @Output()
-  get proveedorAut(): EventEmitter<ListaBusqueda> {
-    return this._proveedorEvent;
+  get data(): ListaBusqueda {
+    return this._data;
   }
   get proveedorAutStr(): ListaBusqueda {
     return new ListaBusqueda();

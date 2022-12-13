@@ -354,13 +354,15 @@ export class ListaBusqueda {
   constructor() {
     this.id = null;
     this.nombre = '';
-    this.imagen = 'https://placehold.it/250x200';
+    this.slug = '';
+    this.imagen = 'https://via.placeholder.com/250x200';
     this.validacion = 5;
     this.inventario = new Inventario();
   }
   id?: number | null | undefined;
   nombre?: string;
   imagen?: string;
+  slug?: string;
   imagenes?: Imagen[];
   objeto?: any;
   validacion?: number;
@@ -396,7 +398,7 @@ export class Producto {
 export class Inventario {
   constructor() {
     this.id = null;
-    this.portada = 'https://placehold.it/250x200';
+    this.portada = 'https://via.placeholder.com/250x200';
     this.cantidad = 1;
     this.nombre = '';
     this.estado = 1;
@@ -520,7 +522,7 @@ export class Configuracion {
 export class Imagen {
   constructor() {
     this.id = null;
-    this.url = 'https://placehold.it/50X50';
+    this.url = 'https://via.placeholder.com/50X50';
     this.titulo = '';
     this.descripcion = '';
     this.estado = 1;
@@ -686,6 +688,7 @@ export class Locality {
   picture?: string;
   description?: string;
   address?: string;
+  slug?: string;
   time_start?: Date;
   time_end?: Date;
   date_start?: Date;

@@ -62,26 +62,26 @@ export class AutorizarProveedoresComponent implements OnInit {
   private _offset = 0;
   private _page = 1;
   active = 1;
-  sliders = [{ url: 'https://placehold.it/500x250?text=NO ENCONTRADO', titulo: '', descripcion: '' }];
+  sliders = [{ url: 'https://via.placeholder.com/500x250?text=NO ENCONTRADO', titulo: '', descripcion: '' }];
   private _proveedoresLista: ListaBusqueda[] = [
     {
       id: 1,
       nombre: 'No Encontrado',
-      imagen: 'https://placehold.it/500x250?text=NO ENCONTRADO',
+      imagen: 'https://via.placeholder.com/500x250?text=NO ENCONTRADO',
     },
     {
       id: 1,
       nombre: 'No Encontrado',
-      imagen: 'https://placehold.it/500x250?text=NO ENCONTRADO',
+      imagen: 'https://via.placeholder.com/500x250?text=NO ENCONTRADO',
     },
     {
       id: 1,
       nombre: 'No Encontrado',
-      imagen: 'https://placehold.it/500x250?text=NO ENCONTRADO',
+      imagen: 'https://via.placeholder.com/500x250?text=NO ENCONTRADO',
     }, {
       id: 1,
       nombre: 'No Encontrado',
-      imagen: 'https://placehold.it/500x250?text=NO ENCONTRADO',
+      imagen: 'https://via.placeholder.com/500x250?text=NO ENCONTRADO',
     }
   ];
   private _proveedoresListaAuxiliar: ListaBusqueda[] = this._proveedoresLista;
@@ -122,7 +122,7 @@ export class AutorizarProveedoresComponent implements OnInit {
     //     try {
     //       response.objeto.forEach((element: Proveedor) => {
     //         const datas: ListaBusqueda = {
-    //           imagen: element.imagenes?.length > 0 ? element.imagenes[0].url : 'https://placehold.it/250x200',
+    //           imagen: element.imagenes?.length > 0 ? element.imagenes[0].url : 'https://via.placeholder.com/250x200',
     //           nombre: element.nombre ? element.nombre : 'No Name',
     //           id: element.id,
     //           validacion: 5,

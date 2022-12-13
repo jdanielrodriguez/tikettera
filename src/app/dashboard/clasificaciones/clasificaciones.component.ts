@@ -113,7 +113,7 @@ export class ClasificacionesComponent implements OnInit {
         try {
           response.objeto.forEach((element: TipoItem) => {
             const datas: ListaBusqueda = {
-              imagen: element.portada ? element.portada : 'https://placehold.it/250x200',
+              imagen: element.portada ? element.portada : 'https://via.placeholder.com/250x200',
               nombre: element.nombre ? element.nombre : 'No Name',
               id: element.id
             };

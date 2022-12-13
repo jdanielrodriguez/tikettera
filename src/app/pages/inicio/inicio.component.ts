@@ -13,56 +13,32 @@ export class InicioComponent implements OnInit {
     private _service: NotificationsService,
     private localitiesService: LocalitiesService
   ) { }
-  set numReg(value: number) {
-    this._numReg = value;
-  }
-  get numReg(): number {
-    return this._numReg;
-  }
-  set limit(value: number) {
-    this._limit = value;
-  }
-  get limit(): number {
-    return this._limit;
-  }
   set offset(value: number) {
     this._offset = value;
   }
   get offset(): number {
-    const actual = (this.page - 1) * this._limit;
+    const actual = (this.page - 1) * this.limit;
     this._offset = actual;
     return this._offset;
   }
-  set page(value: number) {
-    this._page = value;
+  get mainLista(): ListaBusqueda[] {
+    return this._mainList;
   }
-  get page(): number {
-    return this._page;
+  get mainListaAuxiliar(): ListaBusqueda[] {
+    return this._mainList;
   }
-  set proveedoresLista(value: ListaBusqueda[]) {
-    this._localitiesList = value;
-  }
-  get proveedoresLista(): ListaBusqueda[] {
-    return this._localitiesList;
-  }
-  get proveedoresListaAuxiliar(): ListaBusqueda[] {
-    return this._localitiesList;
-  }
-  set proveedor(value: ListaBusqueda) {
-    this._proveedor = value;
-  }
-  get proveedor(): ListaBusqueda {
-    return this._proveedor;
-  }
+
   @BlockUI() blockUI!: NgBlockUI;
-  private _proveedor: ListaBusqueda = new ListaBusqueda();
-  private _numReg = 0;
-  private _limit = 10;
+  public numReg = 0;
+  public limit = 10;
   private _offset = 0;
-  private _page = 1;
-  active = 1;
-  sliders = [{ url: 'https://via.placeholder.com/500x250.png?text=Cagando...', titulo: '', descripcion: '' }];
-  private _localitiesList: ListaBusqueda[] = [
+  public page = 1;
+  public active = 1;
+  public sliders = [
+    { url: 'https://via.placeholder.com/500x250.png?text=Cagando...', titulo: '', descripcion: '' },
+    { url: 'https://via.placeholder.com/500x250.png?text=Cagando2...', titulo: '', descripcion: '' }
+  ];
+  private _mainList: ListaBusqueda[] = [
     {
       id: 1,
       nombre: 'Cargando...',
@@ -83,76 +59,55 @@ export class InicioComponent implements OnInit {
       imagen: 'https://via.placeholder.com/500x250.png?text=Cagando...',
     }
   ];
-  private _localitiesListAuxiliar: ListaBusqueda[] = this._localitiesList;
-  public options = {
-    timeOut: 2000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200
-  };
+  private _mainListAuxiliar: ListaBusqueda[] = this._mainList;
 
   ngOnInit(): void {
     this.getMainList();
   }
 
-  cargarProveedor(value: ListaBusqueda) {
-    if (value.id) {
-      // this._proveedor = value;
-      // this._localitiesList = this._localitiesList.filter((v: ListaBusqueda) =>
-      //   v.nombre.toLowerCase().indexOf(value.nombre.toLowerCase()) > -1);
-    } else {
-      this._proveedor = new ListaBusqueda();
-      this._localitiesList = this._localitiesListAuxiliar;
-    }
-  }
-
   getMainList() {
     this.blockUI.start();
-    const data = {
-      id: 0,
-      estado: 0,
-      filter: 'proveedor&limit=' + this.limit + '&offset=' + this.offset + '&estado=1'
-    };
-    this.localitiesService.getAllActive()
-      .subscribe((response: { status: number, count: number, data: Locality[] }) => {
-        this._numReg = response.count;
-        this._localitiesList.length = 0;
-        this._localitiesListAuxiliar.length = 0;
-        try {
-          response.data.forEach((element: Locality) => {
-            const datas: ListaBusqueda = {
-              imagen: ('https://via.placeholder.com/250x200'),
-              nombre: element.name ? element.name : 'No Name',
-              id: element.id,
-              validacion: 5,
-            };
-            this._localitiesList.push(datas);
-          });
-          const prov = new ListaBusqueda();
-          prov.nombre = '';
-          this.cargarProveedor(prov);
-          this._localitiesListAuxiliar = this._localitiesList;
-          this.sliders.length = 0;
-        } catch (exception) {
-          console.log(exception);
-        } finally {
+    const request = this.localitiesService.getAllActive()
+      .subscribe({
+        next: (response: { status: number, count: number, data: Locality[] }) => {
+          this.numReg = response.count;
+          this._mainList.length = 0;
+          this._mainListAuxiliar.length = 0;
+          try {
+            response.data.forEach((element: Locality) => {
+              const datas: ListaBusqueda = {
+                imagen: ('https://via.placeholder.com/250x200'),
+                nombre: element.name ? element.name : 'No Name',
+                id: element.id,
+                slug: element.slug,
+                validacion: 5,
+              };
+              this._mainList.push(datas);
+            });
+            this._mainListAuxiliar = this._mainList;
+          } catch (exception) {
+            console.log(exception);
+          } finally {
+            this.blockUI.stop();
+          }
+        },
+        error: (error) => {
           this.blockUI.stop();
-        }
-      }, (error) => {
-        this.blockUI.stop();
-        this.createError(error);
+          this.createError(error);
+        },
+        complete: () => { request.unsubscribe(); }
       });
   }
 
   cambioPagina(value: any) {
-    this._page = value;
+    this.page = value;
     this.getMainList();
   }
+
   createSuccess(success: string) {
     this._service.success('¡Éxito!', success);
   }
+
   createError(error: string) {
     this._service.error('¡Error!', error);
   }

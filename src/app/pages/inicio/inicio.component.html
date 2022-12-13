@@ -1,11 +1,11 @@
 <app-sliders [sliders]="sliders"></app-sliders>
-<!-- <app-busqueda [lista]="proveedoresListaAuxiliar" titulo="Proveedores" (seleccionador)="cargarProveedor($event)"
+<!-- <app-busqueda [lista]="mainListaAuxiliar" titulo="Proveedores" (seleccionador)="cargarProveedor($event)"
   [seleccion]="proveedor"></app-busqueda> -->
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
   <li [ngbNavItem]="1">
     <a ngbNavLink>Eventos</a>
     <ng-template ngbNavContent class="w-100 d-flex">
-      <app-galeria class="w-100" [lista]="proveedoresLista" titulo="Proveedores" [page]="page" [numReg]="numReg"
+      <app-galeria class="w-100" [lista]="mainLista" titulo="Proveedores" [page]="page" [numReg]="numReg"
         [size]="limit" (paginaActual)="cambioPagina($event)"></app-galeria>
     </ng-template>
   </li>

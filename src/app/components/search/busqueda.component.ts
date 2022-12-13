@@ -15,7 +15,7 @@ export class BusquedaComponent implements OnInit {
   private _lista: ListaBusqueda[] = [];
   private _titulo = '';
   private _seleccion: ListaBusqueda = new ListaBusqueda();
-  public imagenDefault = 'https://placehold.it/250x200?text=Logo';
+  public imagenDefault = 'https://via.placeholder.com/250x200?text=Logo';
   private _seleccionador: EventEmitter<ListaBusqueda> = new EventEmitter<ListaBusqueda>();
   private _seleccionado: ListaBusqueda = new ListaBusqueda();
   constructor() { }

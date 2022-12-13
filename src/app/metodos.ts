@@ -244,6 +244,24 @@ export class Encript {
     }
     return compare ? newLetter : null;
   }
+
+  decode(value: string | any): any {
+    if(value.data && typeof value.data === 'string'){
+      value.data = JSON.parse(value.data);
+    } else if(typeof value === 'string') {
+      value = JSON.parse(value);
+    }
+    return value;
+  }
+
+  encode(value: any): string {
+    if(value.data && typeof value.data !== 'string'){
+      value.data = JSON.stringify(value.data);
+    } else if(typeof value !== 'string') {
+      value = JSON.stringify(value);
+    }
+    return value;
+  }
 }
 @Injectable()
 export class Formatos {

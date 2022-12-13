@@ -44,6 +44,7 @@ import { ComentariosComponent } from './comentarios/comentarios.component';
 import { PreciosComponent } from './precios/precios.component';
 import { ReaccionesComponent } from './reacciones/reacciones.component';
 import { BusquedaComponent } from './search/busqueda.component';
+import { CardsComponent } from './cards/cards.component';
 
 const modules = [
   BusquedaComponent,
@@ -75,6 +76,7 @@ const modules = [
   ViewHistorialComponent,
   ViewRetiroComponent,
   PreciosComponent,
+  CardsComponent,
 ]
 @NgModule({
   declarations: modules,

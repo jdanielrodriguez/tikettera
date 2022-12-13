@@ -17,23 +17,26 @@ class Encripter extends Controller
     /**
      * Constructor de la clase, el cual inicializa los valores por defecto.
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->config();
     }
 
-    private function strToHex($string){
+    private function strToHex($string)
+    {
         $hex = '';
-        for ($i=0; $i<strlen($string); $i++){
+        for ($i = 0; $i < strlen($string); $i++) {
             $ord = ord($string[$i]);
             $hexCode = dechex($ord);
-            $hex .= substr('0'.$hexCode, -2);
+            $hex .= substr('0' . $hexCode, -2);
         }
         return strToUpper($hex);
     }
-    private function hexToStr($hex){
-        $string='';
-        for ($i=0; $i < strlen($hex)-1; $i+=2){
-            $string .= chr(hexdec($hex[$i].$hex[$i+1]));
+    private function hexToStr($hex)
+    {
+        $string = '';
+        for ($i = 0; $i < strlen($hex) - 1; $i += 2) {
+            $string .= chr(hexdec($hex[$i] . $hex[$i + 1]));
         }
         return $string;
     }
@@ -41,7 +44,8 @@ class Encripter extends Controller
      * Función para obtener cadena encriptada.
      * @return string
      */
-    public function encript($string){
+    public function encript($string)
+    {
         $newLetter = "";
         $string = base64_encode(mb_convert_encoding($string, 'UTF-8', 'UTF-8'));
         //valor de base 64 a hexadecimal
@@ -57,17 +61,18 @@ class Encripter extends Controller
      * Función para obtener cadena desencriptada.
      * @return string
      */
-    public function desencript($string){
+    public function desencript($string)
+    {
         $newLetter = "";
         $salt = $this->key;
         //oobtener valor con salt
         $string = base64_decode(mb_convert_encoding($string, 'UTF-8', 'UTF-8'));
         //compara salt
         $newSaltId = strpos($string, '@:@');
-        $newSalt = substr($string,$newSaltId+3);
+        $newSalt = substr($string, $newSaltId + 3);
         $this->validSalt = $newSalt == $salt;
         //oobtener base 64 sin salt
-        $string = substr($string,0,$newSaltId+1);
+        $string = substr($string, 0, $newSaltId + 1);
         //oobtener valor octal
         $string = base64_decode(mb_convert_encoding($string, 'UTF-8', 'UTF-8'));
         //valor de hexadecimal a base 64
@@ -76,10 +81,10 @@ class Encripter extends Controller
         $string = base64_decode(mb_convert_encoding($string, 'UTF-8', 'UTF-8'));
         $newLetter = $string;
         return $newLetter;
-
     }
 
-    public function getValidSalt(){
+    public function getValidSalt()
+    {
         return $this->validSalt;
     }
 
@@ -88,9 +93,8 @@ class Encripter extends Controller
     /**
      * Establece los valores por defecto.
      */
-    private function config(){
-      $this->key          = env('APP_KEY','base64:vh8QteX+yD8UP0p1EgmCmx5nTdHggwVvo6M0bsdvMfU=');
+    private function config()
+    {
+        $this->key = env('APP_KEY', '');
     }
 }
-
-?>

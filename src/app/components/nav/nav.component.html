@@ -96,7 +96,7 @@
   [class.background-gradient]="!background" *ngIf="!esAdmin">
   <div class="p-fixed w-100">
     <a class="navbar-brand mr-auto" [routerLink]="['./']"
-      (click)="navegar({url:'./inicio',nombre:'Inicio'},0,$event,true)">
+      (click)="navegar({url:'./',nombre:'Inicio'},0,$event,true)">
       <img [src]="logo" tourAnchor="installation" alt="Logo" style="width: 6rem;height: 5rem!important;">
     </a>
     <div *ngIf="isFullScreeen" class="ml-auto">

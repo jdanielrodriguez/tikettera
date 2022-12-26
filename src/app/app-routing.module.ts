@@ -8,7 +8,7 @@ import { ChangePassComponent } from './components/change-pass/change-pass.compon
 import { LoginComponent } from './login/login.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { BoletosComponent } from './pages/boletos/boletos.component';
-import { PresentacionesComponent } from './pages/presentaciones/presentaciones.component';
+import { LocalidadesComponent } from './pages/localidades/localidades.component';
 import { BuscarEventoComponent } from './pages/buscar-evento/buscar-evento.component';
 import { ComprarComponent } from './pages/comprar/comprar.component';
 import { PagoComponent } from './pages/pago/pago.component';
@@ -26,8 +26,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'logout', component: LogoutComponent },
-  { path: 'presentaciones/:slug', component: PresentacionesComponent },
-  { path: 'presentaciones/:event_slug/localidad/:slug', component: BoletosComponent },
+  { path: 'localidades/:slug', component: LocalidadesComponent },
+  { path: 'localidades/:event_slug/localidad/:slug', component: BoletosComponent },
   { path: 'detalle-compra/:crypto_id', component: ComprarComponent },
   { path: 'pagar/:crypto_id', component: PagoComponent },
   { path: 'factura/:crypto_id', component: FacturaComponent },

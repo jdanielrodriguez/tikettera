@@ -1,6 +1,9 @@
 html, body {
-  width: 100vw;
   height: 100vh;
+}
+
+.h-max {
+  height: calc(100% - 225px)!important;
 }
 
 .grecaptcha-badge {

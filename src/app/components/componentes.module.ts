@@ -7,7 +7,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NavComponent } from './nav/nav.component';
 
-import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -32,19 +32,20 @@ import { CvvTCPipe } from '../pipes/cvv-tc.pipe';
 import { JustTextPipe } from '../pipes/just-text.pipe';
 import { NumTCPipe } from '../pipes/num-tc.pipe';
 
+import { AccordeonComponent } from './accordeon/accordeon.component';
 import { CajaComponent } from './caja/caja.component';
 import { HistorialComponent } from './caja/transacciones/historial/historial.component';
 import { ViewHistorialComponent } from './caja/transacciones/historial/view/view.component';
 import { RetiroComponent } from './caja/transacciones/retiro/retiro.component';
 import { ViewRetiroComponent } from './caja/transacciones/retiro/view/view.component';
 import { TransferenciaComponent } from './caja/transacciones/transferencia/transferencia.component';
+import { CardsComponent } from './cards/cards.component';
 import { SendComponent } from './chat/send/send.component';
 import { AddComentarioComponent } from './comentarios/add-comentario/add-comentario.component';
 import { ComentariosComponent } from './comentarios/comentarios.component';
 import { PreciosComponent } from './precios/precios.component';
 import { ReaccionesComponent } from './reacciones/reacciones.component';
 import { BusquedaComponent } from './search/busqueda.component';
-import { CardsComponent } from './cards/cards.component';
 
 const modules = [
   BusquedaComponent,
@@ -77,6 +78,7 @@ const modules = [
   ViewRetiroComponent,
   PreciosComponent,
   CardsComponent,
+  AccordeonComponent,
 ]
 @NgModule({
   declarations: modules,
@@ -92,6 +94,7 @@ const modules = [
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     NgbDropdownModule,
+    NgbAccordionModule,
     RouterModule,
     SimpleNotificationsModule.forRoot(),
   ],

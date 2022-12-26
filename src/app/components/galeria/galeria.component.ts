@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Inventario, ListaBusqueda, Menus, Proveedor } from '../../interfaces';
+import { Inventario, ListaBusqueda, Menus } from '../../interfaces';
 @Component({
   selector: 'app-galeria',
   templateUrl: './galeria.component.html',
@@ -13,6 +13,7 @@ export class GaleriaComponent implements OnInit {
     private router: Router,
     private localSt: LocalStorageService,
   ) { }
+  @Input() galleryType = 'grid'
   private _lista: ListaBusqueda[] = [];
   private _page = 1;
   private _size = 100;
@@ -81,11 +82,11 @@ export class GaleriaComponent implements OnInit {
     const num = new Number(total);
     return num.toFixed(2);
   }
-  pruebaConfirm(){
+  pruebaConfirm() {
 
   }
   abrir(data: ListaBusqueda): void {
-      this.router.navigate([`./presentaciones/${data.slug}`]);
+    this.router.navigate([`./localidades/${data.slug}`]);
   }
   @Input()
   set page(value: number) {

@@ -1,20 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { listaBusqueda, sliders } from './../../default';
-import { ListaBusqueda, Locality } from './../../interfaces';
+import { Locality, ListaBusqueda } from './../../interfaces';
 import { LocalitiesService } from './../../services/localities.service';
+import { Encript } from './../../metodos';
+import { sliders, listaBusqueda } from './../../default';
+
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.component.html',
-  styleUrls: []
+  selector: 'app-localidades',
+  templateUrl: './localidades.component.html',
+  styleUrls: ['./localidades.component.scss']
 })
-export class InicioComponent implements OnInit {
+export class LocalidadesComponent implements OnInit {
   constructor(
+    private route: ActivatedRoute,
     private _service: NotificationsService,
+    private encript: Encript,
     private localitiesService: LocalitiesService
   ) { }
-
   set offset(value: number) {
     this._offset = value;
   }
@@ -35,18 +39,26 @@ export class InicioComponent implements OnInit {
   public limit = 10;
   private _offset = 0;
   public page = 1;
+  public slug = '';
+  public galleryType = 'list';
   public active = 1;
-  public galleryType = 'grid';
-  public sliders = sliders(5);
-  private _mainList: ListaBusqueda[] = listaBusqueda(20);
+  public sliders = sliders(0);
+  private _mainList: ListaBusqueda[] = listaBusqueda(4);
   private _mainListAuxiliar: ListaBusqueda[] = this._mainList;
 
   ngOnInit(): void {
+    this.getParams();
     this.getMainList();
+  }
+
+  getParams() {
+    this.slug = this.route.snapshot.paramMap.get("slug") || '';
   }
 
   getMainList() {
     this.blockUI.start();
+    const slug = this.encript.encriptar(JSON.stringify(this.slug)) || '';
+    console.log(slug);
     const request = this.localitiesService.getAllActive()
       .subscribe({
         next: (response: { status: number, count: number, data: Locality[] }) => {

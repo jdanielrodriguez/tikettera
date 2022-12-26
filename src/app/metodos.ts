@@ -25,7 +25,7 @@ export class Sesion {
   get captchaSubscription(): Subscription {
     return this._captchaSubscription;
   }
-  get lastLink(): string| null {
+  get lastLink(): string | null {
     const tempData = this.lastLinkStore;
     if (tempData) {
       this._lastLink = this.desencriptar(tempData);
@@ -58,13 +58,13 @@ export class Sesion {
   });
   encriptar(value: string | null): string | null {
     let newLetter: string | null = '';
-    if(value){
+    if (value) {
       value = this.cripto.encriptar((value));
       newLetter = value;
     }
     return newLetter;
   }
-  desencriptar(value: string| null): string | null {
+  desencriptar(value: string | null): string | null {
     let newLetter: string | null = '';
     value = this.cripto.desencriptar((value));
     newLetter = value;
@@ -213,7 +213,7 @@ export class Encript {
   desencriptar(value: string | null): string | null {
     let newLetter = '';
     let compare = false;
-    if(value){
+    if (value) {
       try {
         const salt = environment.salt.trim();
         // oobtener valor con salt
@@ -246,18 +246,18 @@ export class Encript {
   }
 
   decode(value: string | any): any {
-    if(value.data && typeof value.data === 'string'){
+    if (value.data && typeof value.data === 'string') {
       value.data = JSON.parse(value.data);
-    } else if(typeof value === 'string') {
+    } else if (typeof value === 'string') {
       value = JSON.parse(value);
     }
     return value;
   }
 
   encode(value: any): string {
-    if(value.data && typeof value.data !== 'string'){
+    if (value.data && typeof value.data !== 'string') {
       value.data = JSON.stringify(value.data);
-    } else if(typeof value !== 'string') {
+    } else if (typeof value !== 'string') {
       value = JSON.stringify(value);
     }
     return value;

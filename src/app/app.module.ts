@@ -36,7 +36,7 @@ import { PagoComponent } from './pages/pago/pago.component';
 import { ComprarComponent } from './pages/comprar/comprar.component';
 import { FacturaComponent } from './pages/factura/factura.component';
 import { BuscarEventoComponent } from './pages/buscar-evento/buscar-evento.component';
-import { PresentacionesComponent } from './pages/presentaciones/presentaciones.component';
+import { LocalidadesComponent } from './pages/localidades/localidades.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ import { PresentacionesComponent } from './pages/presentaciones/presentaciones.c
     ComprarComponent,
     FacturaComponent,
     BuscarEventoComponent,
-    PresentacionesComponent,
+    LocalidadesComponent,
   ],
   imports: [
     BrowserModule,

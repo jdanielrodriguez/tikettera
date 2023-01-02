@@ -3,7 +3,7 @@ declare var $: any;
 @Component({
   selector: 'app-recovery',
   templateUrl: './recovery.component.html',
-  styleUrls: []
+  styleUrls: ['./recovery.component.css']
 })
 export class RecoveryComponent implements OnInit {
   private _dinamicLink = '';

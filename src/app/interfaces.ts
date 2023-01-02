@@ -48,6 +48,7 @@ export class Perfil {
     this.facebook_id = '';
     this.one_signal_id = '';
     this.google_id = '';
+    this.username = '';
     this.token = '';
     this.google_token = '';
     this.formas_pago = [];

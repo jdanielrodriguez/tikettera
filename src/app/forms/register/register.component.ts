@@ -275,14 +275,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.router.navigate([`${data.url}`])
     }
   }
-  public options = {
-    timeOut: 3000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200
-  };
   createSuccess(success: string) {
     this._service.success('¡Éxito!', success)
   }

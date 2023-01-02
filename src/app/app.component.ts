@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Tikettera';
+  public options = {
+    timeOut: 2000,
+    lastOnBottom: false,
+    showProgressBar: false,
+    pauseOnHover: true,
+    clickToClose: true,
+    maxLength: 200
+  };
+
 }

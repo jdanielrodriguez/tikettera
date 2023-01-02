@@ -5,8 +5,8 @@ import { AuthServices } from './../../services/auth.service';
 import { UsuariosService } from './../../services/usuarios.service';
 import { NotificationsService } from 'angular2-notifications';
 import { Perfil, Socialusers, Menus, Cliente } from './../../interfaces';
-import { Sesion, Formatos } from './../../metodos';
-import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Sesion } from './../../metodos';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Modal } from './../modal.component';
 declare var $: any;
 @Component({
@@ -19,16 +19,10 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthServices,
     private modalService: NgbModal,
-    private config: NgbModalConfig,
     private userService: UsuariosService,
-    private formatear: Formatos,
     private _service: NotificationsService,
     private mySesion: Sesion,
-  ) {
-    config.backdrop = 'static';
-    config.keyboard = true;
-    config.size = 'lg';
-  }
+  ) {}
   @Input()
   set esModal(value: boolean) {
     this._esModal = value;
@@ -76,14 +70,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   private _muestraTexto = false;
   private _titulo = '';
   private _dinamicLink = '';
-  public options = {
-    timeOut: 2000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200
-  };
 
   public socialSignIn(socialProvider: string) {
     // this.blockUI.start();
@@ -146,7 +132,9 @@ export class LoginFormComponent implements OnInit, OnDestroy {
           }
         }).catch(async error => {
           console.log(error);
-          // await this.autenticate(socialusers);
+          this.createError('Error iniciando sesion');
+          this.blockUI.stop();
+        // await this.autenticate(socialusers);
         });
     } else {
       token = await this.mySesion.validateCaptcha('login');

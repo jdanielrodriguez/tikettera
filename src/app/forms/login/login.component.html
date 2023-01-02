@@ -1,44 +1,47 @@
-<div class="col-sm-12 col-md-12  mx-auto text-center my-3 px-3" [class.col-lg-8]="esModal" [class.col-lg-10]="!esModal"
-  *ngIf="!esModal">
-  <form class="form-signin" autocomplete="off" id="login-form" #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
-    <h1 class="h3 mb-3 font-weight-normal" *ngIf="titulo && (muestraTexto)">{{titulo}}</h1>
-    <div class="input-group mb-1">
-      <input type="text" class="form-control" name="username" required ngModel #username="ngModel"
-        placeholder="Usuario">
-    </div>
-    <div class="input-group mb-3">
-      <input type="password" class="form-control" name="password" required ngModel #password="ngModel"
-        placeholder="Contraseña">
-    </div>
-    <div class="mb-3 row">
-      <div class="ml-3 col-xs-12 col-sm-12 col-md-4 col-lg-6 text-left ml-auto ">
-        <a class="c-celeste-bishound pointer link-pointer"
-          (click)="navegar({url:'./../register',nombre:''},$event)">Registrate</a>
+<div class="container">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mx-auto text-center my-3 px-3" [class.col-lg-8]="esModal"
+    [class.col-lg-10]="!esModal" *ngIf="!esModal">
+    <form class="form-signin" autocomplete="off" id="login-form" #loginForm="ngForm"
+      (ngSubmit)="login(loginForm.value)">
+      <h1 class="h3 my-3 font-weight-normal" *ngIf="titulo && (muestraTexto)">{{titulo}}</h1>
+      <div class="input-group my-3">
+        <input type="text" class="form-control" name="username" required ngModel #username="ngModel"
+          placeholder="Usuario">
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 text-right mr-auto">
-        <a class="c-celeste-bishound pointer link-pointer"
-          (click)="navegar({url:'./../recovery',nombre:''},$event)">Recuperar Contraseña</a>
+      <div class="input-group my-3">
+        <input type="password" class="form-control" name="password" required ngModel #password="ngModel"
+          placeholder="Contraseña">
       </div>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block"
-      [disabled]="loginForm.value.password=='' || loginForm.value.username==''" type="submit"><i
-        class="fa fa-sign-in"></i> Ingresar</button>
-    <div class="row mt-5">
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ml-auto">
-        <a class="btn btn-block btn-social btn-facebook badge-pill bg-facebook h2 text-light"
-          (click)="socialSignIn('facebook')">
-          <span class="fa fa-facebook"></span>
-        </a>
+      <div class="mb-3 row">
+        <div class="ml-3 col-xs-12 col-sm-12 col-md-4 col-lg-6 text-left ml-auto ">
+          <a class="c-celeste-bishound pointer link-pointer"
+            (click)="navegar({url:'./../register',nombre:''},$event)">Registrate</a>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 text-right mr-auto">
+          <a class="c-celeste-bishound pointer link-pointer"
+            (click)="navegar({url:'./../recovery',nombre:''},$event)">Recuperar Contraseña</a>
+        </div>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mr-auto">
-        <a class="btn btn-block btn-social btn-google badge-pill bg-danger h2 text-light"
-          (click)="socialSignIn('google')">
-          <span class="fa fa-google"></span>
-        </a>
+      <button class="btn btn-lg mx-auto btn-primary btn-block"
+        [disabled]="loginForm.value.password=='' || loginForm.value.username==''" type="submit"><i
+          class="fa fa-sign-in"></i> Ingresar</button>
+      <div class="row mt-5">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ml-auto">
+          <h1 class="h3 mb-5 font-weight-normal">o</h1>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ml-auto">
+          <a class="btn btn-block btn-social btn-facebook badge-pill bg-facebook h2 text-light"
+            (click)="socialSignIn('facebook')">
+            <span class="fa fa-facebook"></span>
+          </a>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mr-auto">
+          <a class="btn btn-block btn-social btn-google badge-pill bg-danger h2 text-light"
+            (click)="socialSignIn('google')">
+            <span class="fa fa-google"></span>
+          </a>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
-<!-- Inicio Notificaciones -->
-<simple-notifications [options]="options"></simple-notifications>
-<!-- Fin Notificaciones -->

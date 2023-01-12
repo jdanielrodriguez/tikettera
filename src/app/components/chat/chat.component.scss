@@ -1,8 +1,10 @@
+@import './../../../vars.scss';
+
 .list-group-item {
   cursor: pointer;
 }
 
 .list-group-item:hover {
-  background-color: #C85B22;
+  background-color: $color-second;
   color: #f8f9fa;
 }

@@ -5,7 +5,7 @@ declare var $: any;
 @Component({
   selector: 'app-perfil-view',
   templateUrl: './perfil-view.component.html',
-  styleUrls: ['./perfil-view.component.css']
+  styleUrls: ['./perfil-view.component.scss']
 })
 export class PerfilViewComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;

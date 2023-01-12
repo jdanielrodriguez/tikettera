@@ -8,7 +8,7 @@ declare var $: any;
 @Component({
   selector: 'app-imagenes',
   templateUrl: './imagenes.component.html',
-  styleUrls: ['./imagenes.component.css']
+  styleUrls: ['./imagenes.component.scss']
 })
 export class ImagenesComponent implements OnInit {
   constructor(

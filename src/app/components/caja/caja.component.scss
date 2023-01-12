@@ -1,3 +1,5 @@
+@import './../../../vars.scss';
+
 label {
   color: #000000;
   text-align: center;
@@ -20,7 +22,7 @@ label {
   border: 1px solid;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #C85B22;
+  background-color: $color-second;
   color: white !important;
 }
 
@@ -32,12 +34,12 @@ label {
   border: 1px solid;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #C85B22;
+  background-color: $color-second;
   color: white !important;
 }
 
 .selectedv {
-  background-color: #C85B22;
+  background-color: $color-second;
   color: white !important;
 }
 
@@ -56,7 +58,7 @@ label {
 .cuadro-img-min {
   border-radius: 15px;
   padding: 5px;
-  height: 200px;
+  height: 400px;
 }
 
 #barra_de_progreso {
@@ -85,7 +87,7 @@ progress[value] {
 }
 
 progress::-webkit-progress-value {
-  background: #C85B22;
+  background: $color-second;
   color: #ffffff!important;
   border-radius: 7px;
 }

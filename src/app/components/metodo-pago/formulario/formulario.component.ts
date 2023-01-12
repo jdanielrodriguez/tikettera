@@ -6,7 +6,7 @@ declare const TwoPayClient: any;
 @Component({
   selector: 'app-formulario-metodo-pago',
   templateUrl: './formulario.component.html',
-  styleUrls: ['./formulario.component.css']
+  styleUrls: ['./formulario.component.scss']
 })
 export class FormularioComponent implements OnInit {
   private _tcData: EventEmitter<MetodoPago> = new EventEmitter<MetodoPago>();

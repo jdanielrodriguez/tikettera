@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light  mb-3 px-5" [ngStyle]="getBackground()"
+<nav class="navbar navbar-expand-lg navbar-light mb-3 px-5" [ngStyle]="getBackground()"
   [class.background-gradient]="!background">
-  <div class="p-fixed w-100">
+  <div class="p-fixed container w-100">
     <a class="navbar-brand mr-auto" [routerLink]="['./']">
       <img [src]="logo" alt="Logo" style="width: 6rem;height: 5rem!important;">
     </a>
@@ -92,9 +92,9 @@
   </div>
 </nav>
 <!-- este si se mira -->
-<nav class="navbar navbar-expand-lg navbar-light  mb-3 px-5 nav-fixed" [ngStyle]="getBackground()"
+<nav class="navbar navbar-expand-lg navbar-light mb-3 px-5 nav-fixed" [ngStyle]="getBackground()"
   [class.background-gradient]="!background" *ngIf="!esAdmin">
-  <div class="p-fixed w-100">
+  <div class="p-fixed container w-100">
     <a class="navbar-brand mr-auto" [routerLink]="['./']"
       (click)="navegar({url:'./',nombre:'Inicio'},0,$event,true)">
       <img [src]="logo" tourAnchor="installation" alt="Logo" style="width: 6rem;height: 5rem!important;">

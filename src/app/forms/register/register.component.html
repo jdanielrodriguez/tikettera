@@ -6,37 +6,30 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <input type="hidden" class="form-control" name="id" id="id" *ngIf="perfil" [(ngModel)]="perfil.id" ngModel
             #id="ngModel">
-          <div class="input-group my-3">
-            <input type="email" class="form-control" name="email" id="email" [disabled]="userAcepted" required ngModel
+          <div class="input-group mb-3 mt-5">
+            <input type="email" class="form-control" name="email" id="email" required ngModel
               #email="ngModel" placeholder="Correo" (keyup)="cargar(RegisterForm)" email>
           </div>
           <div class="input-group my-3">
-            <input type="password" class="form-control" name="password" id="password" [disabled]="userAcepted" required
+            <input type="password" class="form-control" name="password" id="password" required
               ngModel #password="ngModel" placeholder="Contraseña" (keyup)="cargar(RegisterForm)">
           </div>
-          <div class="input-group my-3">
-            <input type="password" class="form-control" name="password_rep" id="password_rep" [disabled]="userAcepted"
-              required ngModel #password_rep="ngModel" placeholder="Repite tu contraseña"
+          <div class="input-group my-3" [ngClass]="{'invisible': !(password && password.value!='')}">
+            <input type="password" class="form-control" name="password_rep" id="password_rep" required ngModel #password_rep="ngModel" placeholder="Repite tu contraseña"
               (keyup)="cargar(RegisterForm)">
           </div>
           <div
             *ngIf="(password && password_rep) && (password_rep.value!='' || password.value!='') && (mostrarNotificacion)">
             <div class="alert alert-success"
               *ngIf="(password.value==password_rep.value) && (password_rep && password) && (!cliente || !proveedor)">
-              <strong>Tu contraseña es valida <i class="fa fa-check"></i></strong>
+              <strong>Tu contraseña es valida. <i class="fa fa-check"></i></strong>
             </div>
             <div class="alert alert-danger" *ngIf="(password.value!=password_rep.value) && (password_rep && password)">
-              <strong>Tus contraseñas Deben ser iguales <i class="fa fa-exit"></i></strong>
-              <strong *ngIf="password.value.length<3">Tus contraseñas Deben tener mas de 3 caracteres <i
+              <strong>Tus contraseñas deben ser iguales. <i class="fa fa-exit"></i></strong>
+              <strong *ngIf="password.value.length<3">Tus contraseñas Deben tener mas de 3 caracteres. <i
                   class="fa fa-exit"></i></strong>
             </div>
           </div>
-          <button class=" btn btn-lg btn-danger btn-block w-50 mr-auto" type="button" *ngIf="userAcepted"
-            (click)="cancelar(false)"><i class="fa fa-times"></i> Cancelar</button>
-          <button class=" btn btn-lg btn-primary btn-block w-50 ml-auto" type="button"
-            [disabled]="(email && password_rep && password) && (email.value=='' || password_rep.value=='' || password.value=='') || RegisterForm.invalid"
-            *ngIf="!userAcepted" (click)="aceptarUsuario((password.value==password_rep.value),RegisterForm)"><i
-              class="fa fa-check"></i> Aceptar</button>
         </div>
       </div>
       <h5 class="h5 mb-3 mt-3 font-weight-normal text-dark" *ngIf="esProveedor && userAcepted">Ingrese la información de
@@ -56,8 +49,7 @@
             Contraseña</a>
         </div>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit"
-        *ngIf="userAcepted && (perfil && (cliente || proveedor))"><i class="fa fa-sign-in"></i> Registrar</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fa fa-sign-in"></i> Registrar</button>
     </form>
   </div>
   <div class="row mt-5 col-xs-12 col-sm-12 col-md-12 col-lg-6 mx-auto text-left" *ngIf="esCliente">

@@ -1,3 +1,5 @@
+@import './../../../../vars.scss';
+
 .payform {
   margin: 0;
   font-family: inherit;
@@ -85,11 +87,11 @@
 }
 
 .payform .is-error input {
-  border: 1px solid #D9534F
+  border: 1px solid $color-light
 }
 
 .payform .is-error input:focus {
-  background-color: #D9534F0B
+  background-color: $color-light
 }
 
 .payform .is-valid input {
@@ -101,7 +103,7 @@
 }
 
 .payform .validation-message {
-  color: #D9534F;
+  color: $color-light;
   font-size: 10px;
   font-style: italic;
   margin-top: 6px;

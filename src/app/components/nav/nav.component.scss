@@ -1,9 +1,11 @@
+@import './../../../vars.scss';
+
 .carritoMenu {
   left: -6rem!important;
 }
 
 .background-gradient {
-  background: rgb(255, 255, 255) linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(232, 186, 162, 1) 10%, rgba(200, 91, 34, 1) 90%, rgba(255, 255, 255, 1) 100%);
+  background: rgb(255, 255, 255) linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(223, 69, 79, 0.88) 10%, rgba(217, 2, 16, 0.85) 90%, rgba(255, 255, 255, 1) 100%);
 }
 
 .admin>.dropdown-menu {

@@ -1,7 +1,10 @@
+@import './vars.scss';
 html, body {
   height: 100vh;
 }
-
+*{
+  // outline: solid 2px red;
+}
 .h-max {
   height: calc(100% - 225px)!important;
 }
@@ -105,11 +108,11 @@ html, body {
     border-radius: 10px 10px 10px 10px;
   }
   .conversation-container .mensaje .mensaje-in {
-    background-color: #d6aa92;
+    background-color: $color-light;
     margin-right: auto;
   }
   .conversation-container .mensaje .mensaje-out {
-    background-color: #d37f52;
+    background-color: $color-main;
     margin-left: auto;
   }
 }
@@ -216,11 +219,11 @@ html, body {
     border-radius: 10px 10px 10px 10px;
   }
   .conversation-container .mensaje .mensaje-in {
-    background-color: #d6aa92;
+    background-color: $color-light;
     margin-right: auto;
   }
   .conversation-container .mensaje .mensaje-out {
-    background-color: #d37f52;
+    background-color: $color-main;
     margin-left: auto;
   }
 }
@@ -298,11 +301,11 @@ html, body {
     border-radius: 10px 10px 10px 10px;
   }
   .conversation-container .comentario .comentario-in {
-    background-color: #d6aa92;
+    background-color: $color-light;
     margin-right: auto;
   }
   .conversation-container .comentario .comentario-out {
-    background-color: #d37f52;
+    background-color: $color-main;
     margin-left: auto;
   }
 }
@@ -421,12 +424,12 @@ html, body {
     border-radius: 10px 10px 10px 10px;
   }
   .conversation-container .comentario .comentario-in {
-    background-color: #d6aa92;
+    background-color: $color-light;
     margin-right: auto;
     margin-left: auto;
   }
   .conversation-container .comentario .comentario-out {
-    background-color: #d37f52;
+    background-color: $color-main;
     margin-right: auto;
     margin-left: auto;
   }
@@ -488,7 +491,7 @@ app-lista-producto {
 }
 
 .link-pointer {
-  color: #C85B22!important;
+  color: $color-second!important;
   text-decoration: none!important;
   background-color: transparent!important;
   -webkit-text-decoration-skip: objects!important;
@@ -653,11 +656,11 @@ app-lista-producto {
 }
 
 .payform .is-error input {
-  border: 1px solid #D9534F
+  border: 1px solid $color-light
 }
 
 .payform .is-error input:focus {
-  background-color: #D9534F0B
+  background-color: $color-light
 }
 
 .payform .is-valid input {
@@ -669,7 +672,7 @@ app-lista-producto {
 }
 
 .payform .validation-message {
-  color: #D9534F;
+  color: $color-light;
   font-size: 10px;
   font-style: italic;
   margin-top: 6px;

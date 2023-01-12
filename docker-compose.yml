@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-  tikettera_php:
-    container_name: tikettera-php
+  tikettera_app:
+    container_name: tikettera_app
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
@@ -17,11 +17,11 @@ services:
       - ~/.ssh:/root/.ssh:ro
       - ~/.composer:/root/.composer
     depends_on:
-      - db
+      - tikettera_db
     networks:
       - tikettera-network
-  nginx:
-    container_name: tikettera-nginx
+  tikettera_nginx:
+    container_name: tikettera_nginx
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
@@ -30,15 +30,15 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - tikettera_php
+      - tikettera_app
     environment:
-      NGINX_FPM_HOST: tikettera_php
+      NGINX_FPM_HOST: tikettera_app
       NGINX_ROOT: /usr/src/app/public
     networks:
       - tikettera-network
-  db:
+  tikettera_db:
     image: mysql:latest
-    container_name: tikettera-db
+    container_name: tikettera_db
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -52,8 +52,8 @@ services:
       - ./docker/mysql/data:/var/lib/mysql
     networks:
       - tikettera-network
-  phpmyadmin:
-    container_name: tikettera-phpmyadmin
+  tikettera_phpmyadmin:
+    container_name: tikettera_phpmyadmin
     image: phpmyadmin
     restart: always
     ports:
@@ -61,11 +61,11 @@ services:
     environment:
       - PMA_ARBITRARY=1
     depends_on:
-      - db
+      - tikettera_db
     networks:
       - tikettera-network
-  tikettera-redis:
-    container_name: tikettera-redis
+  tikettera_redis:
+    container_name: tikettera_redis
     image: redis:latest
     ports:
       - 6379:6379

@@ -2,6 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { NotificationsService } from 'angular2-notifications';
 import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { environment } from './../environments/environment';
@@ -12,6 +13,7 @@ export class Sesion {
     private localSt: LocalStorageService,
     private cripto: Encript,
     private recaptchaV3Service: ReCaptchaV3Service,
+    private _service: NotificationsService,
     private router: Router
   ) {
     this.actualizaPerfil();
@@ -153,7 +155,12 @@ export class Sesion {
       this.localSt.store('currentSelectedId', this.encriptar(id + ''));
     }
   }
-
+  createSuccess(success: string) {
+    this._service.success('¡Éxito!', success)
+  }
+  createError(error: string) {
+    this._service.error('¡Error!', error)
+  }
 }
 
 @Injectable()

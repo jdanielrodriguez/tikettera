@@ -3,11 +3,9 @@ import { Router } from "@angular/router";
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { UsuariosService } from "./../../services/usuarios.service";
 import { AuthServices } from "./../../services/auth.service";
-import { NotificationsService } from 'angular2-notifications';
 import { Menus, Socialusers, Cliente, Proveedor, Perfil, Imagen } from "./../../interfaces";
 import { Modal } from "./../modal.component";
-import { LocalStorageService } from 'ngx-webstorage';
-import { Sesion, Formatos } from "./../../metodos";
+import { Sesion } from "./../../metodos";
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any
 @Component({
@@ -31,16 +29,112 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private _perfil!: Perfil;
   private _titulo: string = "";
   private _dinamicLink: string = "";
+  @Input()
+  set esModal(value: boolean) {
+    this._esModal = value
+  }
+  get esModal(): boolean {
+    return this._esModal;
+  }
+  @Input()
+  set muestraTexto(value: boolean) {
+    this._muestraTexto = value
+  }
+  get muestraTexto(): boolean {
+    return this._muestraTexto;
+  }
+  set userAcepted(value: boolean) {
+    this._userAcepted = value
+  }
+  get userAcepted(): boolean {
+    return this._userAcepted;
+  }
+  @Input()
+  set titulo(value: string) {
+    this._titulo = value
+  }
+  get titulo(): string {
+    return this._titulo;
+  }
+  @Input()
+  set dinamicLink(value: string) {
+    if (value) {
+      this.mySesion.lastLink = value
+    }
+    this._dinamicLink = value
+  }
+  @Output()
+  get component(): EventEmitter<string> {
+    this._component.emit(this._componentStr);
+    return this._component;
+  }
+  get componentStr(): string {
+    return this._componentStr;
+  }
+  @Input()
+  set esProv(value: boolean) {
+    this._tipo = value
+  }
+  get esProveedor(): boolean {
+    return this._tipo
+  }
+  get esCliente(): boolean {
+    return this._tipo != true
+  }
+  set cliente(value: Cliente) {
+    this._cliente = value
+  }
+  get cliente(): Cliente {
+    return this._cliente;
+  }
+  set proveedor(value: Proveedor) {
+    this._proveedor = value
+  }
+  get proveedor(): Proveedor {
+    return this._proveedor;
+  }
+  set perfil(value: Perfil) {
+    this._perfil = value
+  }
+  get perfil(): Perfil {
+    if (this.mySesion.validarSesion()) {
+      this._perfil = this.mySesion.perfil
+      this.userAcepted = true
+      $("#email").val(this._perfil.email);
+      $("#password").val("***********");
+      $("#password_rep").val("**********");
+    }
+    return this._perfil;
+  }
+  get mostrarNotificacion(): boolean {
+    if (this.perfil) {
+      // if (this.perfil.password && this.perfil.password.length >= 1 && (this.perfil.password_rep.length >= 1)) {
+      //   return true;
+      // }
+    }
+    return false
+  }
+  get contraValida(): boolean {
+    if (this.perfil) {
+      if (this.perfil.password && this.perfil.password.length >= 1 && (this.perfil.password == this.perfil.password_rep)) {
+        return true;
+      }
+    }
+    return false
+  }
+  get contraMinima(): boolean {
+    // if (this.perfil.password.length >= 3 && (this.perfil.password != this.perfil.password_rep)) {
+    //   return false;
+    // }
+    return true
+  }
   constructor(
     private router: Router,
     public userServices: UsuariosService,
     private modalService: NgbModal,
     private authServices: AuthServices,
     private config: NgbModalConfig,
-    private _service: NotificationsService,
-    private storage: LocalStorageService,
     private mySesion: Sesion,
-    private formatear: Formatos
   ) {
     config.backdrop = 'static';
     config.keyboard = true;
@@ -81,18 +175,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
               this.blockUI.stop();
               this.userAcepted = value
               if (form) {
-                this.createError("Compruebe que sus contraseñas sean iguales")
+                this.mySesion.createError("Compruebe que sus contraseñas sean iguales")
               }
               return;
             }
             // if (this.perfil.email.length >= 5 && this.validarEmail(this.perfil.email)) {
             //   if (this.perfil.password.length <= 3 || this.perfil.password.length <= 3 || (this.perfil.password != this.perfil.password_rep)) {
-            //     this.createError("Compruebe que sus contraseñas esten ingresadas correctamente")
+            //     this.mySesion.createError("Compruebe que sus contraseñas esten ingresadas correctamente")
             //   } else {
             //     this.userAcepted = (value && (this.perfil ? true : false))
             //   }
             // } else {
-            //   this.createError("Su email no es valido")
+            //   this.mySesion.createError("Su email no es valido")
             // }
             this.blockUI.stop();
           }
@@ -199,7 +293,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.userServices.create(data)
       .then((response: { status: number, objeto: Perfil, msg?: string }) => {
         if (response.status >= 400) {
-          this.createError(response.msg ? response.msg : '')
+          this.mySesion.createError(response.msg ? response.msg : '')
         } else {
           this.mySesion.actualizaPerfil(response.objeto);
           if (this.mySesion.validarSesion()) {
@@ -224,29 +318,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
               this.router.navigate([`./dashboard/inicio`])
             }
           } else {
-            this.createError("Error iniciando sesion")
+            this.mySesion.createError("Error iniciando sesion")
           }
         }
         this.blockUI.stop();
       }).catch((error) => {
         if (error.msg) {
-          this.createError(error.msg)
+          this.mySesion.createError(error.msg)
         } else {
-          this.createError("Error desconocido, por favor trate otra vez")
+          this.mySesion.createError("Error desconocido, por favor trate otra vez")
         }
         console.log(error);
         this.blockUI.stop();
       })
-  }
-  obtenerCliente(value: Cliente) {
-    if (value) {
-      this._cliente = value;
-    }
-  }
-  obtenerProveedor(value: Proveedor) {
-    if (value) {
-      this._proveedor = value;
-    }
   }
   cargar(form: any) {
     let perfil: Perfil = new Perfil();
@@ -275,111 +359,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.router.navigate([`${data.url}`])
     }
   }
-  createSuccess(success: string) {
-    this._service.success('¡Éxito!', success)
-  }
-  createError(error: string) {
-    this._service.error('¡Error!', error)
-  }
-  @Input()
-  set esModal(value: boolean) {
-    this._esModal = value
-  }
-  get esModal(): boolean {
-    return this._esModal;
-  }
-  @Input()
-  set muestraTexto(value: boolean) {
-    this._muestraTexto = value
-  }
-  get muestraTexto(): boolean {
-    return this._muestraTexto;
-  }
-  set userAcepted(value: boolean) {
-    this._userAcepted = value
-  }
-  get userAcepted(): boolean {
-    return this._userAcepted;
-  }
-  @Input()
-  set titulo(value: string) {
-    this._titulo = value
-  }
-  get titulo(): string {
-    return this._titulo;
-  }
-  @Input()
-  set dinamicLink(value: string) {
-    if (value) {
-      this.mySesion.lastLink = value
-    }
-    this._dinamicLink = value
-  }
-  @Output()
-  get component(): EventEmitter<string> {
-    this._component.emit(this._componentStr);
-    return this._component;
-  }
-  get componentStr(): string {
-    return this._componentStr;
-  }
-  @Input()
-  set esProv(value: boolean) {
-    this._tipo = value
-  }
-  get esProveedor(): boolean {
-    return this._tipo
-  }
-  get esCliente(): boolean {
-    return this._tipo != true
-  }
-  set cliente(value: Cliente) {
-    this._cliente = value
-  }
-  get cliente(): Cliente {
-    return this._cliente;
-  }
-  set proveedor(value: Proveedor) {
-    this._proveedor = value
-  }
-  get proveedor(): Proveedor {
-    return this._proveedor;
-  }
-  set perfil(value: Perfil) {
-    this._perfil = value
-  }
-  get perfil(): Perfil {
-    if (this.mySesion.validarSesion()) {
-      this._perfil = this.mySesion.perfil
-      this.userAcepted = true
-      $("#email").val(this._perfil.email);
-      $("#password").val("***********");
-      $("#password_rep").val("**********");
-    }
-    return this._perfil;
-  }
-  get mostrarNotificacion(): boolean {
-    if (this.perfil) {
-      // if (this.perfil.password && this.perfil.password.length >= 1 && (this.perfil.password_rep.length >= 1)) {
-      //   return true;
-      // }
-    }
-    return false
-  }
-  get contraValida(): boolean {
-    if (this.perfil) {
-      if (this.perfil.password && this.perfil.password.length >= 1 && (this.perfil.password == this.perfil.password_rep)) {
-        return true;
-      }
-    }
-    return false
-  }
-  get contraMinima(): boolean {
-    // if (this.perfil.password.length >= 3 && (this.perfil.password != this.perfil.password_rep)) {
-    //   return false;
-    // }
-    return true
-  }
+
   public ngOnDestroy() {
     if (this.mySesion.captchaSubscription) {
       this.mySesion.captchaSubscription.unsubscribe();

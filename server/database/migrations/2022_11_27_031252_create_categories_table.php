@@ -20,6 +20,9 @@ return new class extends Migration
             $table->integer('type')->nullable()->default(1);
             $table->integer('state')->nullable()->default(1);
 
+            $table->integer('user_id')->nullable()->default(null)->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

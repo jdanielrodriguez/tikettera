@@ -1,12 +1,12 @@
 <div class="container">
-  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 mx-auto text-left ">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mx-auto text-center ">
     <form class="form-signin" autocomplete="off" id="RegisterForm" #RegisterForm="ngForm" (ngSubmit)="registrar()">
       <h1 class="h3 mb-3 mt-3 font-weight-normal text-dark" *ngIf="titulo && muestraTexto">{{titulo}}</h1>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <input type="hidden" class="form-control" name="id" id="id" *ngIf="perfil" [(ngModel)]="perfil.id" ngModel
             #id="ngModel">
-          <div class="input-group mb-3 mt-5">
+          <div class="input-group mb-3 mt-1">
             <input type="email" class="form-control" name="email" id="email" required ngModel
               #email="ngModel" placeholder="Correo" (keyup)="cargar(RegisterForm)" email>
           </div>
@@ -14,7 +14,7 @@
             <input type="password" class="form-control" name="password" id="password" required
               ngModel #password="ngModel" placeholder="Contraseña" (keyup)="cargar(RegisterForm)">
           </div>
-          <div class="input-group my-3" [ngClass]="{'invisible': !(password && password.value!='')}">
+          <div class="input-group my-3" [ngClass]="{'d-none': (password && password.value=='')}">
             <input type="password" class="form-control" name="password_rep" id="password_rep" required ngModel #password_rep="ngModel" placeholder="Repite tu contraseña"
               (keyup)="cargar(RegisterForm)">
           </div>
@@ -32,13 +32,6 @@
           </div>
         </div>
       </div>
-      <h5 class="h5 mb-3 mt-3 font-weight-normal text-dark" *ngIf="esProveedor && userAcepted">Ingrese la información de
-        su negocio.</h5>
-      <app-proveedor-form (form)="obtenerProveedor($event)" class="row" *ngIf="esProveedor && userAcepted">
-      </app-proveedor-form>
-      <h5 class="h5 mb-3 mt-3 font-weight-normal text-dark" *ngIf="esCliente && userAcepted">Ingrese su información de
-        facturación.</h5>
-      <app-cliente-form (form)="obtenerCliente($event)" class="row" *ngIf="esCliente && userAcepted"></app-cliente-form>
       <div class="mb-3 row">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 ml-auto text-left">
           <a class="c-celeste-bishound pointer link-pointer"
@@ -49,10 +42,13 @@
             Contraseña</a>
         </div>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fa fa-sign-in"></i> Registrar</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="RegisterForm.value.password=='' || RegisterForm.value.username==''"><i class="fa fa-sign-in"></i> Registrar</button>
     </form>
   </div>
-  <div class="row mt-5 col-xs-12 col-sm-12 col-md-12 col-lg-6 mx-auto text-left" *ngIf="esCliente">
+  <div class="row mt-5 col-xs-12 col-sm-12 col-md-12 col-lg-12 mx-auto text-left">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ml-auto">
+      <h1 class="h3 mb-5 font-weight-normal text-center">o</h1>
+    </div>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ml-auto">
       <a class="btn btn-block btn-social btn-facebook badge-pill bg-facebook h2 text-light"
         (click)="socialSignIn('facebook')">

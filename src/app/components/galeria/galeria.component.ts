@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Inventario, ListaBusqueda, Menus } from '../../interfaces';
+import { ListaBusqueda, Menus } from '../../interfaces';
 @Component({
   selector: 'app-galeria',
   templateUrl: './galeria.component.html',
@@ -41,10 +41,6 @@ export class GaleriaComponent implements OnInit {
 
   public handleRefusal(dismissMethod?: any): void {
     this._autorizaNav = true;
-  }
-  agregarCarrito(producto: Inventario) {
-  }
-  removerCarrito(data: Inventario) {
   }
   navegar(data: Menus, id?: number, info?: ListaBusqueda) {
     if (data.evento) {

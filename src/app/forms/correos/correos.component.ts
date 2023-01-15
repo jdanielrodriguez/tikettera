@@ -4,7 +4,7 @@ import { AuthServices } from 'src/app/services/auth.service';
 import { ConfiguracionesService } from 'src/app/services/configuraciones.service';
 import { NotificationsService } from 'angular2-notifications';
 import { ImagenesComponent } from './../../components/imagenes/imagenes.component';
-import { Proveedor, Imagen, FilterGET, Configuracion } from 'src/app/interfaces';
+import { Imagen, FilterGET, Configuracion } from 'src/app/interfaces';
 import { Sesion } from 'src/app/metodos';
 declare var $: any;
 @Component({
@@ -19,13 +19,7 @@ export class CorreosComponent implements OnInit, AfterViewInit {
     private authService: AuthServices,
     private mainService: ConfiguracionesService
   ) { }
-  @Input()
-  set perfil(value: Proveedor) {
-    this._perfil = value;
-  }
-  get perfil(): Proveedor {
-    return this._perfil;
-  }
+
   set titulo(value: string) {
     this._titulo = value;
   }
@@ -43,7 +37,7 @@ export class CorreosComponent implements OnInit, AfterViewInit {
   }
   @BlockUI() blockUI!: NgBlockUI;
   @ViewChild(ImagenesComponent) imagenPrincipal!: ImagenesComponent;
-  private _perfil: Proveedor = new Proveedor();
+  // private _perfil: Proveedor = new Proveedor();
   private _configuracion!: Configuracion;
   sliders: Imagen[] = [];
   private _titulo!: string;
@@ -90,7 +84,7 @@ export class CorreosComponent implements OnInit, AfterViewInit {
   obtenerConfiguraciones() {
     this.blockUI.start();
     const data: FilterGET = {
-      id: this.perfil.id,
+      id: 1,//this.perfil.id,
       estado: '2',
       filter: 'tipo',
     };
@@ -145,16 +139,16 @@ export class CorreosComponent implements OnInit, AfterViewInit {
   guardar() {
     this.blockUI.start();
     this._configuracion.tipo = 2;
-    const data1 = {
-      id: this._perfil.id,
-      imagenes: this.sliders,
-      proveedor: this._perfil,
-      configuracion: this._configuracion,
-    };
+    // const data1 = {
+    //   id: this._perfil.id,
+    //   imagenes: this.sliders,
+    //   proveedor: this._perfil,
+    //   configuracion: this._configuracion,
+    // };
     const data = {
-      id: this._perfil.id,
+      id: 1,//this._perfil.id,
       imagenes: btoa(JSON.stringify(this.sliders)),
-      proveedor: btoa(JSON.stringify(this._perfil)),
+      proveedor: null,//btoa(JSON.stringify(this._perfil)),
       configuracion: btoa(JSON.stringify(this._configuracion)),
     };
     this.mainService.create(data).then((response: { status: number, objeto: Configuracion }) => {

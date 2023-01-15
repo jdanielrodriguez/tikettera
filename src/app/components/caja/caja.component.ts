@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ComisionesService } from './../../services/comisiones.service';
-import { Perfil, Pasarela, Comision, Proveedor, Caja } from 'src/app/interfaces';
+import { Perfil, Pasarela, Comision, Caja } from 'src/app/interfaces';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { Sesion, Constantes } from 'src/app/metodos';
 declare const $: any;
@@ -116,9 +116,6 @@ export class CajaComponent implements OnInit {
   }
   get perfil(): Perfil {
     return this._perfil;
-  }
-  get proveedor(): Proveedor {
-    return new Proveedor(); //this._perfil.proveedores.length > 0 ? this._perfil.proveedores[0] : null;
   }
   set retiro(value: Comision) {
     this._comisionRetiro = value;

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Proveedor, Caja, Pasarela, Comision } from 'src/app/interfaces';
+import { Caja, Pasarela, Comision } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-caja-retiro',
@@ -11,19 +11,11 @@ export class RetiroComponent implements OnInit {
   private _comision: Comision = new Comision();
   private _retiro: Comision = new Comision();
   public active = 1;
-  private _proveedor: Proveedor = new Proveedor();
   private _caja: Caja = new Caja();
   constructor() { }
 
 
   ngOnInit(): void {
-  }
-  @Input()
-  set proveedor(value: Proveedor) {
-    this._proveedor = value;
-  }
-  get proveedor(): Proveedor {
-    return this._proveedor;
   }
   @Input()
   set caja(value: Caja) {

@@ -6,8 +6,6 @@ import { NotificationsService } from "angular2-notifications";
 import { ImagenesComponent } from "./../../components/imagenes/imagenes.component";
 import {
   Perfil,
-  Cliente,
-  Proveedor,
   Imagen,
   FilterGET,
 } from "src/app/interfaces";
@@ -21,7 +19,6 @@ declare var $: any;
 export class SlidersFormComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   @ViewChild(ImagenesComponent) imagenPrincipal!: ImagenesComponent;
-  private _perfil: Proveedor = new Proveedor();
   sliders: Imagen[] = [];
   private _titulo!: string;
   private _muestraTexto!: boolean;
@@ -51,7 +48,7 @@ export class SlidersFormComponent implements OnInit {
     let data: FilterGET = {
       id: 0,
       filter: "imagenes",
-      estado: this._perfil.id + "",
+      estado: "",
     };
     this.sliders = [];
     this.provsService
@@ -128,13 +125,6 @@ export class SlidersFormComponent implements OnInit {
   }
   createWarning(error: string) {
     this._service.warn("¡Cuidado!", error);
-  }
-  @Input()
-  set perfil(value: Proveedor) {
-    this._perfil = value;
-  }
-  get perfil(): Proveedor {
-    return this._perfil;
   }
   set titulo(value: string) {
     this._titulo = value;

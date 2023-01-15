@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Perfil, Proveedor, Cliente, Menus } from 'src/app/interfaces';
+import { Perfil, Menus } from 'src/app/interfaces';
 import { Sesion } from 'src/app/metodos';
 @Component({
   selector: 'app-configuraciones',
@@ -33,12 +33,6 @@ export class ConfiguracionComponent implements OnInit {
   }
   get perfil(): Perfil {
     return this._perfil;
-  }
-  get proveedor(): Proveedor {
-    return new Proveedor();
-  }
-  get cliente(): Cliente {
-    return new Cliente();
   }
   @Input()
   set type(value: string) {

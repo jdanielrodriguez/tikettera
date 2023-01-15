@@ -5,7 +5,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { CategoriasService } from './../../services/categorias.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ImagenesComponent } from './../../components/imagenes/imagenes.component';
-import { TipoItem, Imagen, Menus, Inventario } from './../../interfaces';
+import { Imagen, Menus } from './../../interfaces';
 import { Sesion } from './../../metodos';
 @Component({
   selector: 'app-categoria',
@@ -21,15 +21,8 @@ export class CategoriaComponent implements OnInit {
     private localSt: LocalStorageService,
     private _service: NotificationsService
   ) { }
-  set producto(value: Inventario) {
-    this._producto = value;
-  }
-  get producto(): Inventario {
-    return this._producto;
-  }
   @BlockUI() blockUI!: NgBlockUI;
   @ViewChild(ImagenesComponent) imagenPrincipal!: ImagenesComponent;
-  private _producto: TipoItem = new TipoItem();
   sliders: Imagen[] = [
   ];
   public options = {
@@ -52,7 +45,7 @@ export class CategoriaComponent implements OnInit {
       this.sliders.push(resp);
     }
   }
-  guardar(value: TipoItem) {
+  guardar(value: any) {
     this.blockUI.start();
     const data1 = {
       tipoItem: value,
@@ -64,37 +57,37 @@ export class CategoriaComponent implements OnInit {
       // proveedor: this.mySesion.encriptar(JSON.stringify(this.mySesion.perfil.proveedores[0])),
       imagenes: this.mySesion.encriptar(JSON.stringify(this.sliders))
     };
-    this.mainService.create(data)
-      .then((response: { status: number, objeto: TipoItem, msg: string }) => {
-        if (response.status >= 400) {
-          this.createError(response.msg);
-        } else {
-          this.createSuccess(this._producto.id ? 'Categoria Creada' : 'Categoria Actualizada');
-          this._producto = response.objeto;
-          const men: Menus = {
-            url: './dashboard/categorias/' + this._producto.nombre,
-            nombre: this._producto.nombre
-          };
-          this.mySesion.navegar(men, 0);
-        }
-        this.blockUI.stop();
-      }).catch(error => {
-        this.createError('Error ingresando clasificacion');
-        this.blockUI.stop();
-      });
+    // this.mainService.create(data)
+    //   .then((response: { status: number, objeto: TipoItem, msg: string }) => {
+    //     if (response.status >= 400) {
+    //       this.createError(response.msg);
+    //     } else {
+    //       this.createSuccess(this._producto.id ? 'Categoria Creada' : 'Categoria Actualizada');
+    //       this._producto = response.objeto;
+    //       const men: Menus = {
+    //         url: './dashboard/categorias/' + this._producto.nombre,
+    //         nombre: this._producto.nombre
+    //       };
+    //       this.mySesion.navegar(men, 0);
+    //     }
+    //     this.blockUI.stop();
+    //   }).catch(error => {
+    //     this.createError('Error ingresando clasificacion');
+    //     this.blockUI.stop();
+    //   });
 
   }
   getParams() {
     // this._producto.nombre = this.route.snapshot.paramMap.get('producto');
 
-    if (this.mySesion.validarSesion() && this._producto.nombre !== 'nuevo') {
-      this.cargarClasificacion(this._producto.nombre);
-    }
-    if (this._producto.nombre === 'nuevo') {
-      this._producto.nombre = '';
-      this._producto.descripcion = '';
-      this._producto.imagenes = [];
-    }
+    // if (this.mySesion.validarSesion() && this._producto.nombre !== 'nuevo') {
+    //   this.cargarClasificacion(this._producto.nombre);
+    // }
+    // if (this._producto.nombre === 'nuevo') {
+    //   this._producto.nombre = '';
+    //   this._producto.descripcion = '';
+    //   this._producto.imagenes = [];
+    // }
   }
   cargarClasificacion(nombre?: string) {
     const data = {

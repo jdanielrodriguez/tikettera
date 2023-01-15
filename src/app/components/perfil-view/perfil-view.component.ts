@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Perfil, Proveedor } from 'src/app/interfaces';
+import { Perfil } from 'src/app/interfaces';
 declare var $: any;
 @Component({
   selector: 'app-perfil-view',
@@ -52,7 +52,7 @@ export class PerfilViewComponent implements OnInit {
   get muestraTexto(): boolean {
     return this._muestraTexto;
   }
-  get proveedor(): Proveedor {
-    return /* this.perfil.proveedores.length > 0 ? this.perfil.proveedores[0] :  */new Proveedor();
+  get proveedor(): any {
+    return /* this.perfil.proveedores.length > 0 ? this.perfil.proveedores[0] :  new Proveedor();*/ null;
   }
 }

@@ -44,7 +44,7 @@ export class DireccionesComponent implements OnInit {
     this.blockUI.start();
     this.mainService.create(dat)
       .then((element: { status: number, objeto: Direccion[] }) => {
-        this._perfil.direcciones = element.objeto;
+        // this._perfil.direcciones = element.objeto;
         this._perfilEmit.emit(this._perfil);
         this._listaEliminar = [];
         this._isCollapsed = true;
@@ -88,12 +88,6 @@ export class DireccionesComponent implements OnInit {
         // this.perfil.direcciones[index] = form.value;
       }
     } else {
-      if (this.perfil.direcciones) {
-        this.perfil.direcciones.push(form.value);
-      } else {
-        this.perfil.direcciones = [];
-        this.perfil.direcciones.push(form.value);
-      }
     }
     // this._lista = this.perfil.direcciones;
     this._perfilEmit.emit(this.perfil);
@@ -137,9 +131,6 @@ export class DireccionesComponent implements OnInit {
   @Input()
   set perfil(value: Perfil) {
     this._perfil = value;
-    if (this._perfil.direcciones && this._perfil.direcciones.length > 0) {
-      this._lista = this._perfil.direcciones;
-    }
   }
   get perfil(): Perfil {
     return this._perfil;

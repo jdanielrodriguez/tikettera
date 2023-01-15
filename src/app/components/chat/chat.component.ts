@@ -17,22 +17,22 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     const temp: Perfil = new Perfil();
     temp.email = 'tempora.@fdf.com';
-    temp.nombre = 'temporal';
+    temp.names = 'temporal';
     temp.username = 'temporal';
-    temp.imagenes = [
-      {
-        url: 'https://robohash.org/68.186.255.198.png'
-      }
-    ];
+    // temp.imagenes = [
+    //   {
+    //     url: 'https://robohash.org/68.186.255.198.png'
+    //   }
+    // ];
     const temp2: Perfil = new Perfil();
     temp2.email = 'dannyjose1112@hotmail.com';
-    temp2.nombre = 'Daniel Rodriguez';
+    temp2.names = 'Daniel Rodriguez';
     temp2.username = 'Dannyjose1112';
-    temp2.imagenes = [
-      {
-        url: 'https://robohash.org/68.186.255.198.png'
-      }
-    ];
+    // temp2.imagenes = [
+    //   {
+    //     url: 'https://robohash.org/68.186.255.198.png'
+    //   }
+    // ];
     this._conversaciones = [temp, temp2, this.mySesion.perfil];
   }
   seleccionar(value: Perfil) {

@@ -13,7 +13,8 @@
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pt-5">
-          <h4 class="mb-0 text-truncated mt-3">{{perfil.nombre}}</h4>
+          <h4 class="mb-0 text-truncated mt-3">{{perfil.names}}</h4>
+          <!--
           <p class="lead">{{(perfil.proveedores && perfil.proveedores.length>0)?"PROVEEDOR":((perfil.clientes && perfil.clientes.length>0)?"CLIENTE":"USUARIO")}}</p>
           <span class="badge badge-success badge-pill tags"
             *ngIf="perfil.proveedores && perfil.proveedores.length>0 && perfil.proveedores[0].estado===1">Activo</span>
@@ -27,12 +28,12 @@
             <span class="badge badge-primary badge-pill tags ml-1" *ngIf="perfil.clientes && perfil.clientes.length>0">Cliente</span>
             <span class="badge badge-primary badge-pill tags ml-1"
               *ngIf="perfil.direcciones && perfil.direcciones.length>0">Direcciones</span>
-          </p>
+          </p>-->
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mx-auto text-center  d-flex mp-0">
-          <img
+          <!-- <img
             [src]="(perfil.imagenes && perfil.imagenes.length>0)?perfil.imagenes[0].url:(perfil.picture?perfil.picture:'https://robohash.org/68.186.255.198.png')"
-            alt="" class=" m-auto badge-pill rounded-circle" style="max-height: 100%;max-width: 100%;">
+            alt="" class=" m-auto badge-pill rounded-circle" style="max-height: 100%;max-width: 100%;"> -->
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
           <h3 class="mb-0">20</h3>

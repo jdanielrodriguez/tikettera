@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { CategoriasService } from './../../services/categorias.service';
-import { ListaBusqueda, TipoItem, Menus } from './../../interfaces';
+import { ListaBusqueda, Menus } from './../../interfaces';
 import { Sesion } from './../../metodos';
 @Component({
   selector: 'app-clasificaciones',
@@ -47,19 +47,6 @@ export class ClasificacionesComponent implements OnInit {
   get proveedor(): any {
     return this._proveedor;
   }
-  set categoriasLista(value: TipoItem[]) {
-    this._categoriasLista = value;
-  }
-  get categoriasLista(): TipoItem[] {
-    return this._categoriasLista;
-  }
-
-  set categoriasListaAuxiliar(value: TipoItem[]) {
-    this._categoriasListaAuxiliar = value;
-  }
-  get categoriasListaAuxiliar(): TipoItem[] {
-    return this._categoriasListaAuxiliar;
-  }
   set categoria(value: ListaBusqueda) {
     this._categoria = value;
   }
@@ -73,8 +60,6 @@ export class ClasificacionesComponent implements OnInit {
   private _offset = 0;
   private _page = 1;
   @BlockUI() blockUI!: NgBlockUI;
-  private _categoriasLista: TipoItem[] = [];
-  private _categoriasListaAuxiliar: TipoItem[] = [];
   private _categoria: ListaBusqueda = new ListaBusqueda();
   public options = {
     timeOut: 2000,
@@ -95,7 +80,6 @@ export class ClasificacionesComponent implements OnInit {
       //   (v: ListaBusqueda) => v.nombre.toLowerCase().indexOf(value.nombre.toLowerCase()) > -1);
     } else {
       this._categoria = new ListaBusqueda();
-      this._categoriasLista = this._categoriasListaAuxiliar;
     }
   }
   cargarCategorias() {
@@ -106,20 +90,20 @@ export class ClasificacionesComponent implements OnInit {
       filter: 'proveedor&limit=' + this.limit + '&offset=' + this.offset
     };
     this.mainService.getAllFilter(data)
-      .then((response: { status: number, numReg: number, objeto: TipoItem[] }) => {
+      .then((response: { status: number, numReg: number, objeto: any[] }) => {
         this._numReg = response.numReg;
-        this._categoriasLista.length = 0;
-        this._categoriasListaAuxiliar.length = 0;
+        // this._categoriasLista.length = 0;
+        // this._categoriasListaAuxiliar.length = 0;
         try {
-          response.objeto.forEach((element: TipoItem) => {
-            const datas: ListaBusqueda = {
-              imagen: element.portada ? element.portada : 'https://via.placeholder.com/250x200',
-              nombre: element.nombre ? element.nombre : 'No Name',
-              id: element.id
-            };
-            this._categoriasLista.push(datas);
-          });
-          this._categoriasListaAuxiliar = this._categoriasLista;
+          // response.objeto.forEach((element: TipoItem) => {
+          //   const datas: ListaBusqueda = {
+          //     imagen: element.portada ? element.portada : 'https://via.placeholder.com/250x200',
+          //     nombre: element.nombre ? element.nombre : 'No Name',
+          //     id: element.id
+          //   };
+          //   this._categoriasLista.push(datas);
+          // });
+          // this._categoriasListaAuxiliar = this._categoriasLista;
         } catch (exception) {
           console.log(exception);
         } finally {

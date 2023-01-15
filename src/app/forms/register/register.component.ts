@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { UsuariosService } from "./../../services/usuarios.service";
 import { AuthServices } from "./../../services/auth.service";
-import { Menus, Socialusers, Cliente, Proveedor, Perfil, Imagen } from "./../../interfaces";
+import { Menus, Socialusers, Perfil, Imagen } from "./../../interfaces";
 import { Modal } from "./../modal.component";
 import { Sesion } from "./../../metodos";
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,8 +24,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private _userAcepted: boolean = false;
   private _tipo!: boolean;
   private _muestraTexto!: boolean;
-  private _cliente!: Cliente;
-  private _proveedor!: Proveedor;
   private _perfil!: Perfil;
   private _titulo: string = "";
   private _dinamicLink: string = "";
@@ -80,18 +78,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
   get esCliente(): boolean {
     return this._tipo != true
-  }
-  set cliente(value: Cliente) {
-    this._cliente = value
-  }
-  get cliente(): Cliente {
-    return this._cliente;
-  }
-  set proveedor(value: Proveedor) {
-    this._proveedor = value
-  }
-  get proveedor(): Proveedor {
-    return this._proveedor;
   }
   set perfil(value: Perfil) {
     this._perfil = value
@@ -269,26 +255,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.blockUI.start();
     }
     this.perfil.picture = this.perfil.picture ? this.perfil.picture : 'https://robohash.org/68.186.255.198.png';
-    if (this.proveedor) {
-      // this.proveedor.nombre = this.formatear.getCleanedString(this.proveedor.nombre)
-      // this.proveedor.apellido = this.formatear.getCleanedString(this.proveedor.apellido)
-      this._proveedor.nacimiento = this._proveedor.nacimiento ? btoa(this._proveedor.nacimiento) : btoa(new Date().toISOString())
-      this.proveedor.estado = 3
-    }
-    if (this.cliente) {
+    // if (this.proveedor) {
+    //   // this.proveedor.nombre = this.formatear.getCleanedString(this.proveedor.nombre)
+    //   // this.proveedor.apellido = this.formatear.getCleanedString(this.proveedor.apellido)
+    //   this._proveedor.nacimiento = this._proveedor.nacimiento ? btoa(this._proveedor.nacimiento) : btoa(new Date().toISOString())
+    //   this.proveedor.estado = 3
+    // }
+    // if (this.cliente) {
       // this.cliente.nombre = this.formatear.getCleanedString(this.cliente.nombre)
       // this.cliente.apellido = this.formatear.getCleanedString(this.cliente.apellido)
       // this.cliente.nombre_a_facturar = this.formatear.getCleanedString(this.cliente.nombre_a_facturar)
-    }
+    // }
     let data = {
       // cliente: this.perfil.clientes?.length > 0 ? null : (this.cliente ? this.mySesion.encriptar(JSON.stringify(this.cliente)) : null),
-      proveedor: this.proveedor ? this.mySesion.encriptar(JSON.stringify(this.proveedor)) : null,
+      // proveedor: this.proveedor ? this.mySesion.encriptar(JSON.stringify(this.proveedor)) : null,
       usuario: this.perfil ? this.mySesion.encriptar(JSON.stringify(this.perfil)) : null
-    }
-    let data1 = {
-      // cliente: this.perfil.clientes?.length > 0 ? null : this.cliente,
-      proveedor: this.proveedor,
-      usuario: this.perfil
     }
     this.userServices.create(data)
       .then((response: { status: number, objeto: Perfil, msg?: string }) => {
@@ -337,11 +318,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     perfil = form.value
     if (perfil) {
       // perfil.username = perfil.email.split("@")[0];
-      perfil.estado = 1;
+      perfil.state = 1;
       perfil.google_id = "";
       perfil.facebook_id = "";
       perfil.google_token = "";
-      perfil.google_idToken = "";
+      perfil.google_id_token = "";
       this._perfil = perfil;
     }
   }

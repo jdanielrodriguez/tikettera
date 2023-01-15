@@ -7,43 +7,28 @@
       <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/configuracion/perfil'})">
         <a ngbNavLink>Perfil</a>
         <ng-template ngbNavContent class="w-100 d-flex">
-          <div class="alert alert-info" *ngIf="proveedor && proveedor.estado==2">
-            <strong>Su Proveedor se encuentra aun en etapa de validación.</strong>
-          </div>
           <app-perfil [perfil]="perfil"></app-perfil>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2" [class.d-none]="!proveedor" (click)="navegar({url:'./dashboard/configuracion/sliders'})">
+      <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/configuracion/sliders'})">
         <a ngbNavLink>Sliders</a>
         <ng-template ngbNavContent class="w-100 d-flex">
-          <div class="alert alert-info" *ngIf="proveedor && proveedor.estado==2">
-            <strong>Su Proveedor se encuentra aun en etapa de validación.</strong>
-          </div>
-          <app-sliders-form *ngIf="proveedor" [perfil]="proveedor"></app-sliders-form>
-          <div class="mx-auto alert alert-warning text-center" *ngIf="!proveedor">
-            <span class="fa fa-warning mr-2"></span>
-            <strong>Lamentamos que no tengas disponible esta opción, activa tu proveedor ahora!</strong>
-          </div>
-          <div class="w-100 d-flex" *ngIf="!proveedor">
-            <button type="button" class="btn btn-info btn-rounded mx-auto" (click)="navegar({url:'./../vender'})">
-              <i class="fa fa-hand-o-left"></i>
-            </button>
-          </div>
+          <!-- <app-sliders-form *ngIf="proveedor" [perfil]="proveedor"></app-sliders-form> -->
         </ng-template>
       </li>
-      <li [ngbNavItem]="3" *ngIf="cliente" (click)="navegar({url:'./dashboard/configuracion/direcciones'})">
+      <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/configuracion/direcciones'})">
         <a ngbNavLink>Direcciones</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <app-direcciones [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-direcciones>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4" *ngIf="cliente" (click)="navegar({url:'./dashboard/configuracion/metodos-pago'})">
+      <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/configuracion/metodos-pago'})">
         <a ngbNavLink>Metodos de Pago</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
         </ng-template>
       </li>
-      <li [ngbNavItem]="5" [class.d-none]="!proveedor" (click)="navegar({url:'./dashboard/configuracion/encabezado'})">
+      <!-- <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/configuracion/encabezado'})">
         <a ngbNavLink>Encabezado</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <div class="alert alert-info" *ngIf="proveedor && proveedor.estado==2">
@@ -60,23 +45,11 @@
             </button>
           </div>
         </ng-template>
-      </li>
-      <li [ngbNavItem]="6" [class.d-none]="!proveedor" (click)="navegar({url:'./dashboard/configuracion/correos'})">
+      </li> -->
+      <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/configuracion/correos'})">
         <a ngbNavLink>Correos</a>
         <ng-template ngbNavContent class="w-100 d-flex">
-          <div class="alert alert-info" *ngIf="proveedor && proveedor.estado==2">
-            <strong>Su Proveedor se encuentra aun en etapa de validación.</strong>
-          </div>
-          <app-correos *ngIf="proveedor" [perfil]="proveedor"></app-correos>
-          <div class="mx-auto alert alert-warning text-center" *ngIf="!proveedor">
-            <span class="fa fa-warning mr-2"></span>
-            <strong>Lamentamos que no tengas disponible esta opción, activa tu proveedor ahora!</strong>
-          </div>
-          <div class="w-100 d-flex" *ngIf="!proveedor">
-            <button type="button" class="btn btn-info btn-rounded mx-auto" (click)="navegar({url:'./../vender'})">
-              <i class="fa fa-hand-o-left"></i>
-            </button>
-          </div>
+          <!-- <app-correos *ngIf="proveedor" [perfil]="proveedor"></app-correos> -->
         </ng-template>
       </li>
       <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/configuracion/password'})">

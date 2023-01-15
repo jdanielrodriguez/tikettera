@@ -3,7 +3,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NotificationsService } from 'angular2-notifications';
 import { ComentariosService } from './../../services/comentarios.service';
 import { Sesion } from './../../metodos';
-import { Perfil, Comentario, Inventario, FilterGET } from './../../interfaces';
+import { Perfil, Comentario, FilterGET } from './../../interfaces';
 declare var $: any;
 @Component({
   selector: 'app-comentarios',
@@ -16,15 +16,6 @@ export class ComentariosComponent implements OnInit {
     private mySesion: Sesion,
     private mainService: ComentariosService
   ) { }
-  @Input() set producto(value: Inventario) {
-    this._producto = value;
-    if (value.id) {
-      this.obtenerComentarios(value);
-    }
-  }
-  get producto(): Inventario {
-    return this._producto;
-  }
   get perfilActual(): Perfil {
     return this._perfilActual;
   }
@@ -43,7 +34,6 @@ export class ComentariosComponent implements OnInit {
   }
   @BlockUI() blockUI!: NgBlockUI;
   @ViewChild('conversationContainer') private conversationContainer!: ElementRef;
-  private _producto!: Inventario;
   private _perfilActual!: Perfil;
   private _conversacion: Comentario[] = [];
   public options = {
@@ -61,7 +51,7 @@ export class ComentariosComponent implements OnInit {
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
-  obtenerComentarios(value?: Inventario) {
+  obtenerComentarios(value?: any) {
     if (value && value.id) {
       const data: FilterGET = {
         id: this.mySesion.perfil.id,

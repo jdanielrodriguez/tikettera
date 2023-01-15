@@ -1,27 +1,13 @@
-export class Socialusers {
-  provider?: string;
-  id?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
+export class Rol {
+  constructor() {
+    this.id = null;
+    this.name = '';
+    this.description = '';
+    this.state = 1;
+  }
+  id?: number | null | undefined;
   name?: string;
-  image?: string;
-  token?: string;
-  authToken?: string;
-  photoUrl?: string;
-  idToken?: string;
-  google_id?: string;
-  google_token?: string;
-  google_idToken?: string;
-  google?: string;
-  imagen?: string;
-  username?: string;
-  password?: string;
-  nombres?: string;
-  codigo?: string;
-  apellidos?: string;
-  rol?: string;
-  nacimiento?: string;
+  description?: string;
   state?: number;
 }
 export class Menus {
@@ -46,49 +32,53 @@ export class Perfil {
   ) {
     this.last_link = '';
     this.facebook_id = '';
-    this.one_signal_id = '';
     this.google_id = '';
     this.username = '';
     this.token = '';
     this.google_token = '';
     this.formas_pago = [];
-    this.direcciones = [];
-    this.imagenes = [];
-    this.google_idToken = '';
+    this.google_id_token = '';
   }
-  provider?: string;
   id?: number;
-  name?: string;
-  image?: string;
-  idToken?: string;
-  google?: string;
-  imagen?: string;
-  formas_pago?: MetodoPago[];
-  direcciones?: Direccion[];
-  imagenes?: Imagen[];
-  picture?: string;
-  empleados?: Empleado[];
-  clientes?: Cliente[];
-  proveedores?: Proveedor[];
   username?: string;
-  password_rep?: string;
   password?: string;
+  password_rep?: string;
   email?: string;
-  nombre?: string;
-  codigo?: string;
-  nacimiento?: string;
-  last_link?: string;
-  foto?: string;
-  last_conection?: string;
+  code?: string;
+  names?: string;
+  lastnames?: string;
+  description?: string;
+  image?: string;
+  birth?: string;
+  picture?: string;
+  last_conection?: Date;
+  twitter_id?: string;
+  tiktok_id?: string;
   facebook_id?: string;
-  one_signal_id?: string;
   google_id?: string;
   google_token?: string;
-  google_idToken?: string;
+  google_id_token?: string;
+  pic1?: string;
+  pic2?: string;
+  pic3?: string;
   token?: string;
-  estado?: number;
+  auth_type?: string;
+  state?: number;
+  rol_id?: number;
   rol?: Rol;
-  referido?: Perfil;
+
+  formas_pago?: MetodoPago[];
+  last_link?: string;
+}
+export class Socialusers extends Perfil {
+  firstName?: string;
+  lastName?: string;
+  authToken?: string;
+  photoUrl?: string;
+  idToken?: string;
+  google_idToken?: string;
+  google?: string;
+  imagen?: string;
 }
 export class Comentario {
   constructor(
@@ -111,7 +101,6 @@ export class Comentario {
   comment?: number | null;
   comment_obj?: Perfil;
   inventario?: number | null;
-  inventario_obj?: Inventario;
   url?: string | null;
 }
 export class Reaccion {
@@ -124,7 +113,6 @@ export class Reaccion {
     this.estado = null;
     this.path = null;
     this.orden = '0';
-    this.inventario = null;
   }
   url?: string;
   default?: number | null;
@@ -135,37 +123,11 @@ export class Reaccion {
   usuario?: number | null;
   usuario_obj?: Perfil;
   proveedor?: number;
-  proveedor_obj?: Proveedor;
   like?: number;
   like_obj?: Perfil;
-  inventario?: number | null;
-  inventario_obj?: Inventario;
   tipo_forma_pago?: number;
   direccion?: number;
   tipo_item?: number;
-}
-export class Empleado {
-  id?: number;
-  nombre?: string;
-  apellido?: string;
-  direccion?: string;
-  telefono?: string;
-  celular?: string;
-  sueldo?: number;
-  estado?: number;
-  puesto?: number;
-}
-export class Identificador {
-  carrito?: Carrito[];
-  proveedor?: Proveedor;
-  token?: string;
-  aprobacion?: string;
-}
-export class IdentificadorQ {
-  carrito?: string;
-  proveedor?: string;
-  token?: string;
-  carritoEliminar?: string;
 }
 export class ChangePasswordForm {
   constructor() {
@@ -182,83 +144,13 @@ export class ChangePasswordForm {
   perfil?: Perfil;
 
 }
-export class Proveedor {
-  constructor() {
-    this.id = null;
-    this.nombre = '';
-    this.apellido = '';
-    this.nit = '';
-    this.dpi = '';
-    this.estado = 1;
-    this.usuario = new Perfil();
-    this.imagenes = [];
-    this.configuraciones = [];
-  }
-  id?: number | null | undefined;
-  direccion?: string;
-  telefono?: string;
-  nacimiento?: string;
-  celular?: string;
-  sueldo?: number;
-  imagenes?: Imagen[];
-  nombre?: string;
-  apellido?: string;
-  nit?: string;
-  comercio?: string;
-  dpi?: string;
-  foto?: string;
-  estado?: number;
-
-  usuario?: Perfil;
-  configuraciones: Configuracion[];
-  created_at!: Date;
-  updated_at!: Date;
-}
-export class Cliente {
-  constructor() {
-    this.id = null;
-    this.nombre = '';
-    this.apellido = '';
-    this.nombre_a_facturar = '';
-    this.dpi = '';
-    this.nit = '';
-    this.telefono = '';
-    this.estado = 1;
-    this.usuario = new Perfil();
-    this.imagenes = [];
-  }
-  id?: number | null | undefined;
-  direccion?: string;
-  cuenta?: string;
-  nombre?: string;
-  apellido?: string;
-  nit?: string;
-  nombre_a_facturar?: string;
-  dpi?: string;
-  telefono?: string;
-  foto?: string;
-  imagenes?: Imagen[];
-  estado?: number;
-
-  usuario?: Perfil;
-}
-export class Rol {
-  constructor() {
-    this.id = null;
-    this.nombre = '';
-    this.estado = 1;
-  }
-  id?: number | null | undefined;
-  nombre?: string;
-  estado?: number;
-}
 export class Factura {
   constructor() {
     this.id = null;
   }
   tokenReal?: string;
   aprobacion?: string;
-  cliente?: Cliente;
+  cliente?: Perfil;
   clienteId?: number;
   codigo?: string;
   eliminar?: string;
@@ -279,7 +171,7 @@ export class Factura {
   id?: number | null | undefined;
   latitud?: number;
   longitud?: number;
-  proveedor?: Proveedor;
+  proveedor?: Perfil;
   tipo?: any;
   tipo_venta?: number;
   token?: string;
@@ -306,8 +198,6 @@ export class MetodoPago {
     this.nombreTC = '';
     this.paypalToken = '';
     this.tipo = '';
-    this.productos = [];
-    this.carrito = [];
   }
   noTC?: string;
   id?: string | null;
@@ -318,8 +208,6 @@ export class MetodoPago {
   envio?: string;
   token?: string;
   tipo?: string;
-  productos?: Inventario[];
-  carrito?: Carrito[];
   cod?: string;
   default?: number;
   cambio?: number;
@@ -358,7 +246,6 @@ export class ListaBusqueda {
     this.slug = '';
     this.imagen = 'https://via.placeholder.com/250x200';
     this.validacion = 5;
-    this.inventario = new Inventario();
   }
   id?: number | null | undefined;
   nombre?: string;
@@ -368,7 +255,6 @@ export class ListaBusqueda {
   objeto?: any;
   validacion?: number;
   cantidad?: number;
-  inventario?: Inventario;
 }
 export class Producto {
   constructor() {
@@ -395,95 +281,6 @@ export class Producto {
   retiro?: number;
   inventario?: number;
   imagenes?: Imagen[];
-}
-export class Inventario {
-  constructor() {
-    this.id = null;
-    this.portada = 'https://via.placeholder.com/250x200';
-    this.cantidad = 1;
-    this.nombre = '';
-    this.estado = 1;
-    this.item = new Item();
-    this.imagenes = [];
-    this.productos = [];
-    this.pasarela = 0;
-    this.comision_venta = 0;
-    this.iva = 0;
-    this.retiro = 0;
-  }
-  id?: number | null | undefined;
-  portada?: string;
-  nombre?: string;
-  descripcion?: string;
-  codigo?: string;
-  cantidad?: number;
-  minimo?: number;
-  precio?: number;
-  comision?: number;
-  precio_venta?: number;
-  comision_venta?: number;
-  precio_especial?: number;
-  pasarela?: number;
-  iva?: number;
-  retiro?: number;
-  descuento?: number;
-  estado?: number;
-  item?: Item;
-  marca?: any;
-  imagenes?: Imagen[];
-  productos?: Producto[];
-  presentaciones?: Producto[];
-  sabores?: Producto[];
-  tallas?: Producto[];
-  colores?: Producto[];
-}
-
-export class Item {
-  constructor() {
-    this.id = null;
-    this.nombre = '';
-    this.estado = 1;
-    this.tipo_item = new TipoItem();
-    this.proveedor = new Proveedor();
-  }
-  id?: number | null | undefined;
-  nombre?: string;
-  descripcion?: string;
-  estado?: number;
-  tipo_item?: TipoItem;
-  proveedor?: Proveedor;
-}
-
-export class TipoItem {
-  constructor() {
-    this.id = null;
-    this.nombre = '';
-    this.estado = 1;
-    this.imagenes = [];
-  }
-  id?: number | null | undefined;
-  nombre?: string;
-  descripcion?: string;
-  portada?: string;
-  color?: string;
-  css?: string;
-  opciones?: string;
-  estado?: number;
-  imagenes?: Imagen[];
-  proveedor?: Proveedor;
-}
-export class Carrito {
-  constructor() {
-    this.inventario = new Inventario();
-    this.nombre = this.inventario.nombre;
-    this.id = this.inventario.id;
-    this.leido = false;
-  }
-  inventario?: Inventario;
-  id?: number | null | undefined;
-  cantidad?: number;
-  nombre?: string;
-  leido?: boolean;
 }
 
 export class Configuracion {
@@ -583,21 +380,6 @@ export class FilterGET {
   filter: string;
 }
 
-export class Wiki {
-  constructor() {
-    this.titulo = 'Nuevo Contenido';
-    this.contenido = '';
-  }
-  uuid?: string;
-  titulo?: string;
-  contenido?: string;
-  subtitulo?: string;
-  creador?: number;
-  modificador?: number;
-  anterior?: Wiki;
-  siguiente?: Wiki;
-}
-
 export class Pasarela {
   constructor() {
     this.nombre = 'No Seleccionada';
@@ -672,8 +454,8 @@ export class HistoricoCaja {
   tipo_forma_pago?: number;
   tipo_transaccion?: number;
 }
-// Tikettera
 
+// Tikettera
 
 export class Locality {
   constructor() {

@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, HostListener, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService, LocalStorage } from 'ngx-webstorage';
-import { Menus, Perfil, Carrito, Configuracion } from './../../interfaces';
+import { Menus, Perfil, Configuracion } from './../../interfaces';
 import { Sesion } from './../../metodos';
 @Component({
   selector: 'app-nav',
@@ -18,7 +18,6 @@ export class NavComponent implements OnInit, AfterViewInit {
   private _sesion!: boolean;
   private _esAdmin!: boolean;
   private _perfil!: Perfil;
-  private _carrito!: Carrito[];
   private _logo = 'assets/images/logo.png';
   constructor(
     private router: Router,
@@ -312,13 +311,6 @@ export class NavComponent implements OnInit, AfterViewInit {
       return { 'background-color': this._background };
     }
   }
-  set carrito(value: Carrito[]) {
-    this._carrito = value;
-  }
-  get carrito(): Carrito[] {
-    // this._carrito = this.myCarrito.carros;
-    return this._carrito;
-  }
   get currentPerfil(): string {
     return '';//this.mySesion.perfil.nombre;
   }
@@ -332,6 +324,6 @@ export class NavComponent implements OnInit, AfterViewInit {
     return ret;
   }
   get actualizarPass(): boolean {
-    return this.perfil.estado === 21;
+    return this.perfil.state === 21;
   }
 }

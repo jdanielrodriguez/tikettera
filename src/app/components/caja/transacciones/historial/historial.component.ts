@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { Proveedor, HistoricoCaja, Perfil } from 'src/app/interfaces';
+import { HistoricoCaja, Perfil } from 'src/app/interfaces';
 import { ComisionesService } from './../../../../services/comisiones.service';
 
 @Component({
@@ -27,7 +27,6 @@ export class HistorialComponent implements OnInit {
     private comisionesService: ComisionesService
   ) { }
   public active = 1;
-  private _proveedor: Proveedor = new Proveedor();
   ngOnInit(): void {
     this.cargarHistoricoTransacciones();
   }
@@ -57,13 +56,6 @@ export class HistorialComponent implements OnInit {
   }
   get modelInicial(): NgbDateStruct {
     return this._modelInicial;
-  }
-  @Input()
-  set proveedor(value: Proveedor) {
-    this._proveedor = value;
-  }
-  get proveedor(): Proveedor {
-    return this._proveedor;
   }
   @Input()
   set perfil(value: Perfil) {

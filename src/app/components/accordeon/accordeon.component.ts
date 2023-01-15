@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Inventario, ListaBusqueda, Menus, Proveedor } from '../../interfaces';
+import { ListaBusqueda, Menus } from '../../interfaces';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgIf } from '@angular/common';
 

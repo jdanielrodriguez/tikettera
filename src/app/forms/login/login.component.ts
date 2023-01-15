@@ -4,7 +4,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { AuthServices } from './../../services/auth.service';
 import { UsuariosService } from './../../services/usuarios.service';
 import { NotificationsService } from 'angular2-notifications';
-import { Perfil, Socialusers, Menus, Cliente } from './../../interfaces';
+import { Perfil, Socialusers, Menus } from './../../interfaces';
 import { Sesion } from './../../metodos';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Modal } from './../modal.component';
@@ -66,7 +66,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   @BlockUI() blockUI!: NgBlockUI;
   socialusers = new Socialusers();
   private _esModal!: boolean;
-  private _cliente!: Cliente;
   private _muestraTexto = false;
   private _titulo = '';
   private _dinamicLink = '';
@@ -176,7 +175,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         if (e.status === 404) {
           this.createError('Usuario no encontrado');
         } else if (e.status === 401) {
-          if (socialusers.google === 'facebook' || socialusers.google === 'google') {
+          if (socialusers.auth_type === 'facebook' || socialusers.auth_type === 'google') {
             this.blockUI.start();
             // socialusers.password = this.mySesion.desencriptar(socialusers.password);
             this.registrar(socialusers);
@@ -209,11 +208,11 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   }
   registrar(perfil: Perfil) {
     perfil.picture = perfil.picture ? perfil.picture : 'https://robohash.org/68.186.255.198.png';
-    if (this._cliente) {
+    // if (this._cliente) {
       // this._cliente.nombre = this.formatear.getCleanedString(this._cliente.nombre);
       // this._cliente.apellido = this.formatear.getCleanedString(this._cliente.apellido);
       // this._cliente.nombre_a_facturar = this.formatear.getCleanedString(this._cliente.nombre_a_facturar);
-    }
+    // }
     const data = {
       // cliente: perfil.clientes?.length > 0 ? null : (this._cliente ? this.mySesion.encriptar(JSON.stringify(this._cliente)) : null),
       proveedor: null,

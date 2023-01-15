@@ -2,14 +2,14 @@
   <div class="ml-auto list-group" [class.d-none]="!chatAbierto" [class.chats-container]="chatAbierto">
     <div class="list-group-item row w-100 mp-0 d-flex" *ngFor="let data of conversaciones" (click)="seleccionar(data)">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 mp-0 d-flex">
-        <img class="card-img-top badge-pill m-auto"
+        <!-- <img class="card-img-top badge-pill m-auto"
           [src]="(data.imagenes && data.imagenes.length>0)?data.imagenes[0].url:(data.picture?data.picture:'https://robohash.org/68.186.255.198.png')"
-          alt="Card image cap">
+          alt="Card image cap"> -->
       </div>
       <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 mr-auto ml-0 my-0 p-0">
         <div class="card-body text-left ml-0 px-0">
           <p>
-            {{data.nombre}}
+            {{data.names}}
           </p>
           <p>
             {{data.username}}

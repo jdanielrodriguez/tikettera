@@ -3,7 +3,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { InteresesService } from './../../services/intereses.service';
 import { NotificationsService } from 'angular2-notifications';
 import { Sesion } from './../../metodos';
-import { Inventario, FilterGET, Reaccion } from './../../interfaces';
+import { FilterGET, Reaccion } from './../../interfaces';
 @Component({
   selector: 'app-reacciones',
   templateUrl: './reacciones.component.html',
@@ -15,15 +15,6 @@ export class ReaccionesComponent implements OnInit {
     private mySesion: Sesion,
     private mainService: InteresesService
   ) { }
-  @Input() set producto(value: Inventario) {
-    this._producto = value;
-    if (value.id) {
-      this.obtenerLike(value);
-    }
-  }
-  get producto(): Inventario {
-    return this._producto;
-  }
   set reaccion(value: Reaccion) {
     this._reaccion = value;
   }
@@ -34,7 +25,6 @@ export class ReaccionesComponent implements OnInit {
     return this.mySesion.validarSesion();
   }
   @BlockUI() blockUI!: NgBlockUI;
-  private _producto!: Inventario;
   private _reaccion!: Reaccion;
   public options = {
     timeOut: 2000,
@@ -48,7 +38,7 @@ export class ReaccionesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  obtenerLike(value?: Inventario) {
+  obtenerLike(value?: any) {
     if (value && value.id) {
       const data: FilterGET = {
         id: this.mySesion.perfil.id,
@@ -71,13 +61,12 @@ export class ReaccionesComponent implements OnInit {
       }
     }
   }
-  darLike(value?: Inventario, like?: boolean) {
+  darLike(value?: any, like?: boolean) {
     if (value && value.id) {
       this.blockUI.start();
       const data: Reaccion = new Reaccion();
       data.default = like ? 1 : 0;
       data.usuario = this.mySesion.perfil.id;
-      data.inventario = this.producto.id;
       this.mainService.create(data)
         .then((element: Reaccion) => {
           this._reaccion = element;

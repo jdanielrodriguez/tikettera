@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsuariosService } from './../../services/usuarios.service';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Proveedor, Perfil } from './../../interfaces';
+import { Perfil } from './../../interfaces';
 import { Sesion } from '../../metodos';
 @Component({
   selector: 'app-perfil',
@@ -53,7 +53,7 @@ export class PerfilComponent implements OnInit {
   get perfil(): Perfil {
     return this._perfil ? this._perfil : this.mySesion.perfil;
   }
-  get proveedor(): Proveedor | null {
+  get proveedor(): null {
     return null;//this.mySesion.perfil.proveedores.length > 0 ? this.mySesion.perfil.proveedores[0] : new Proveedor();
   }
 }

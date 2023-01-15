@@ -3,17 +3,17 @@
     <div class="card-body">
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pt-5">
-          <h4 class="mb-0 text-truncated mt-3">{{perfil.nombre}}</h4>
-          <p class="lead">{{(perfil.proveedores && perfil.proveedores.length>0)?"PROVEEDOR":((perfil.clientes && perfil.clientes.length>0)?"CLIENTE":"USUARIO")}}</p>
+          <h4 class="mb-0 text-truncated mt-3">{{perfil.names}}</h4>
+          <!--<p class="lead">{{(perfil.proveedores && perfil.proveedores.length>0)?"PROVEEDOR":((perfil.clientes && perfil.clientes.length>0)?"CLIENTE":"USUARIO")}}</p>
           <p>
             <span class="badge badge-primary badge-pill tags" *ngIf="perfil.proveedores && perfil.proveedores.length>0">Proveedor</span>
             <span class="badge badge-primary badge-pill tags ml-1" *ngIf="perfil.clientes && perfil.clientes.length>0">Cliente</span>
-          </p>
+          </p>-->
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 mx-auto text-center  d-flex mp-0">
-          <img
+          <!-- <img
             [src]="(perfil.imagenes && perfil.imagenes.length>0)?perfil.imagenes[0].url:(perfil.picture?perfil.picture:'https://robohash.org/68.186.255.198.png')"
-            alt="" class=" m-auto badge-pill rounded-circle" style="max-height: 100%;max-width: 100%;">
+            alt="" class=" m-auto badge-pill rounded-circle" style="max-height: 100%;max-width: 100%;"> -->
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
           <div class="input-group mb-1 nacimiento">
@@ -72,7 +72,7 @@
           <div class="mx-auto w-100">
             <h6>Q{{comisionPlataforma}}</h6>
           </div>
-        </div>
+        </div><!--
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center mx-0 px-0" *ngIf="proveedor">
           <div class="border-bottom border-dark text-muted w-100 mx-auto">Comision por Retiro</div>
           <div class="mx-auto w-100">
@@ -84,17 +84,18 @@
           <div class="mx-auto w-100">
             <h6>Q{{totalSinRetiro}}</h6>
           </div>
-        </div>
+        </div>-->
         <ngb-accordion [closeOthers]="true" class="w-100 text-center mt-3 mx-0 px-0 historiales">
           <ngb-panel id="historial" class="mx-0 px-0">
             <ng-template ngbPanelTitle>
               <span>Historial</span>
             </ng-template>
             <ng-template ngbPanelContent class="mx-0 px-0">
-              <app-caja-historial [proveedor]="proveedor" [modelInicial]="modelInicial" [modelFinal]="modelFinal"
-                [perfil]="perfil"></app-caja-historial>
+              <!-- <app-caja-historial [proveedor]="proveedor" [modelInicial]="modelInicial" [modelFinal]="modelFinal"
+                [perfil]="perfil"></app-caja-historial> -->
             </ng-template>
           </ngb-panel>
+<!--
           <ngb-panel id="retiro" class="mx-0 px-0" *ngIf="proveedor">
             <ng-template ngbPanelTitle>
               <span>Retirar</span>
@@ -110,7 +111,7 @@
             <ng-template ngbPanelContent class="mx-0 px-0">
               <app-caja-transferencia></app-caja-transferencia>
             </ng-template>
-          </ngb-panel>
+          </ngb-panel>-->
         </ngb-accordion>
 
       </div>

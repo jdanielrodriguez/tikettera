@@ -3,8 +3,8 @@
     <h1 class="h3 mb-3 mt-3 font-weight-normal text-dark" *ngIf="titulo && muestraTexto">
       {{ titulo }}
     </h1>
-    <input type="hidden" class="form-control" name="id" id="id" *ngIf="perfil" [(ngModel)]="perfil.id" ngModel
-      #id="ngModel" />
+    <!-- <input type="hidden" class="form-control" name="id" id="id" *ngIf="perfil" [(ngModel)]="perfil.id" ngModel
+      #id="ngModel" /> -->
     <app-nav [esAdmin]="true" *ngIf="sliders.length == 0 && configuracion" [proveedores]="configuracion.footer?configuracion.footer:''"
       [color]="configuracion.css?configuracion.css:''" [background]="configuracion.color_nav?configuracion.color_nav:''"></app-nav>
     <app-nav [esAdmin]="true" *ngIf="sliders.length > 0 && configuracion" [logo]="sliders[0].url"

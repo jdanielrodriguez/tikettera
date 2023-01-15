@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Proveedor, ListaBusqueda } from './../../interfaces';
+import { ListaBusqueda } from './../../interfaces';
 import { Formatos, Sesion } from '../../metodos';
 @Component({
   selector: 'app-autorizar-proveedores',

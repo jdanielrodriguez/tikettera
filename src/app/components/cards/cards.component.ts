@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Inventario, ListaBusqueda, Menus, Proveedor } from '../../interfaces';
+import { ListaBusqueda } from '../../interfaces';
 
 @Component({
   selector: 'app-cards',

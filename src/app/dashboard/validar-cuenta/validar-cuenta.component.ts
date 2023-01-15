@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProveedoresService } from './../../services/proveedores.service';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Proveedor, Perfil } from './../../interfaces';
+import { Perfil } from './../../interfaces';
 import { Sesion } from '../../metodos';
 @Component({
   selector: 'app-validar-cuenta',
@@ -22,9 +22,6 @@ export class ValidarCuentaComponent implements OnInit {
   }
   get perfil(): Perfil {
     return this._perfil ? this._perfil : this.mySesion.perfil;
-  }
-  get proveedor(): Proveedor | null {
-    return null;// this.mySesion.perfil.proveedores.length > 0 ? this.mySesion.perfil.proveedores[0] : null;
   }
   set token(value: string | null) {
     this._token = value;
@@ -52,7 +49,7 @@ export class ValidarCuentaComponent implements OnInit {
     this.getParams();
   }
   getParams() {
-    if (this.mySesion.validarSesion() && this.proveedor) {
+    if (this.mySesion.validarSesion()) {
       this._token = this.route.snapshot.paramMap.get('token');
       // this.verificarToken(this._token, this.proveedor.id);
     } else {

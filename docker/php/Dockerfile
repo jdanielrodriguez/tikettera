@@ -28,6 +28,7 @@ RUN apt-get update && \
         libzip-dev \
         unzip \
         libfreetype6-dev \
+        git \
         zip \
         nodejs \
     && apt-get clean \
@@ -53,4 +54,4 @@ COPY ./docker/php/laravel.ini /usr/local/etc/php/conf.d/laravel.ini
 WORKDIR /usr/src/app
 
 RUN chown -R www-data:www-data .
-RUN chmod -R 777 .
+RUN apt-get update

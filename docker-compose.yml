@@ -29,7 +29,7 @@ services:
     volumes:
       - './server/public:/usr/src/app:cached'
     ports:
-      - "80:80"
+      - "86:80"
     depends_on:
       - tikettera_app
     environment:
@@ -60,7 +60,7 @@ services:
     image: phpmyadmin
     restart: always
     ports:
-      - 8080:80
+      - 8081:80
     environment:
       - PMA_ARBITRARY=1
     depends_on:

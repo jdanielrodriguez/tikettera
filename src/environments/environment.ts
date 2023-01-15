@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://localhost',
+  url: 'http://localhost:86',
   token: 'TOKEN',
   salt: 'base64:vh8QteX+yD8UP0p1EgmCmx5nTdHggwVvo6M0bsdvMfU=',
   firebaseConfig: {

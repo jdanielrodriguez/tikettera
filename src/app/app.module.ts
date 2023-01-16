@@ -26,66 +26,66 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { SocialLoginModule } from 'angularx-social-login';
 import { NgxPayPalModule } from 'ngx-paypal';
 
+import { BoletosComponent } from './pages/boletos/boletos.component';
+import { BuscarEventoComponent } from './pages/buscar-evento/buscar-evento.component';
+import { ComprarComponent } from './pages/comprar/comprar.component';
+import { FacturaComponent } from './pages/factura/factura.component';
+import { LocalidadesComponent } from './pages/localidades/localidades.component';
+import { PagoComponent } from './pages/pago/pago.component';
 import { AuthServices } from './services/auth.service';
 import { CategoriasService } from './services/categorias.service';
 import { ComisionesService } from './services/comisiones.service';
-import { ProveedoresService } from './services/proveedores.service';
 import { LocalitiesService } from './services/localities.service';
-import { BoletosComponent } from './pages/boletos/boletos.component';
-import { PagoComponent } from './pages/pago/pago.component';
-import { ComprarComponent } from './pages/comprar/comprar.component';
-import { FacturaComponent } from './pages/factura/factura.component';
-import { BuscarEventoComponent } from './pages/buscar-evento/buscar-evento.component';
-import { LocalidadesComponent } from './pages/localidades/localidades.component';
+import { ProveedoresService } from './services/proveedores.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    RecoveryComponent,
-    InicioComponent,
-    NosotrosComponent,
     BoletosComponent,
-    PagoComponent,
+    BuscarEventoComponent,
     ComprarComponent,
     FacturaComponent,
-    BuscarEventoComponent,
+    InicioComponent,
     LocalidadesComponent,
+    LoginComponent,
+    NosotrosComponent,
+    PagoComponent,
+    RegisterComponent,
+    RecoveryComponent,
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
+    AppRoutingModule,
     BlockUIModule.forRoot(),
-    HttpClientModule,
     BrowserAnimationsModule,
-    SweetAlert2Module.forRoot(),
+    BrowserModule,
+    ComponentesModule,
+    FormsModule,
+    FormModule,
+    HttpClientModule,
+    NgbDropdownModule,
     NgbModule,
     NgxPayPalModule,
     NgxWebstorageModule.forRoot(),
-    NgbDropdownModule,
-    SocialLoginModule,
     RecaptchaV3Module,
     RouterModule,
-    ComponentesModule,
-    FormModule,
     SimpleNotificationsModule.forRoot(),
-    AppRoutingModule
+    SocialLoginModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     AuthServices,
-    Sesion,
-    ProveedoresService,
-    ComisionesService,
     CategoriasService,
-    Encript,
+    ComisionesService,
     Constantes,
+    Encript,
     Formatos,
     LocalitiesService,
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: '6LfW5vgUAAAAAFMhgbCPIkZHjH9tq95IYX4aIZSn'
-    }
+    },
+    ProveedoresService,
+    Sesion,
   ],
   bootstrap: [AppComponent]
 })

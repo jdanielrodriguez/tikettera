@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from "rxjs";
+import { Perfil } from '../interfaces';
 import { environment } from './../../environments/environment';
 import { Sesion } from './../metodos';
 @Injectable({
@@ -12,70 +14,62 @@ export class UsuariosService {
     private mySesion: Sesion
   ) {
   }
-  private handleError(error: any): Promise<any> {
-    return Promise.reject(error);
+  private handleError(error: any): Observable<any> {
+    return new Observable((observer) => { observer.error(error); });
   }
-  async getAll(): Promise<any> {
+  getAll(): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/users`;
     try {
-      const response = await this.http.get(url, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.get(url, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-
-
-  async create(form: any): Promise<any> {
-    const url = `${this.basePath}/api/users`;
+  create(form: { user: string }): Observable<any> {
+    const url = `${this.basePath}/api/signup`;
     try {
-      const response = await this.http.post(url, form, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.post(url, form, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async addAddress(form: any): Promise<any> {
+  addAddress(form: any): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/direcciones`;
     try {
-      const response = await this.http.post(url, form, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.post(url, form, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async delete(id: number): Promise<any> {
+  delete(id: number): Observable<any> {
     const url = `${this.basePath}/api/users/${id}`;
     try {
-      const response = await this.http.delete(url)
-        .toPromise();
+      const response = this.http.delete(url);
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async update(form: any): Promise<any> {
+  update(form: any): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/users/${form.id}`;
     try {
-      const response = await this.http.put(url, form, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.put(url, form, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async getSingle(id: number): Promise<any> {
+  getSingle(id: number): Observable<Perfil> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/users/${id}`;
     try {
-      const response = await this.http.get(url, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.get(url, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);

@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { Menus, Perfil, Socialusers } from './../../interfaces';
+import { Sesion } from './../../metodos';
 import { AuthServices } from './../../services/auth.service';
 import { UsuariosService } from './../../services/usuarios.service';
-import { NotificationsService } from 'angular2-notifications';
-import { Perfil, Socialusers, Menus } from './../../interfaces';
-import { Sesion } from './../../metodos';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Modal } from './../modal.component';
 declare var $: any;
 @Component({
@@ -22,53 +22,17 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     private userService: UsuariosService,
     private _service: NotificationsService,
     private mySesion: Sesion,
-  ) {}
-  @Input()
-  set esModal(value: boolean) {
-    this._esModal = value;
-  }
-  get esModal(): boolean {
-    return this._esModal;
-  }
-  @Input()
-  set muestraTexto(value: boolean) {
-    this._muestraTexto = value;
-  }
-  get muestraTexto(): boolean {
-    return this._muestraTexto;
-  }
-  @Input()
-  set titulo(value: string) {
-    this._titulo = value;
-  }
-  get titulo(): string {
-    return this._titulo;
-  }
-  @Input()
-  set dinamicLink(value: string) {
-    if (value) {
-      this.mySesion.lastLink = value;
-    }
-    this._dinamicLink = value;
-  }
-  @Output()
-  get component(): EventEmitter<string> {
-    this._component.emit(this._componentStr);
-    return this._component;
-  }
-  get componentStr(): string {
-    return this._componentStr;
-  }
+  ) { }
   auth: any;
-  private _component: EventEmitter<string> = new EventEmitter<string>();
-  private _componentStr!: string;
+  component: EventEmitter<string> = new EventEmitter<string>();
+  componentStr!: string;
   @ViewChild(Modal) loginModal!: Modal;
   @BlockUI() blockUI!: NgBlockUI;
   socialusers = new Socialusers();
-  private _esModal!: boolean;
-  private _muestraTexto = false;
-  private _titulo = '';
-  private _dinamicLink = '';
+  @Input() esModal!: boolean;
+  @Input() muestraTexto = false;
+  @Input() titulo = '';
+  @Input() dinamicLink = '';
 
   public socialSignIn(socialProvider: string) {
     // this.blockUI.start();
@@ -133,7 +97,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
           console.log(error);
           this.createError('Error iniciando sesion');
           this.blockUI.stop();
-        // await this.autenticate(socialusers);
+          // await this.autenticate(socialusers);
         });
     } else {
       token = await this.mySesion.validateCaptcha('login');
@@ -208,64 +172,61 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   }
   registrar(perfil: Perfil) {
     perfil.picture = perfil.picture ? perfil.picture : 'https://robohash.org/68.186.255.198.png';
-    // if (this._cliente) {
-      // this._cliente.nombre = this.formatear.getCleanedString(this._cliente.nombre);
-      // this._cliente.apellido = this.formatear.getCleanedString(this._cliente.apellido);
-      // this._cliente.nombre_a_facturar = this.formatear.getCleanedString(this._cliente.nombre_a_facturar);
-    // }
     const data = {
-      // cliente: perfil.clientes?.length > 0 ? null : (this._cliente ? this.mySesion.encriptar(JSON.stringify(this._cliente)) : null),
-      proveedor: null,
-      usuario: perfil ? this.mySesion.encriptar(JSON.stringify(perfil)) : null
+      user: this.mySesion.encriptar(JSON.stringify(perfil))
     };
-    this.userService.create(data)
-      .then((response: { status: number, objeto: Perfil, msg?: string }) => {
-        if (response.status >= 400) {
-          this.createError(response.msg ? response.msg : '');
-        } else {
-          this.mySesion.actualizaPerfil(response.objeto);
-          if (this.mySesion.validarSesion()) {
-            $('.grecaptcha-badge').removeClass('visible');
-            // if (this.modalService.hasOpenModals) {
-            //   this.closeModal();
-            // }
-            if (this.mySesion.lastLink) {
-              this.blockUI.stop();
-              let linkURL = './dashboard/inicio';
-              if (this.mySesion.lastLink.length > 3) {
-                const urls = this.mySesion.lastLink;
-                linkURL = urls;
-              }
-              if (linkURL) {
-                this.mySesion.lastLink = null;
-                this.router.navigate([`${linkURL}`]);
+    const request = this.userService.create(data)
+      .subscribe({
+        next: (response: { status: number, objeto: Perfil, msg?: string }) => {
+          if (response.status >= 400) {
+            this.createError(response.msg ? response.msg : '');
+          } else {
+            this.mySesion.actualizaPerfil(response.objeto);
+            if (this.mySesion.validarSesion()) {
+              $('.grecaptcha-badge').removeClass('visible');
+              // if (this.modalService.hasOpenModals) {
+              //   this.closeModal();
+              // }
+              if (this.mySesion.lastLink) {
+                this.blockUI.stop();
+                let linkURL = './dashboard/inicio';
+                if (this.mySesion.lastLink.length > 3) {
+                  const urls = this.mySesion.lastLink;
+                  linkURL = urls;
+                }
+                if (linkURL) {
+                  this.mySesion.lastLink = null;
+                  this.router.navigate([`${linkURL}`]);
+                } else {
+                  this.router.navigate([`./dashboard/inicio`]);
+                }
               } else {
                 this.router.navigate([`./dashboard/inicio`]);
               }
             } else {
-              this.router.navigate([`./dashboard/inicio`]);
+              this.createError('Error iniciando sesion');
             }
-          } else {
-            this.createError('Error iniciando sesion');
           }
-        }
-        this.blockUI.stop();
-      }).catch((error) => {
-        if (error.msg) {
-          this.createError(error.msg);
-        } else {
-          this.createError('Error desconocido, por favor trate otra vez');
-        }
-        console.log(error);
-        this.blockUI.stop();
+          this.blockUI.stop();
+        },
+        error: (error) => {
+          if (error.msg) {
+            this.createError(error.msg);
+          } else {
+            this.createError('Error desconocido, por favor trate otra vez');
+          }
+          console.log(error);
+          this.blockUI.stop();
+        },
+        complete: () => { request.unsubscribe(); }
       });
   }
   navegar(data: Menus, evento?: MouseEvent) {
     if (this.modalService.hasOpenModals()) {
-      this._componentStr = data.url;
-      this._component.emit(this._componentStr);
+      this.componentStr = data.url;
+      this.component.emit(this.componentStr);
     } else {
-      this.router.navigate([`${data.url}`]);
+      this.mySesion.navegar({ url: `${data.url}` });
     }
     if (evento) {
       evento.stopPropagation();

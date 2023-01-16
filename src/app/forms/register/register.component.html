@@ -1,25 +1,23 @@
 <div class="container">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mx-auto text-center ">
-    <form class="form-signin" autocomplete="off" id="RegisterForm" #RegisterForm="ngForm" (ngSubmit)="registrar()">
+    <form class="form-signin" autocomplete="off" id="RegisterForm" #RegisterForm="ngForm" (ngSubmit)="simpleSignIn(RegisterForm)">
       <h1 class="h3 mb-3 mt-3 font-weight-normal text-dark" *ngIf="titulo">{{titulo}}</h1>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <input type="hidden" class="form-control" name="id" id="id" *ngIf="perfil" [(ngModel)]="perfil.id" ngModel
-            #id="ngModel">
           <div class="input-group mb-3 mt-1">
             <input type="email" class="form-control" name="email" id="email" required ngModel #email="ngModel"
-              placeholder="Correo" (keyup)="cargar(RegisterForm)" email>
+              placeholder="Correo">
           </div>
           <div class="input-group my-3">
             <input type="password" class="form-control" name="password" id="password" required ngModel
-              #password="ngModel" placeholder="Contraseña" (keyup)="cargar(RegisterForm)">
+              #password="ngModel" placeholder="Contraseña">
           </div>
           <div class="input-group my-3" [ngClass]="{'d-none': (password && password.value=='')}">
             <input type="password" class="form-control" name="password_rep" id="password_rep" required ngModel
-              #password_rep="ngModel" placeholder="Repite tu contraseña" (keyup)="cargar(RegisterForm)">
+              #password_rep="ngModel" placeholder="Repite tu contraseña">
           </div>
           <div
-            *ngIf="(password && password_rep) && (password_rep.value!='' || password.value!='') && (mostrarNotificacion)">
+            *ngIf="(password && password_rep) && (password_rep.value!='' || password.value!='')">
             <div class="alert alert-success"
               *ngIf="(password.value==password_rep.value) && (password_rep && password)">
               <strong>Tu contraseña es valida. <i class="fa fa-check"></i></strong>
@@ -52,13 +50,13 @@
       <h1 class="h3 mb-5 font-weight-normal text-center">o</h1>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ml-auto">
-      <a class="btn btn-block btn-social btn-facebook badge-pill bg-facebook h2 text-light"
+      <a class="btn btn-block btn-social btn-facebook badge-pill bg-facebook h2 text-light disabled"
         (click)="socialSignIn('facebook')">
         <span class="fa fa-facebook"></span>
       </a>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mr-auto">
-      <a class="btn btn-block btn-social btn-google badge-pill bg-danger h2 text-light"
+      <a class="btn btn-block btn-social btn-google badge-pill bg-danger h2 text-light disabled"
         (click)="socialSignIn('google')">
         <span class="fa fa-google"></span>
       </a>

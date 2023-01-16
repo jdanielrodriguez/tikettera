@@ -28,7 +28,7 @@ export class Menus {
   submenu?: Menus[];
 }
 export class Perfil {
-  constructor(
+  constructor(form?: { email: string, password: string }
   ) {
     this.last_link = '';
     this.facebook_id = '';
@@ -37,9 +37,27 @@ export class Perfil {
     this.token = '';
     this.google_token = '';
     this.formas_pago = [];
+    this.picture = 'https://robohash.org/68.186.255.198.png';
     this.google_id_token = '';
+    this.twitter_id = '';
+    this.tiktok_id = '';
+    this.code = '';
+    this.names = '';
+    this.description = '';
+    this.lastnames = '';
+    this.pic1 = '';
+    this.pic2 = '';
+    this.state = 1;
+    this.pic3 = '';
+    this.auth_type = 'simple';
+    this.id = null;
+    if (form) {
+      this.email = form.email;
+      this.username = form.email.split("@")[0];
+      this.password = form.password;
+    }
   }
-  id?: number;
+  id?: number | null;
   username?: string;
   password?: string;
   password_rep?: string;
@@ -488,4 +506,14 @@ export class Locality {
   event?: Configuracion;
   created_at!: Date;
   updated_at!: Date;
+}
+
+export class Response {
+  constructor() {
+    this.status = 500;
+    this.objeto = null;
+  }
+  status: number;
+  objeto: string | null;
+  msg?: string;
 }

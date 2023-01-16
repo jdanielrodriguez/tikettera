@@ -1,12 +1,15 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { NotificationsService } from 'angular2-notifications';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { LocalStorage, LocalStorageService } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { environment } from './../environments/environment';
 import { Menus, Perfil } from './interfaces';
+declare var $: any
+
 @Injectable()
 export class Sesion {
   constructor(
@@ -18,96 +21,79 @@ export class Sesion {
   ) {
     this.actualizaPerfil();
   }
-  get perfil(): Perfil {
-    return this._perfil;
-  }
-  get token(): string {
-    return this._token;
-  }
-  get captchaSubscription(): Subscription {
-    return this._captchaSubscription;
-  }
-  get lastLink(): string | null {
-    const tempData = this.lastLinkStore;
-    if (tempData) {
-      this._lastLink = this.desencriptar(tempData);
-    }
-    return this._lastLink;
-  }
-  set lastLink(value: string | null) {
-    const per = value ? this.encriptar(value) : null;
-    if (per) {
-      this.localSt.store('lastLink', per);
-    } else {
-      this.localSt.clear('lastLink');
-    }
-    this._lastLink = per;
-  }
-  get headers(): HttpHeaders {
-    return this._headers;
-  }
-  @LocalStorage('lastLink')
-  public lastLinkStore!: string | null;
-  @LocalStorage('currentPerfil')
-  public currentPerfil!: string;
-  private _perfil: Perfil = new Perfil();
-  private _token = '';
-  private _captchaSubscription!: Subscription;
-  private _captcha = '';
-  private _lastLink: string | null = '';
-  private _headers: HttpHeaders = new HttpHeaders({
+  @LocalStorage('lastLink') lastLinkStore!: string | null;
+  @LocalStorage('currentPerfil') currentPerfil!: string;
+  @BlockUI() blockUI!: NgBlockUI;
+
+  perfil: Perfil = new Perfil();
+  token = '';
+  captchaSubscription!: Subscription;
+  lastLink: string | null = '';
+  headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json; charset=UTF-8'
   });
-  encriptar(value: string | null): string | null {
-    let newLetter: string | null = '';
+  encriptar(value: string | null): string {
+    let newLetter: string = '';
     if (value) {
       value = this.cripto.encriptar((value));
-      newLetter = value;
+      newLetter = value ? value : '';
     }
     return newLetter;
   }
-  desencriptar(value: string | null): string | null {
+  desencriptar(value: string): string {
     let newLetter: string | null = '';
-    value = this.cripto.desencriptar((value));
+    const decript = this.cripto.desencriptar(value);
+    value = decript ? decript : '';
     newLetter = value;
     return newLetter;
   }
-  public validarSesion(): boolean {
-    let retun = false;
+  validarSesion(): boolean {
+    let response = false;
     const tempData = this.currentPerfil;
     let perfil: Perfil;
-    if (tempData && !this._perfil) {
+    if (tempData && !this.perfil) {
       const decript = this.desencriptar(tempData);
       perfil = tempData ? decript ? JSON.parse(decript) : null : null;
       if (parseInt(perfil.id + '', 10) > 0) {
-        this._perfil = perfil;
+        this.perfil = perfil;
       }
-      retun = parseInt(perfil.id + '', 10) > 0;
-    } else if (this._perfil) {
-      retun = parseInt(this._perfil.id + '', 10) > 0;
+      response = parseInt(perfil.id + '', 10) > 0;
+    } else if (this.perfil) {
+      response = parseInt(this.perfil.id + '', 10) > 0;
     }
-    return retun;
+    return response;
   }
-  public async validateCaptcha(action: string): Promise<string> {
+  async validateCaptcha(action: string): Promise<string> {
     if (this.captchaSubscription) {
       this.captchaSubscription.unsubscribe();
     }
     const prom: string = await new Promise((resolve, reject) => {
-      this._captchaSubscription = this.recaptchaV3Service.execute(action)
-        .subscribe((token) => {
-          this._captcha = token;
-          resolve(token);
+      this.captchaSubscription = this.recaptchaV3Service.execute(action)
+        .subscribe({
+          next: (token) => {
+            resolve(token);
+          },
+          error: (error) => {
+            if (error.msg) {
+              reject(error.msg)
+              this.createError(error.msg)
+            } else {
+              reject("Error desconocido, por favor trate otra vez")
+              this.createError("Error desconocido, por favor trate otra vez")
+            }
+          },
+          complete: () => { this.captchaSubscription.unsubscribe(); }
         });
     });
     return prom;
   }
-  public actualizaPerfil(perf?: Perfil): void {
+  actualizaPerfil(perf?: Perfil): void {
     if (perf) {
       const tempData = this.currentPerfil;
       let perfil: Perfil;
       if (tempData) {
         const decript = this.desencriptar(tempData);
-        perfil = this._perfil ? this._perfil : decript ? JSON.parse(decript) : null;
+        perfil = this.perfil ? this.perfil : decript ? JSON.parse(decript) : null;
         if (perfil) {
           const per = perf ? this.encriptar(JSON.stringify(perf)) : null;
           if (per) {
@@ -115,16 +101,16 @@ export class Sesion {
           } else {
             this.localSt.clear('currentPerfil');
           }
-          this._perfil = perfil;
+          this.perfil = perfil;
         } else {
-          this._perfil = new Perfil();
+          this.perfil = new Perfil();
         }
 
       } else {
         const per = perf ? this.encriptar(JSON.stringify(perf)) : null;
         this.localSt.store('currentPerfil', per);
       }
-      this._perfil = perf;
+      this.perfil = perf;
     } else {
       let perfil: Perfil = new Perfil();
       if (this.currentPerfil && this.currentPerfil !== 'dW5kZWZpbmVk') {
@@ -134,7 +120,7 @@ export class Sesion {
           perfil = per;
         }
       }
-      this._perfil = perfil;
+      this.perfil = perfil;
     }
   }
   reloadToken(): void {
@@ -143,8 +129,8 @@ export class Sesion {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: token ? 'Bearer ' + token : ''
     });
-    this._headers = headers;
-    this._token = token;
+    this.headers = headers;
+    this.token = token;
   }
   navegar(data: Menus, id?: number) {
     if (data.evento) {
@@ -155,11 +141,26 @@ export class Sesion {
       this.localSt.store('currentSelectedId', this.encriptar(id + ''));
     }
   }
+  scrollTop() {
+    $('html, body').animate({ scrollTop: 0 }, '300');
+  }
+  validarEmail(valor?: string): boolean {
+    if (valor) {
+      return (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor))
+    }
+    return false;
+  }
   createSuccess(success: string) {
     this._service.success('¡Éxito!', success)
   }
   createError(error: string) {
     this._service.error('¡Error!', error)
+  }
+  loadingStart() {
+    this.blockUI.start();
+  }
+  loadingStop() {
+    this.blockUI.stop();
   }
 }
 
@@ -199,7 +200,7 @@ export class Encript {
   }
   encriptar(value: string): string | null {
     let newLetter = '';
-    // valor stirng a base 64
+    // valor string a base 64
     value = btoa(value);
     // valor de base 64 a hexadecimal
     value = this.a2hex(value);
@@ -209,7 +210,6 @@ export class Encript {
     // valor hexadecimal con el salt a base 64
     const salt = environment.salt.trim();
     value = btoa(btoa(value) + '@:@' + salt);
-
     // newLetter = value ? CryptoJS.AES.encrypt(value, salt, {
     //   keySize: 128 / 8,
     //   mode: CryptoJS.mode.CTR
@@ -223,13 +223,13 @@ export class Encript {
     if (value) {
       try {
         const salt = environment.salt.trim();
-        // oobtener valor con salt
+        // get valor con salt
         value = atob(value);
-        // compara salt
+        // compare salt
         const newSalt = value.split('@:@')[1];
         value = value.split('@:@')[0];
         compare = newSalt === salt;
-        // oobtener valor octal
+        // get valor octal
         value = atob(value);
         // valor de octal a hexadecimal
         //  value =this.deoct2(value);

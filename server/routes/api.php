@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group(['middleware' => ['jwt.auth']], function() {
-    Route::post('change-password', [App\Http\Controllers\AuthenticateController::class,'changePassword']);
-    Route::post('logout', [App\Http\Controllers\AuthenticateController::class,'logout']);
+    Route::post('change-password', [App\Http\Controllers\AuthenticationController::class,'changePassword']);
+    Route::post('logout', [App\Http\Controllers\AuthenticationController::class,'logout']);
 });
-Route::post('signup', [App\Http\Controllers\AuthenticateController::class,'signUp']);
-Route::post('login', [App\Http\Controllers\AuthenticateController::class,'login']);
-Route::post('reset-password', [App\Http\Controllers\AuthenticateController::class,'resetPassword']);
-Route::post('validate-captcha', [App\Http\Controllers\AuthenticateController::class,'validarCaptcha']);
+Route::post('signup', [App\Http\Controllers\AuthenticationController::class,'signUp']);
+Route::post('login', [App\Http\Controllers\AuthenticationController::class,'login']);
+Route::post('reset-password', [App\Http\Controllers\AuthenticationController::class,'resetPassword']);
+Route::post('validate-captcha', [App\Http\Controllers\AuthenticationController::class,'validarCaptcha']);
 
 Route::get('events/active', [App\Http\Controllers\EventsController::class,'getActives']);
 Route::resource('events', App\Http\Controllers\EventsController::class);

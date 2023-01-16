@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('pic2')->nullable()->default(null);
             $table->string('pic3')->nullable()->default(null);
             $table->string('token',500)->nullable()->default(null);
-            $table->integer('auth_type')->nullable()->default(0);
+            $table->string('auth_type')->nullable()->default(0);
             $table->integer('state')->nullable()->default(1);
 
             $table->integer('rol_id')->nullable()->default(null)->unsigned();

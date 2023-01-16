@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from "rxjs";
 import { environment } from './../../environments/environment';
 import { Sesion } from './../metodos';
 @Injectable({
@@ -12,81 +13,74 @@ export class AuthServices {
     private mySesion: Sesion
   ) {
   }
-  private handleError(error: any): Promise<any> {
-    return Promise.reject(error);
+  private handleError(error: any): Observable<any> {
+    return new Observable((observer) => { observer.error(error); });
   }
-  async Authentication(login: any): Promise<any> {
+  Authentication(login: any): Observable<any> {
     const url = `${this.basePath}/api/login`;
     try {
-      const response = await this.http.post(url, login)
-        .toPromise();
+      const response = this.http.post(url, login);
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
 
-  async logout(login: any): Promise<any> {
+  logout(login: any): Observable<any> {
     const url = `${this.basePath}/api/logout`;
     this.mySesion.reloadToken();
     try {
-      const response = await this.http.post(url, login, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.post(url, login, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
 
-  async recovery(form: any): Promise<any> {
+  recovery(form: any): Observable<any> {
     const url = `${this.basePath}/api/users/password/reset`;
     try {
-      const response = await this.http.post(url, form)
-        .toPromise();
+      const response = this.http.post(url, form);
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async updatePass(form: any): Promise<any> {
+  updatePass(form: any): Observable<any> {
     const url = `${this.basePath}/api/users/${form.id}/changepassword`;
     this.mySesion.reloadToken();
     try {
-      const response = await this.http.post(url, form, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.post(url, form, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async updateImage(form: any): Promise<any> {
+  updateImage(form: any): Observable<any> {
     const url = `${this.basePath}/api/avatar/${form.id}`;
     this.mySesion.reloadToken();
     try {
-      const response = await this.http.put(url, form, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.put(url, form, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async deleteImage(id: number): Promise<any> {
+  deleteImage(id: number): Observable<any> {
     const url = `${this.basePath}/api/downgrade/${id}`;
     this.mySesion.reloadToken();
     try {
-      const response = await this.http.get(url, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.get(url, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  async validarCaptcha(data: any): Promise<any> {
-    const url = `${this.basePath}/api/validarCaptcha`;
+  validarCaptcha(data: any): Observable<any> {
+    const url = `${this.basePath}/api/validate-captcha`;
     this.mySesion.reloadToken();
     try {
-      const response = await this.http.post(url, data, { headers: this.mySesion.headers })
-        .toPromise();
+      const response = this.http.post(url, data, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);

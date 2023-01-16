@@ -77,27 +77,31 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     // });
   }
   async login(socialusers: Perfil, social: boolean = false) {
-    // socialusers.password = this.mySesion.encriptar(socialusers.password);
+    socialusers.password = this.mySesion.encriptar(socialusers.password);
     let token = await this.mySesion.validateCaptcha('login');
     let Fresponse: { status: number, objeto: any };
     if (token) {
       const dat = {
-        token: btoa(token)
+        // token: btoa(token)
       };
       if (!social) {
         this.blockUI.start();
       }
-      await this.authenticationService.validarCaptcha(dat)
-        .then(async (response: { status: number, objeto: any }) => {
-          Fresponse = response;
-          if (Fresponse && Fresponse.objeto.success) {
-            await this.autenticate(socialusers);
-          }
-        }).catch(async error => {
-          console.log(error);
-          this.createError('Error iniciando sesion');
-          this.blockUI.stop();
-          // await this.autenticate(socialusers);
+      const authServ = this.authenticationService.validarCaptcha(dat)
+        .subscribe({
+          next: (response: { status: number, objeto: any }) => {
+            Fresponse = response;
+            if (Fresponse && Fresponse.objeto.success) {
+              this.autenticate(socialusers);
+            }
+          },
+          error: async error => {
+            console.log(error);
+            this.createError('Error iniciando sesion');
+            this.blockUI.stop();
+            // await this.autenticate(socialusers);
+          },
+          complete: () => { authServ.unsubscribe(); }
         });
     } else {
       token = await this.mySesion.validateCaptcha('login');
@@ -105,8 +109,9 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     }
   }
   async autenticate(socialusers: Perfil) {
-    await this.authenticationService.Authentication(socialusers)
-      .then((response: Perfil) => {
+    const authServ = this.authenticationService.Authentication(socialusers)
+      .subscribe({
+        next: (response: Perfil) => {
         this.mySesion.actualizaPerfil(response);
         if (this.mySesion.validarSesion()) {
           $('.grecaptcha-badge').removeClass('visible');
@@ -135,7 +140,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
           this.createError('Error iniciando sesion');
         }
         this.blockUI.stop();
-      }).catch((e) => {
+      },
+      error: (e) => {
         if (e.status === 404) {
           this.createError('Usuario no encontrado');
         } else if (e.status === 401) {
@@ -151,24 +157,26 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         }
         console.log(e);
         this.blockUI.stop();
-      });
+      },
+      complete: () => { authServ.unsubscribe(); }
+    });
   }
   ngOnInit() {
     $('html, body').animate({ scrollTop: 0 }, '300');
-    // if (this.esModal) {
-    //   const temp = Modal;
-    //   if (this.titulo) {
-    //     if (this.loginModal) {
-    //       this.loginModal.titulo = this.titulo;
-    //     }
-    //   }
-    //   temp.prototype.titulo = this.titulo;
-    //   this.modalService.open(temp);
-    // }
-    // setTimeout(() => {
-    //   $('.grecaptcha-badge').removeClass('visible');
-    //   $('.grecaptcha-badge').addClass('visible');
-    // }, 1000);
+    if (this.esModal) {
+      const temp = Modal;
+      if (this.titulo) {
+        if (this.loginModal) {
+          this.loginModal.titulo = this.titulo;
+        }
+      }
+      temp.prototype.titulo = this.titulo;
+      this.modalService.open(temp);
+    }
+    setTimeout(() => {
+      $('.grecaptcha-badge').removeClass('visible');
+      $('.grecaptcha-badge').addClass('visible');
+    }, 1000);
   }
   registrar(perfil: Perfil) {
     perfil.picture = perfil.picture ? perfil.picture : 'https://robohash.org/68.186.255.198.png';

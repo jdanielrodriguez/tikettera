@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { AuthServices } from "./../../services/auth.service";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Router } from "@angular/router";
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
-import { Perfil, Menus } from "./../../interfaces";
-import { Sesion } from "./../../metodos";
-import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { LocalStorageService } from 'ngx-webstorage';
+import { Menus, Perfil } from "./../../interfaces";
+import { Sesion } from "./../../metodos";
+import { AuthServices } from "./../../services/auth.service";
 import { Modal } from "./../modal.component";
 declare var $: any
 @Component({
@@ -70,48 +70,52 @@ export class RecoveryComponent implements OnInit, OnDestroy {
     let Fresponse: { status: number, objeto: any }
     if (token) {
       let dat = {
-        token: btoa(token)
+        // token: btoa(token)
       }
       this.blockUI.start();
-      await this.mainService.validarCaptcha(dat)
-        .then(async (response: { status: number, objeto: any }) => {
-          Fresponse = response
-          this.blockUI.stop();
-          if (Fresponse && Fresponse.objeto.success) {
-            this.blockUI.start();
-            // if (this.data.username.length > 0) {
-            //   let dat: any = {
-            //     username: btoa(this.data.username),
-            //     url: btoa("http://www.ordenes.online/" + (this.myProveedor.provs ? this.myProveedor.provs.nombre + "/" : "") + "inicio"),
-            //     empresa: btoa(this.myProveedor.provs ? this.myProveedor.provs.nombre : "Ordenes Online"),
-            //     nombre: btoa(this.myProveedor.provs ? this.myProveedor.provs.nombre : "Ordenes Online")
-            //   }
-            //   await this.mainService.recovery(dat)
-            //     .then((response: { status: number, objeto: any }) => {
-            //       if (response.status == 200) {
-            //         $(".grecaptcha-badge").removeClass("visible");
-            //         let url = "./" + (this.myProveedor.provs ? this.myProveedor.provs.nombre + "/" : "inicio")
-            //         if (this.mySesion.lastLink) {
-            //           let urls = this.mySesion.lastLink
-            //           url = urls
-            //         }
-            //         this.router.navigate([url])
-            //         this.blockUI.stop();
-            //       }
-            //     })
-            //     .catch(exception => {
-            //       console.log(exception);
-            //       if (exception.status && exception.status == 400) {
-            //         this.createError("No se encuentra el usuario ingresado")
-            //       } else {
-            //         this.createError("No se encuentra el usuario ingresado")
-            //       }
-            //       this.blockUI.stop();
-            //     })
-            // }
-          }
-        }).catch(error => {
-          console.log(error);
+      const authServ = this.mainService.validarCaptcha(dat)
+        .subscribe({
+          next: (response: { status: number, objeto: any }) => {
+            Fresponse = response
+            this.blockUI.stop();
+            if (Fresponse && Fresponse.objeto.success) {
+              this.blockUI.start();
+              // if (this.data.username.length > 0) {
+              //   let dat: any = {
+              //     username: btoa(this.data.username),
+              //     url: btoa("http://www.ordenes.online/" + (this.myProveedor.provs ? this.myProveedor.provs.nombre + "/" : "") + "inicio"),
+              //     empresa: btoa(this.myProveedor.provs ? this.myProveedor.provs.nombre : "Ordenes Online"),
+              //     nombre: btoa(this.myProveedor.provs ? this.myProveedor.provs.nombre : "Ordenes Online")
+              //   }
+              //   await this.mainService.recovery(dat)
+              //     .then((response: { status: number, objeto: any }) => {
+              //       if (response.status == 200) {
+              //         $(".grecaptcha-badge").removeClass("visible");
+              //         let url = "./" + (this.myProveedor.provs ? this.myProveedor.provs.nombre + "/" : "inicio")
+              //         if (this.mySesion.lastLink) {
+              //           let urls = this.mySesion.lastLink
+              //           url = urls
+              //         }
+              //         this.router.navigate([url])
+              //         this.blockUI.stop();
+              //       }
+              //     })
+              //     .catch(exception => {
+              //       console.log(exception);
+              //       if (exception.status && exception.status == 400) {
+              //         this.createError("No se encuentra el usuario ingresado")
+              //       } else {
+              //         this.createError("No se encuentra el usuario ingresado")
+              //       }
+              //       this.blockUI.stop();
+              //     })
+              // }
+            }
+          },
+          error: error => {
+            console.log(error);
+          },
+          complete: () => { authServ.unsubscribe(); }
         })
     } else {
       token = await this.mySesion.validateCaptcha('recovery');

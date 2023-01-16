@@ -32,10 +32,10 @@ export class Sesion {
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json; charset=UTF-8'
   });
-  encriptar(value: string | null): string {
+  encriptar(value: string | null | undefined): string {
     let newLetter: string = '';
     if (value) {
-      value = this.cripto.encriptar((value));
+      value = this.cripto.encriptar(value);
       newLetter = value ? value : '';
     }
     return newLetter;

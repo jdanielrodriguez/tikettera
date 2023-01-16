@@ -81,24 +81,27 @@ export class ChangePassComponent implements OnInit {
     // formValue.new_pass = btoa(formValue.new_pass);
     // formValue.old_pass = btoa(formValue.old_pass);
     this.blockUI.start();
-    this.AuthService.updatePass(formValue)
-      .then((response: { estado: number }) => {
-        if (response.estado === 1) {
-          // formValue.perfil.estado = response.estado;
-          this.mySesion.actualizaPerfil(formValue.perfil);
-          this.createSuccess('Su Clave fue Cambiada');
+    const authServ = this.AuthService.updatePass(formValue)
+      .subscribe({
+        next: (response: { estado: number }) => {
+          if (response.estado === 1) {
+            // formValue.perfil.estado = response.estado;
+            this.mySesion.actualizaPerfil(formValue.perfil);
+            this.createSuccess('Su Clave fue Cambiada');
+            this.blockUI.stop();
+            this.closeModal();
+            formValue.new_pass = '';
+            formValue.new_pass_rep = '';
+            formValue.old_pass = '';
+            form.reset();
+          }
+        },
+        error: error => {
+          console.log(formValue);
+          this.createError(error);
           this.blockUI.stop();
-          this.closeModal();
-          formValue.new_pass = '';
-          formValue.new_pass_rep = '';
-          formValue.old_pass = '';
-          form.reset();
-        }
-      })
-      .catch(error => {
-        console.log(formValue);
-        this.createError(error);
-        this.blockUI.stop();
+        },
+        complete: () => { authServ.unsubscribe(); }
       });
   }
   closeModal() {

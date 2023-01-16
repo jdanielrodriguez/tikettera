@@ -28,7 +28,7 @@ export class SlidersFormComponent implements OnInit {
     private formatear: Formatos,
     private authService: AuthServices,
     private provsService: ProveedoresService
-  ) {}
+  ) { }
   ngOnInit(): void {
     $("html, body").animate({ scrollTop: 0 }, "300");
     this.obtenerSliders();
@@ -68,14 +68,17 @@ export class SlidersFormComponent implements OnInit {
       let respuesta: Imagen[] = [];
       this.sliders.forEach(async (element: Imagen) => {
         // element.proveedor = this._perfil.id;
-        await this.authService
+        const authServ = this.authService
           .updateImage(element)
-          .then((element: Imagen) => {
-            respuesta.push(element);
-            this.createSuccess("Se actualizo la informacion de tus sliders");
-          })
-          .catch((error) => {
-            this.createError("Error actualizando Imagen");
+          .subscribe({
+            next: (element: Imagen) => {
+              respuesta.push(element);
+              this.createSuccess("Se actualizo la informacion de tus sliders");
+            },
+            error: (error) => {
+              this.createError("Error actualizando Imagen");
+            },
+            complete: () => { authServ.unsubscribe(); }
           });
       });
       this.sliders = respuesta;
@@ -88,21 +91,24 @@ export class SlidersFormComponent implements OnInit {
       return element.id == value.id;
     });
     if (index >= 0) {
-      this.authService
+      const authServ = this.authService
         .deleteImage(Number(value.id))
-        .then((element: Imagen) => {
-          if (value) {
-            this.createSuccess("Se elimino la imagen correctamente");
-            this.blockUI.stop();
-            this.obtenerSliders()
-          }
-        })
-        .catch((error) => {
-          this.createError("Imagen no se pudo Eliminar");
-          if(error.indexOf('401')>=0){
-            this.mySesion.navegar({url:'./logout'})
-          }
-          console.log(error);
+        .subscribe({
+          next: (element: Imagen) => {
+            if (value) {
+              this.createSuccess("Se elimino la imagen correctamente");
+              this.blockUI.stop();
+              this.obtenerSliders()
+            }
+          },
+          error: (error) => {
+            this.createError("Imagen no se pudo Eliminar");
+            if (error.indexOf('401') >= 0) {
+              this.mySesion.navegar({ url: './logout' })
+            }
+            console.log(error);
+          },
+          complete: () => { authServ.unsubscribe(); }
         });
     } else {
       this.createError("Imagen no encontrada");

@@ -108,13 +108,18 @@ export class PerfilComponent implements OnInit, AfterViewInit {
     // }
 
     if (this.sliders.length > 0) {
-      await this.authService.updateImage(this.sliders[0]).then((element: Imagen) => {
-        this.sliders = [element]
-        this.mySesion.actualizaPerfil(this._perfil)
-        this.createSuccess("Se actualizo la imagen de perfil")
-      }).catch(error => {
-        this.createError("Error actualizando Imagen")
-      })
+      const authServ = this.authService
+        .updateImage(this.sliders[0])
+        .subscribe({
+          next: (element: Imagen) => {
+            this.sliders = [element]
+            this.mySesion.actualizaPerfil(this._perfil)
+            this.createSuccess("Se actualizo la imagen de perfil")
+          }, error: error => {
+            this.createError("Error actualizando Imagen")
+          },
+          complete: () => { authServ.unsubscribe(); }
+        });
     }
     this.mySesion.actualizaPerfil(this._perfil);
     this.mySesion.actualizaPerfil()

@@ -14,21 +14,22 @@ abstract class EmailsController extends Controller
     public static function enviarConfirm($objectRequest, $objectSee)
     {
         if (env('MAIL_USERNAME') && env('MAIL_DRIVER') == 'smtp') {
+            $names = ($objectSee->names != '' || $objectSee->lastnames != '') ? $objectSee->names . ' ' . $objectSee->lastnames : $objectSee->username;
             Mail::send(
                 'emails.confirm',
                 [
                     'empresa' => self::EMPRESA,
-                    'url' => 'https://www.tikettera.com',
+                    'url' => 'https://www.tikettera.com/login',
                     'app' => 'http://me.JoseDanielRodriguez.gt',
                     'password' => $objectRequest->user->password,
                     'username' => $objectSee->username,
                     'email' => $objectSee->email,
-                    'name' => $objectSee->names . ' ' . $objectSee->lastnames,
+                    'name' => $names,
                 ],
-                function (Message $message) use ($objectSee) {
+                function (Message $message) use ($objectSee, $names) {
                     $message->from(self::CORREO, self::EMPRESA)
                         ->sender(self::CORREO, self::EMPRESA)
-                        ->to($objectSee->email, $objectSee->names . ' ' . $objectSee->lastnames)
+                        ->to($objectSee->email, $names)
                         ->replyTo(self::CORREO, self::EMPRESA)
                         ->subject('Usuario Creado');
                 }

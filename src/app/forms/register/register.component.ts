@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Menus, Perfil, Response } from "./../../interfaces";
@@ -94,14 +94,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     //   console.log(error);
     // });
   }
-  async simpleSignIn(form: NgForm) {
+  async simpleSignUp(form: NgForm) {
     let perfil: Perfil = new Perfil(form.value);
     let validateCaptcha = await this.mySesion.validateCaptcha('signup');
     if (!validateCaptcha) {
       this.mySesion.createError("Error validando Captcha.");
       this.mySesion.loadingStop();
-      validateCaptcha = await this.mySesion.validateCaptcha('login');
-      this.simpleSignIn(form);
+      validateCaptcha = await this.mySesion.validateCaptcha('signup');
+      this.simpleSignUp(form);
       return;
     }
     const captchaData = {

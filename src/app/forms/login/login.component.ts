@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
@@ -76,90 +77,87 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
     // });
   }
-  async login(socialusers: Perfil, social: boolean = false) {
+  async simpleSignIn(form: NgForm) {
+    let socialusers: Perfil = new Perfil(form.value);
     socialusers.password = this.mySesion.encriptar(socialusers.password);
-    let token = await this.mySesion.validateCaptcha('login');
-    let Fresponse: { status: number, objeto: any };
-    if (token) {
-      const dat = {
-        // token: btoa(token)
-      };
-      if (!social) {
-        this.blockUI.start();
-      }
-      const authServ = this.authenticationService.validarCaptcha(dat)
-        .subscribe({
-          next: (response: { status: number, objeto: any }) => {
-            Fresponse = response;
-            if (Fresponse && Fresponse.objeto.success) {
-              this.autenticate(socialusers);
-            }
-          },
-          error: async error => {
-            console.log(error);
-            this.createError('Error iniciando sesion');
-            this.blockUI.stop();
-            // await this.autenticate(socialusers);
-          },
-          complete: () => { authServ.unsubscribe(); }
-        });
-    } else {
-      token = await this.mySesion.validateCaptcha('login');
-      this.login(socialusers);
+    let validateCaptcha = await this.mySesion.validateCaptcha('login');
+    if (!validateCaptcha) {
+      this.mySesion.createError("Error validando Captcha.");
+      this.mySesion.loadingStop();
+      validateCaptcha = await this.mySesion.validateCaptcha('login');
+      this.simpleSignIn(form);
+      return;
     }
+    const captchaData = {
+      token: btoa(validateCaptcha)
+    };
+    const authServ = this.authenticationService.validarCaptcha(captchaData)
+      .subscribe({
+        next: (response: { status: number, objeto: any }) => {
+          if (response.objeto.success) {
+            this.autenticate(socialusers);
+          }
+        },
+        error: async error => {
+          console.log(error);
+          this.createError('Error iniciando sesion');
+          this.blockUI.stop();
+        },
+        complete: () => { authServ.unsubscribe(); }
+      });
   }
   async autenticate(socialusers: Perfil) {
     const authServ = this.authenticationService.Authentication(socialusers)
       .subscribe({
         next: (response: Perfil) => {
-        this.mySesion.actualizaPerfil(response);
-        if (this.mySesion.validarSesion()) {
-          $('.grecaptcha-badge').removeClass('visible');
-          // if (this.modalService.hasOpenModals) {
-          //   this.closeModal();
-          // }
-          this.mySesion.actualizaPerfil();
-          if (this.mySesion.lastLink) {
-            this.blockUI.stop();
-            let linkURL = './dashboard/inicio';
-            if (this.mySesion.lastLink.length > 3) {
-              const urls = this.mySesion.lastLink;
-              linkURL = urls;
-            }
-            if (linkURL) {
-              this.mySesion.actualizaPerfil();
-              this.mySesion.lastLink = null;
-              this.router.navigate([`${linkURL}`]);
+          this.mySesion.actualizaPerfil(response);
+          if (this.mySesion.validarSesion()) {
+            $('.grecaptcha-badge').removeClass('visible');
+            // if (this.modalService.hasOpenModals) {
+            //   this.closeModal();
+            // }
+            this.mySesion.actualizaPerfil();
+            if (this.mySesion.lastLink) {
+              this.blockUI.stop();
+              let linkURL = './dashboard/inicio';
+              if (this.mySesion.lastLink.length > 3) {
+                const urls = this.mySesion.lastLink;
+                linkURL = urls;
+              }
+              if (linkURL) {
+                this.mySesion.actualizaPerfil();
+                this.mySesion.lastLink = null;
+                this.router.navigate([`${linkURL}`]);
+              } else {
+                this.router.navigate([`./dashboard/inicio`]);
+              }
             } else {
               this.router.navigate([`./dashboard/inicio`]);
             }
           } else {
-            this.router.navigate([`./dashboard/inicio`]);
+            this.createError('Error iniciando sesion');
           }
-        } else {
-          this.createError('Error iniciando sesion');
-        }
-        this.blockUI.stop();
-      },
-      error: (e) => {
-        if (e.status === 404) {
-          this.createError('Usuario no encontrado');
-        } else if (e.status === 401) {
-          if (socialusers.auth_type === 'facebook' || socialusers.auth_type === 'google') {
-            this.blockUI.start();
-            // socialusers.password = this.mySesion.desencriptar(socialusers.password);
-            this.registrar(socialusers);
+          this.blockUI.stop();
+        },
+        error: (e) => {
+          if (e.status === 404) {
+            this.createError('Usuario no encontrado');
+          } else if (e.status === 401) {
+            if (socialusers.auth_type === 'facebook' || socialusers.auth_type === 'google') {
+              this.blockUI.start();
+              // socialusers.password = this.mySesion.desencriptar(socialusers.password);
+              this.registrar(socialusers);
+            } else {
+              this.createError('Usuario o Contraseña Incorrectas');
+            }
           } else {
-            this.createError('Usuario o Contraseña Incorrectas');
+            this.createError('Error iniciando sesion');
           }
-        } else {
-          this.createError('Error iniciando sesion');
-        }
-        console.log(e);
-        this.blockUI.stop();
-      },
-      complete: () => { authServ.unsubscribe(); }
-    });
+          console.log(e);
+          this.blockUI.stop();
+        },
+        complete: () => { authServ.unsubscribe(); }
+      });
   }
   ngOnInit() {
     $('html, body').animate({ scrollTop: 0 }, '300');

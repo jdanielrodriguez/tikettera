@@ -96,17 +96,34 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
   async simpleSignIn(form: NgForm) {
     let perfil: Perfil = new Perfil(form.value);
-    const validateCaptcha = await this.mySesion.validateCaptcha('signup');
+    let validateCaptcha = await this.mySesion.validateCaptcha('signup');
     if (!validateCaptcha) {
       this.mySesion.createError("Error validando Captcha.");
       this.mySesion.loadingStop();
+      validateCaptcha = await this.mySesion.validateCaptcha('login');
+      this.simpleSignIn(form);
       return;
     }
+    const captchaData = {
+      token: btoa(validateCaptcha)
+    };
     if (!this.mySesion.validarEmail(perfil.email)) {
       this.mySesion.createError("Su correo es incorrecto.");
       this.mySesion.loadingStop();
     }
-    this.registrar(perfil, false);
+    const authServ = this.authServices.validarCaptcha(captchaData)
+      .subscribe({
+        next: (response: { status: number, objeto: any }) => {
+          if (response.objeto.success) {
+            this.registrar(perfil, false);
+          }
+        },
+        error: async error => {
+          this.mySesion.createError('Error iniciando sesion');
+          this.mySesion.loadingStop();
+        },
+        complete: () => { authServ.unsubscribe(); }
+      });
   }
   registrar(perfil: Perfil, social: boolean = false) {
     if (!social) {

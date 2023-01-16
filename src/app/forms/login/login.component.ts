@@ -72,7 +72,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     // });
   }
   async simpleSignIn(form: NgForm) {
-    let socialusers: Perfil = new Perfil(form.value);
+    const socialusers: Perfil = new Perfil(form.value);
     socialusers.password = this.mySesion.encriptar(socialusers.password);
     let validateCaptcha = await this.mySesion.validateCaptcha('login');
     if (!validateCaptcha) {

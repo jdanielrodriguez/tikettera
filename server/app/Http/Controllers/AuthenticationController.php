@@ -18,7 +18,7 @@ class AuthenticationController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username'  => 'required',
+            'email'  => 'required',
             'password'  => 'required'
         ]);
         if ($validator->fails()) {
@@ -32,7 +32,7 @@ class AuthenticationController extends Controller
         try {
             $encript = new Encripter();
             $userData = [
-                'email'  => $request->get('username'),
+                'username'  => $request->get('username'),
                 'password'  => $encript->desencript($request->get('password'))
             ];
             if (!$encript->getValidSalt()) {
@@ -43,26 +43,32 @@ class AuthenticationController extends Controller
                 ];
                 return Response::json($returnData, $returnData['status']);
             }
-            $token = JWTAuth::attempt($userData);
-            if ($token) {
-                $user = User::find(Auth::user()->id);
-                $user->last_conection = Carbon::now('America/Guatemala');
-                $user->token = $token;
-                $user->google_token = $request->get('google_token');
-                $user->google_id_token = $request->get('google_id_token');
-                $user->google_id = $request->get('google_id');
-                $user->save();
-                $user = User::find($user->id);
-                $returnData = [
-                    'status' => 200,
-                    'msg' => 'OK',
-                    'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
-                ];
-                return Response::json($returnData, $returnData['status']);
+            $email = $request->get('email');
+            $email_exists  = User::whereRaw("email = ?", $email)->first();
+            if ($email_exists) {
+                $userData['username'] = $email_exists->username;
+                $token = JWTAuth::attempt($userData);
+                if ($token) {
+                    $user = User::find(Auth::user()->id);
+                    $user->last_conection = Carbon::now('America/Guatemala');
+                    $user->token = $token;
+                    $user->google_token = $request->get('google_token');
+                    $user->google_id_token = $request->get('google_id_token');
+                    $user->google_id = $request->get('google_id');
+                    $user->save();
+                    $user = User::find($user->id);
+                    $returnData = [
+                        'status' => 200,
+                        'msg' => 'OK',
+                        'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
+                    ];
+                    return Response::json($returnData, $returnData['status']);
+                }
             }
             $returnData = array(
                 'status' => 401,
-                'msg' => 'No valid Username or Password'
+                'msg' => 'No valid Username or Password',
+                'obj'=> $userData
             );
             return Response::json($returnData, $returnData['status']);
         } catch (Exception $e) {

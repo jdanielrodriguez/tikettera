@@ -22,108 +22,55 @@ class AuthenticationController extends Controller
             'password'  => 'required'
         ]);
         if ($validator->fails()) {
-            $returnData = array(
+            $returnData = [
                 'status' => 400,
                 'msg' => 'Invalid Parameters',
                 'validator' => $validator
-            );
-            return Response::json($returnData, 400);
-        } else {
-            try {
-                $validator = Validator::make($request->all(), [
-                    'username'  => 'email',
-                ]);
-                $userdata = array();
-                $encript = new Encripter();
-                if ($validator->fails()) {
-                    $userdata = array(
-                        'username'  => $request->get('username'),
-                        'password'  => $encript->desencript($request->get('password'))
-                    );
-                } else {
-                    // $field = (preg_match('/^[A-z0-9\\._-]+@[A-z0-9][A-z0-9-]*(\\.[A-z0-9_-]+)*\\.([A-z]{2,6})$/', $request->get('username'), null)) ? 'email' : 'username';
-                    $userdata = array(
-                        'email'  => $request->get('username'),
-                        'password'  => $encript->desencript($request->get('password'))
-                    );
-                }
-                if (!$encript->getValidSalt()) {
-                    $returnData = array(
-                        'status' => 404,
-                        'objeto' => null,
-                        'msg' => "Error de seguridad"
-                    );
-                    return Response::json($returnData, 200);
-                }
-                $token = JWTAuth::attempt($userdata);
-                if ($token) {
-                    $user = User::find(Auth::user()->id);
-                    $user->last_conection = date('Y-m-d H:i:s');
-                    $user->token = ($token);
-                    $user->google_token = $request->get('google_token');
-                    $user->google_idToken = $request->get('google_idToken');
-                    $user->google_id = $request->get('google_id');
-                    $user->picture = $request->get('picture');
-                    $user->save();
-                    $user = User::with('rol', 'imagenes', 'proveedores', 'clientes', 'empleados', 'direcciones', 'formasPago')->find($user->id);
-                    return Response::json($user, 200);
-                } else {
-                    if ($request->get('google_id') !== null) {
-                        $user = User::whereRaw('email=? and (google_id=? OR facebook_id=?)', [$request->get('email'), $request->get('google_id'), $request->get('google_id')])->first();
-                        if ($user) {
-                            $user->password = Hash::make($request->get('google_id'));
-                            $user->save();
-                            $userdata = array(
-                                'username'  => $request->get('username'),
-                                'password'  => $request->get('google_id')
-                            );
-                            $token = JWTAuth::attempt($userdata);
-                            if ($token) {
-                                $user = User::find(Auth::user()->id);
-                                $user->last_conection = date('Y-m-d H:i:s');
-                                $user->token = ($token);
-                                $user->google_token = $request->get('google_token');
-                                $user->google_idToken = $request->get('google_idToken');
-                                $user->google_id = $request->get('google_id');
-                                $user->picture = $request->get('picture');
-                                $user->save();
-                                $user = User::with('rol', 'imagenes', 'proveedores', 'clientes', 'empleados', 'direcciones', 'formasPago')->find($user->id);
-                                return Response::json($user, 200);
-                            } else {
-                                $returnData = array(
-                                    'status' => 401,
-                                    'msg' => 'Token error.'
-                                );
-                                return Response::json($returnData, 401);
-                            }
-                        } else {
-                            $returnData = array(
-                                'status' => 401,
-                                'msg' => 'Usuario no encontrado.'
-                            );
-                            return Response::json($returnData, 401);
-                        }
-                    } else {
-                        $returnData = array(
-                            'status' => 404,
-                            'msg' => 'Debe iniciar sesion con su red social.'
-                        );
-                        return Response::json($returnData, 404);
-                    }
-                    $returnData = array(
-                        'status' => 401,
-                        'msg' => 'No valid Username or Password'
-                    );
-                    return Response::json($returnData, 401);
-                }
-                return Response::json($newObject, 200);
-            } catch (Exception $e) {
-                $returnData = array(
-                    'status' => 500,
-                    'msg' => $e->getMessage()
-                );
-                return Response::json($returnData, 500);
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        try {
+            $encript = new Encripter();
+            $userData = [
+                'email'  => $request->get('username'),
+                'password'  => $encript->desencript($request->get('password'))
+            ];
+            if (!$encript->getValidSalt()) {
+                $returnData = [
+                    'status' => 404,
+                    'objeto' => null,
+                    'msg' => "Error de seguridad"
+                ];
+                return Response::json($returnData, $returnData['status']);
             }
+            $token = JWTAuth::attempt($userData);
+            if ($token) {
+                $user = User::find(Auth::user()->id);
+                $user->last_conection = Carbon::now('America/Guatemala');
+                $user->token = $token;
+                $user->google_token = $request->get('google_token');
+                $user->google_id_token = $request->get('google_id_token');
+                $user->google_id = $request->get('google_id');
+                $user->save();
+                $user = User::find($user->id);
+                $returnData = [
+                    'status' => 200,
+                    'msg' => 'OK',
+                    'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+            $returnData = array(
+                'status' => 401,
+                'msg' => 'No valid Username or Password'
+            );
+            return Response::json($returnData, $returnData['status']);
+        } catch (Exception $e) {
+            $returnData = array(
+                'status' => 500,
+                'msg' => $e->getMessage()
+            );
+            return Response::json($returnData, $returnData['status']);
         }
     }
 

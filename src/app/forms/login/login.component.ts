@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NotificationsService } from 'angular2-notifications';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Menus, Perfil, Socialusers } from './../../interfaces';
+import { Menus, Perfil, Response, Socialusers } from './../../interfaces';
 import { Sesion } from './../../metodos';
 import { AuthServices } from './../../services/auth.service';
 import { UsuariosService } from './../../services/usuarios.service';
@@ -17,26 +14,23 @@ declare var $: any;
 })
 export class LoginFormComponent implements OnInit, OnDestroy {
   constructor(
-    private router: Router,
     private authenticationService: AuthServices,
     private modalService: NgbModal,
     private userService: UsuariosService,
-    private _service: NotificationsService,
     private mySesion: Sesion,
   ) { }
   auth: any;
   component: EventEmitter<string> = new EventEmitter<string>();
   componentStr!: string;
   @ViewChild(Modal) loginModal!: Modal;
-  @BlockUI() blockUI!: NgBlockUI;
   socialusers = new Socialusers();
   @Input() esModal!: boolean;
   @Input() muestraTexto = false;
   @Input() titulo = '';
   @Input() dinamicLink = '';
 
-  public socialSignIn(socialProvider: string) {
-    // this.blockUI.start();
+  async socialSignIn(socialProvider: string) {
+    // this.mySesion.loadingStart();
     // let socialPlatformProvider: string;
     // if (socialProvider === 'facebook') {
     //   socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
@@ -72,7 +66,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     //   this._cliente = cliente;
     //   this.login(perfil, true);
     // }).catch(error => {
-    //   this.blockUI.stop();
+    //   this.mySesion.loadingStop();
     //   console.log(error);
 
     // });
@@ -100,67 +94,71 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         },
         error: async error => {
           console.log(error);
-          this.createError('Error iniciando sesion');
-          this.blockUI.stop();
+          this.mySesion.createError('Error iniciando sesion');
+          this.mySesion.loadingStop();
         },
         complete: () => { authServ.unsubscribe(); }
       });
   }
-  async autenticate(socialusers: Perfil) {
-    const authServ = this.authenticationService.Authentication(socialusers)
+  autenticate(perfil: Perfil, social: boolean = false) {
+    if (!social) {
+      this.mySesion.loadingStart();
+    }
+    const authServ = this.authenticationService
+      .Authentication(perfil)
       .subscribe({
-        next: (response: Perfil) => {
-          this.mySesion.actualizaPerfil(response);
-          if (this.mySesion.validarSesion()) {
-            $('.grecaptcha-badge').removeClass('visible');
-            // if (this.modalService.hasOpenModals) {
-            //   this.closeModal();
-            // }
-            this.mySesion.actualizaPerfil();
-            if (this.mySesion.lastLink) {
-              this.blockUI.stop();
-              let linkURL = './dashboard/inicio';
-              if (this.mySesion.lastLink.length > 3) {
-                const urls = this.mySesion.lastLink;
-                linkURL = urls;
-              }
-              if (linkURL) {
-                this.mySesion.actualizaPerfil();
-                this.mySesion.lastLink = null;
-                this.router.navigate([`${linkURL}`]);
-              } else {
-                this.router.navigate([`./dashboard/inicio`]);
-              }
-            } else {
-              this.router.navigate([`./dashboard/inicio`]);
-            }
-          } else {
-            this.createError('Error iniciando sesion');
+        next: (response: Response) => {
+          this.mySesion.loadingStop();
+          if (response.status >= 400) {
+            this.mySesion.createError(response.msg ? response.msg : '')
           }
-          this.blockUI.stop();
+          const perfil = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
+          this.mySesion.actualizaPerfil(perfil);
+          if (!this.mySesion.validarSesion()) {
+            this.mySesion.createError("Error iniciando sesion");
+            return;
+          }
+          $(".grecaptcha-badge").removeClass("visible");
+          if (this.modalService.hasOpenModals()) {
+            this.closeModal()
+          }
+          if (!this.mySesion.lastLink) {
+            this.mySesion.navegar({ url: `./` });
+            return;
+          }
+          let linkURL = "./";
+          if (this.mySesion.lastLink.length > 3) {
+            let urls = this.mySesion.lastLink
+            linkURL = urls
+          }
+          if (!linkURL) {
+            this.mySesion.navegar({ url: `./` })
+          }
+          this.mySesion.lastLink = null
+          this.mySesion.navegar({ url: `${linkURL}` })
         },
         error: (e) => {
           if (e.status === 404) {
-            this.createError('Usuario no encontrado');
+            this.mySesion.createError('Usuario no encontrado');
           } else if (e.status === 401) {
-            if (socialusers.auth_type === 'facebook' || socialusers.auth_type === 'google') {
-              this.blockUI.start();
-              // socialusers.password = this.mySesion.desencriptar(socialusers.password);
-              this.registrar(socialusers);
+            if (perfil.auth_type === 'facebook' || perfil.auth_type === 'google') {
+              this.mySesion.loadingStart();
+              // perfil.password = this.mySesion.desencriptar(perfil.password);
+              this.registrar(perfil);
             } else {
-              this.createError('Usuario o Contraseña Incorrectas');
+              this.mySesion.createError('Usuario o Contraseña Incorrectas');
             }
           } else {
-            this.createError('Error iniciando sesion');
+            this.mySesion.createError('Error iniciando sesion');
           }
           console.log(e);
-          this.blockUI.stop();
+          this.mySesion.loadingStop();
         },
         complete: () => { authServ.unsubscribe(); }
       });
   }
   ngOnInit() {
-    $('html, body').animate({ scrollTop: 0 }, '300');
+    this.mySesion.scrollTop();
     if (this.esModal) {
       const temp = Modal;
       if (this.titulo) {
@@ -185,7 +183,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: { status: number, objeto: Perfil, msg?: string }) => {
           if (response.status >= 400) {
-            this.createError(response.msg ? response.msg : '');
+            this.mySesion.createError(response.msg ? response.msg : '');
           } else {
             this.mySesion.actualizaPerfil(response.objeto);
             if (this.mySesion.validarSesion()) {
@@ -194,7 +192,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               //   this.closeModal();
               // }
               if (this.mySesion.lastLink) {
-                this.blockUI.stop();
+                this.mySesion.loadingStop();
                 let linkURL = './dashboard/inicio';
                 if (this.mySesion.lastLink.length > 3) {
                   const urls = this.mySesion.lastLink;
@@ -202,27 +200,27 @@ export class LoginFormComponent implements OnInit, OnDestroy {
                 }
                 if (linkURL) {
                   this.mySesion.lastLink = null;
-                  this.router.navigate([`${linkURL}`]);
+                  this.mySesion.navegar({ url: `${linkURL}` });
                 } else {
-                  this.router.navigate([`./dashboard/inicio`]);
+                  this.mySesion.navegar({ url: `./dashboard/inicio` });
                 }
               } else {
-                this.router.navigate([`./dashboard/inicio`]);
+                this.mySesion.navegar({ url: `./dashboard/inicio` });
               }
             } else {
-              this.createError('Error iniciando sesion');
+              this.mySesion.createError('Error iniciando sesion');
             }
           }
-          this.blockUI.stop();
+          this.mySesion.loadingStop();
         },
         error: (error) => {
           if (error.msg) {
-            this.createError(error.msg);
+            this.mySesion.createError(error.msg);
           } else {
-            this.createError('Error desconocido, por favor trate otra vez');
+            this.mySesion.createError('Error desconocido, por favor trate otra vez');
           }
           console.log(error);
-          this.blockUI.stop();
+          this.mySesion.loadingStop();
         },
         complete: () => { request.unsubscribe(); }
       });
@@ -241,13 +239,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modalService.dismissAll();
   }
-  createSuccess(success: string) {
-    this._service.success('¡Éxito!', success);
-  }
-  createError(error: string) {
-    this._service.error('¡Error!', error);
-  }
-  public ngOnDestroy() {
+  ngOnDestroy() {
     if (this.mySesion.captchaSubscription) {
       this.mySesion.captchaSubscription.unsubscribe();
     }

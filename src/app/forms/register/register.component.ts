@@ -140,7 +140,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.mySesion.createError(response.msg ? response.msg : '')
           }
           const perfil = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
-          console.log(perfil);
           this.mySesion.actualizaPerfil(perfil);
           if (!this.mySesion.validarSesion()) {
             this.mySesion.createError("Error iniciando sesion");

@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'detalle-compra/:crypto_id', component: ComprarComponent },
   { path: 'pagar/:crypto_id', component: PagoComponent },
   { path: 'factura/:crypto_id', component: FacturaComponent },
-  { path: ':slug', component: BuscarEventoComponent },
+  { path: 'buscar-evento/:slug', component: BuscarEventoComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,

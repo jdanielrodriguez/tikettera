@@ -14,7 +14,7 @@ declare var $: any;
 })
 export class LoginFormComponent implements OnInit, OnDestroy {
   constructor(
-    private authenticationService: AuthServices,
+    private authService: AuthServices,
     private modalService: NgbModal,
     private userService: UsuariosService,
     private mySesion: Sesion,
@@ -85,11 +85,11 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     const captchaData = {
       token: btoa(validateCaptcha)
     };
-    const authServ = this.authenticationService.validarCaptcha(captchaData)
+    const authServ = this.authService.validarCaptcha(captchaData)
       .subscribe({
         next: (response: { status: number, objeto: any }) => {
           if (response.objeto.success) {
-            this.autenticate(socialusers);
+            this.autenticate(socialusers, false);
           }
         },
         error: async error => {
@@ -104,7 +104,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     if (!social) {
       this.mySesion.loadingStart();
     }
-    const authServ = this.authenticationService
+    const authServ = this.authService
       .Authentication(perfil)
       .subscribe({
         next: (response: Response) => {
@@ -138,21 +138,24 @@ export class LoginFormComponent implements OnInit, OnDestroy {
           this.mySesion.navegar({ url: `${linkURL}` })
         },
         error: (e) => {
-          if (e.status === 404) {
+          this.mySesion.loadingStop();
+          if (e.error.status === 404) {
             this.mySesion.createError('Usuario no encontrado');
-          } else if (e.status === 401) {
+          }
+          if (e.error.status === 401) {
             if (perfil.auth_type === 'facebook' || perfil.auth_type === 'google') {
               this.mySesion.loadingStart();
               // perfil.password = this.mySesion.desencriptar(perfil.password);
               this.registrar(perfil);
+            }
+            if (e.error.msg) {
+              this.mySesion.createError(e.error.msg)
             } else {
               this.mySesion.createError('Usuario o Contraseña Incorrectas');
             }
           } else {
             this.mySesion.createError('Error iniciando sesion');
           }
-          console.log(e);
-          this.mySesion.loadingStop();
         },
         complete: () => { authServ.unsubscribe(); }
       });

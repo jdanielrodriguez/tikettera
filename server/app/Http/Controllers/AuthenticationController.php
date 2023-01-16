@@ -64,10 +64,15 @@ class AuthenticationController extends Controller
                     ];
                     return Response::json($returnData, $returnData['status']);
                 }
+                $returnData = array(
+                    'status' => 401,
+                    'msg' => 'No valid Password',
+                );
+                return Response::json($returnData, $returnData['status']);
             }
             $returnData = array(
                 'status' => 401,
-                'msg' => 'No valid Username or Password'
+                'msg' => 'No valid Email',
             );
             return Response::json($returnData, $returnData['status']);
         } catch (Exception $e) {

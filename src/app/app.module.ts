@@ -38,20 +38,37 @@ import { ComisionesService } from './services/comisiones.service';
 import { LocalitiesService } from './services/localities.service';
 import { ProveedoresService } from './services/proveedores.service';
 
+import { AutorizarProveedoresComponent } from './dashboard/autorizar-proveedores/autorizar-proveedores.component';
+import { CajaComponent } from './dashboard/caja/caja.component';
+import { CategoriaComponent } from './dashboard/categoria/categoria.component';
+import { ClasificacionesComponent } from './dashboard/clasificaciones/clasificaciones.component';
+import { ConfiguracionComponent } from './dashboard/configuracion/configuracion.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { PerfilComponent } from './dashboard/perfil/perfil.component';
+import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuenta.component';
+
 @NgModule({
   declarations: [
     AppComponent,
+    AutorizarProveedoresComponent,
     BoletosComponent,
     BuscarEventoComponent,
+    CajaComponent,
+    CategoriaComponent,
+    ClasificacionesComponent,
+    ConfiguracionComponent,
     ComprarComponent,
+    DashboardComponent,
     FacturaComponent,
     InicioComponent,
     LocalidadesComponent,
     LoginComponent,
     NosotrosComponent,
+    PerfilComponent,
     PagoComponent,
     RegisterComponent,
     RecoveryComponent,
+    ValidarCuentaComponent,
   ],
   imports: [
     AppRoutingModule,

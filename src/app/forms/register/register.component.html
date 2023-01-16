@@ -41,7 +41,7 @@
         </div>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit"
-        [disabled]="RegisterForm.value.password=='' || RegisterForm.value.username==''"><i class="fa fa-sign-in"></i>
+        [disabled]="RegisterForm.value.password=='' || RegisterForm.value.username=='' || RegisterForm.value.password!=RegisterForm.value.password_rep"><i class="fa fa-sign-in"></i>
         Registrar</button>
     </form>
   </div>

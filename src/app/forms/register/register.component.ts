@@ -19,35 +19,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   component: EventEmitter<string> = new EventEmitter<string>();
   componentStr!: string
   @Input() esModal!: boolean;
-  tipo!: boolean;
-  @Input() muestraTexto!: boolean;
-  perfil!: Perfil;
   @Input() titulo: string = "";
   @Input() dinamicLink: string = "";
-  @Output()
-  get mostrarNotificacion(): boolean {
-    if (this.perfil) {
-      if (this.perfil.password && this.perfil.password.length >= 1 &&
-        (this.perfil.password_rep && this.perfil.password_rep.length >= 1)) {
-        return true;
-      }
-    }
-    return false
-  }
-  get contraValida(): boolean {
-    if (this.perfil) {
-      if (this.perfil.password && this.perfil.password.length >= 1 && (this.perfil.password == this.perfil.password_rep)) {
-        return true;
-      }
-    }
-    return false
-  }
-  get contraMinima(): boolean {
-    if (this.perfil.password && this.perfil.password.length >= 3 && (this.perfil.password != this.perfil.password_rep)) {
-      return false;
-    }
-    return true
-  }
   constructor(
     public userServices: UsuariosService,
     private modalService: NgbModal,

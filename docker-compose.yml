@@ -20,7 +20,7 @@ services:
       - tikettera_db
     networks:
       tikettera_network:
-          ipv4_address: 172.25.0.2
+          ipv4_address: 172.16.0.2
   tikettera_nginx:
     container_name: tikettera_nginx
     build:
@@ -37,7 +37,7 @@ services:
       NGINX_ROOT: /usr/src/app/public
     networks:
       tikettera_network:
-          ipv4_address: 172.25.0.3
+          ipv4_address: 172.16.0.3
   tikettera_db:
     image: mysql:latest
     container_name: tikettera_db
@@ -54,7 +54,7 @@ services:
       - ./docker/mysql/data:/var/lib/mysql
     networks:
       tikettera_network:
-          ipv4_address: 172.25.0.4
+          ipv4_address: 172.16.0.4
   tikettera_phpmyadmin:
     container_name: tikettera_phpmyadmin
     image: phpmyadmin
@@ -67,7 +67,7 @@ services:
       - tikettera_db
     networks:
       tikettera_network:
-          ipv4_address: 172.25.0.5
+          ipv4_address: 172.16.0.5
   tikettera_redis:
     container_name: tikettera_redis
     image: redis:latest
@@ -75,7 +75,7 @@ services:
       - 6379:6379
     networks:
       tikettera_network:
-          ipv4_address: 172.25.0.6
+          ipv4_address: 172.16.0.6
 networks:
     tikettera_network:
         external: true

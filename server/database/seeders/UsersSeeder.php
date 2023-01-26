@@ -87,6 +87,54 @@ class UsersSeeder extends Seeder
             'updated_at'        => date('Y-m-d H:m:s')
         ]);
 
+        DB::table('auth_method')->insert([
+            'id'                => 1,
+            'name'              => 'Simple',
+            'description'       => 'Simple email and password auth',
+            'logo'              => 'https://via.placeholder.com/500x250.png?text=Simple',
+            'time_out'          => null,
+            'type'              => 1,
+            'state'             => 1,
+            'created_at'        => date('Y-m-d H:m:s'),
+            'updated_at'        => date('Y-m-d H:m:s')
+        ]);
+
+        DB::table('auth_method')->insert([
+            'id'                => 2,
+            'name'              => 'Google',
+            'description'       => 'google api auth',
+            'logo'              => 'https://pbs.twimg.com/profile_images/1214480780472279040/sH9e2ctc_400x400.png',
+            'time_out'          => null,
+            'type'              => 1,
+            'state'             => 1,
+            'created_at'        => date('Y-m-d H:m:s'),
+            'updated_at'        => date('Y-m-d H:m:s')
+        ]);
+
+        DB::table('auth_method')->insert([
+            'id'                => 3,
+            'name'              => 'Facebook',
+            'description'       => 'facebook api auth',
+            'logo'              => 'https://www.facebook.com/images/fb_icon_325x325.png',
+            'time_out'          => null,
+            'type'              => 1,
+            'state'             => 1,
+            'created_at'        => date('Y-m-d H:m:s'),
+            'updated_at'        => date('Y-m-d H:m:s')
+        ]);
+
+        DB::table('auth_method')->insert([
+            'id'                => 4,
+            'name'              => 'Tiktok',
+            'description'       => 'tiktok api auth',
+            'logo'              => 'https://cdn.pixabay.com/photo/2021/01/30/06/42/tiktok-5962992_1280.png',
+            'time_out'          => null,
+            'type'              => 1,
+            'state'             => 1,
+            'created_at'        => date('Y-m-d H:m:s'),
+            'updated_at'        => date('Y-m-d H:m:s')
+        ]);
+
         DB::table('users')->insert([
             "id"                => 1,
             'username'          => "admin",
@@ -98,6 +146,15 @@ class UsersSeeder extends Seeder
             'birth'             => "1995-01-06",
             'state'             => 1,
             'rol_id'            => 1,
+            'created_at'        => date('Y-m-d H:m:s'),
+            'updated_at'        => date('Y-m-d H:m:s')
+        ]);
+
+
+        DB::table('auth_method_users')->insert([
+            'id'                => 1,
+            'user_id'           => 1,
+            'auth_method_id'    => 1,
             'created_at'        => date('Y-m-d H:m:s'),
             'updated_at'        => date('Y-m-d H:m:s')
         ]);
@@ -118,6 +175,15 @@ class UsersSeeder extends Seeder
             'updated_at'        => date('Y-m-d H:m:s')
         ]);
 
+
+        DB::table('auth_method_users')->insert([
+            'id'                => 2,
+            'user_id'           => 2,
+            'auth_method_id'    => 1,
+            'created_at'        => date('Y-m-d H:m:s'),
+            'updated_at'        => date('Y-m-d H:m:s')
+        ]);
+
         DB::table('users')->insert([
             "id"                => 3,
             'username'          => "cliente",
@@ -130,6 +196,15 @@ class UsersSeeder extends Seeder
             'birth'             => "1999-01-01",
             'state'             => 1,
             'rol_id'            => 3,
+            'created_at'        => date('Y-m-d H:m:s'),
+            'updated_at'        => date('Y-m-d H:m:s')
+        ]);
+
+
+        DB::table('auth_method_users')->insert([
+            'id'                => 3,
+            'user_id'           => 3,
+            'auth_method_id'    => 1,
             'created_at'        => date('Y-m-d H:m:s'),
             'updated_at'        => date('Y-m-d H:m:s')
         ]);

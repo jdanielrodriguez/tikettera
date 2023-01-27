@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from "./../interfaces";
+import { Perfil, ResponseUser } from "./../interfaces";
 import { Sesion } from "./../metodos";
 import { AuthServices } from "./../services/auth.service";
 
@@ -11,12 +11,14 @@ import { AuthServices } from "./../services/auth.service";
 })
 export class AuthComponent implements OnInit {
 
+  public uuid = '';
+  public userId = 0;
+  public titulo = '';
   constructor(
     private route: ActivatedRoute,
     private authServices: AuthServices,
     private mySesion: Sesion,
   ) { }
-  public uuid = '';
 
   ngOnInit(): void {
     this.getParams();
@@ -33,13 +35,14 @@ export class AuthComponent implements OnInit {
     }
     const authServ = this.authServices.recovery(dat)
       .subscribe({
-        next: (response: Response) => {
+        next: (response: ResponseUser) => {
           if (response.status != 200) {
             this.mySesion.createError('No se encuentra el usuario ingresado');
             this.mySesion.loadingStop();
             return;
           }
-          console.log(response.objeto);
+          const perfil = response.objeto ? response.objeto : new Perfil();
+          this.userId = perfil.id ?? 0;
           this.mySesion.loadingStop();
         },
         error: async (error: any) => {

@@ -148,12 +148,17 @@ export class Reaccion {
   tipo_item?: number;
 }
 export class ChangePasswordForm {
-  constructor() {
+  constructor(form?: { old_pass: string, new_pass: string, new_pass_rep: string }) {
     this.id = null;
     this.old_pass = '';
     this.new_pass = '';
     this.new_pass_rep = '';
     this.perfil = new Perfil();
+    if(form){
+      this.old_pass = form.old_pass;
+      this.new_pass = form.new_pass;
+      this.new_pass_rep = form.new_pass_rep;
+    }
   }
   id?: number | null | undefined;
   old_pass?: string;
@@ -508,15 +513,7 @@ export class Locality {
   updated_at!: Date;
 }
 
-export class Response {
-  constructor() {
-    this.status = 500;
-    this.objeto = null;
-  }
-  status: number;
-  objeto: string | null;
-  msg?: string;
-}
+// HTTP
 class CaptchaObj {
   constructor() {
     this.success = false;
@@ -532,11 +529,36 @@ class CaptchaObj {
   action: string;
 }
 
-export class ResponseCAPTCHA {
+export class RSP {
   constructor() {
+    this.status = 500;
+  }
+  status: number;
+  msg?: string;
+}
+
+export class Response extends RSP {
+  constructor() {
+    super();
+    this.objeto = null;
+  }
+  objeto: string | null;
+}
+
+export class ResponseUser extends RSP {
+  constructor() {
+    super();
+    this.status = 500;
+    this.objeto = null;
+  }
+  objeto: Perfil | null;
+}
+
+export class ResponseCAPTCHA extends RSP {
+  constructor() {
+    super();
     this.status = 500;
     this.objeto = new CaptchaObj();
   }
-  status: number;
   objeto: CaptchaObj;
 }

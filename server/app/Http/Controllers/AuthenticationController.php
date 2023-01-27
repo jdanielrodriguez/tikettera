@@ -359,7 +359,14 @@ class AuthenticationController extends Controller
         }
         $encript = new Encripter();
         $realUUID = mb_convert_encoding($encript->desencript(base64_decode($request->get('uuid'))), 'UTF-8', 'UTF-8');
-
+        if (!$encript->getValidSalt()) {
+            $returnData = [
+                'status' => 404,
+                'objeto' => null,
+                'msg' => "Error de seguridad"
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
         $passRecoveryObj = PasswordRecovery::whereRaw("uuid = ? AND current_auth_method_id = ?", [$realUUID, User::AUTH_METHOD_SIMPLE])->first();
         if (!$passRecoveryObj) {
             $returnData = [

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Menus, Perfil, Response } from "./../../interfaces";
+import { Menus, Perfil, Response, ResponseCAPTCHA } from "./../../interfaces";
 import { Sesion } from "./../../metodos";
 import { AuthServices } from "./../../services/auth.service";
 import { UsuariosService } from "./../../services/usuarios.service";
@@ -113,7 +113,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
     const authServ = this.authServices.validarCaptcha(captchaData)
       .subscribe({
-        next: (response: { status: number, objeto: any }) => {
+        next: (response: ResponseCAPTCHA) => {
           if (response.objeto.success) {
             this.registrar(perfil, false);
           }

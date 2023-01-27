@@ -38,6 +38,7 @@ import { ComisionesService } from './services/comisiones.service';
 import { LocalitiesService } from './services/localities.service';
 import { ProveedoresService } from './services/proveedores.service';
 
+import { AuthComponent } from './auth/auth.component';
 import { AutorizarProveedoresComponent } from './dashboard/autorizar-proveedores/autorizar-proveedores.component';
 import { CajaComponent } from './dashboard/caja/caja.component';
 import { CategoriaComponent } from './dashboard/categoria/categoria.component';
@@ -69,6 +70,7 @@ import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuent
     RegisterComponent,
     RecoveryComponent,
     ValidarCuentaComponent,
+    AuthComponent,
   ],
   imports: [
     AppRoutingModule,

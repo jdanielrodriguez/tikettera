@@ -517,3 +517,26 @@ export class Response {
   objeto: string | null;
   msg?: string;
 }
+class CaptchaObj {
+  constructor() {
+    this.success = false;
+    this.challenge_ts = (new Date()).toLocaleString();
+    this.hostname = '';
+    this.score = 0;
+    this.action = '';
+  }
+  success: boolean;
+  challenge_ts: string;
+  hostname: string;
+  score: number;
+  action: string;
+}
+
+export class ResponseCAPTCHA {
+  constructor() {
+    this.status = 500;
+    this.objeto = new CaptchaObj();
+  }
+  status: number;
+  objeto: CaptchaObj;
+}

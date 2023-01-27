@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Menus, Perfil } from "./../../interfaces";
+import { Menus, Perfil, Response, ResponseCAPTCHA } from "./../../interfaces";
 import { Sesion } from "./../../metodos";
 import { AuthServices } from "./../../services/auth.service";
 import { Modal } from "./../modal.component";
@@ -73,7 +73,7 @@ export class RecoveryComponent implements OnInit, OnDestroy {
     };
     const authServ = this.authServices.validarCaptcha(captchaData)
       .subscribe({
-        next: (response: { status: number, objeto: any }) => {
+        next: (response: ResponseCAPTCHA) => {
           if (response.objeto.success) {
             if (perfil.email) {
               this.restore(perfil.email);
@@ -94,7 +94,7 @@ export class RecoveryComponent implements OnInit, OnDestroy {
     }
     const authServ = this.authServices.restore(dat)
       .subscribe({
-        next: (response: { status: number, objeto: any }) => {
+        next: (response: Response) => {
           if (response.status != 200) {
             this.mySesion.createError('No se encuentra el usuario ingresado');
             this.mySesion.loadingStop();

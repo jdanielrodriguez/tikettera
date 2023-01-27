@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Menus, Perfil, Response, Socialusers } from './../../interfaces';
+import { Menus, Perfil, Response, ResponseCAPTCHA, Socialusers } from './../../interfaces';
 import { Sesion } from './../../metodos';
 import { AuthServices } from './../../services/auth.service';
 import { UsuariosService } from './../../services/usuarios.service';
@@ -87,7 +87,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     };
     const authServ = this.authService.validarCaptcha(captchaData)
       .subscribe({
-        next: (response: { status: number, objeto: any }) => {
+        next: (response: ResponseCAPTCHA) => {
           if (response.objeto.success) {
             this.autenticate(socialusers, false);
           }

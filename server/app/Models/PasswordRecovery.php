@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PasswordRecoveryModel extends Model
+class PasswordRecovery extends Model
 {
     protected $table = 'password_recovery';
 }

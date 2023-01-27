@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Router } from "@angular/router";
+import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { NotificationsService } from 'angular2-notifications';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { LocalStorageService } from 'ngx-webstorage';
 import { Menus, Perfil } from "./../../interfaces";
 import { Sesion } from "./../../metodos";
 import { AuthServices } from "./../../services/auth.service";
@@ -16,29 +13,25 @@ declare var $: any
 })
 export class RecoveryComponent implements OnInit, OnDestroy {
   @ViewChild(Modal) recoveryModal!: Modal
-  @BlockUI() blockUI!: NgBlockUI;
-  private _component: EventEmitter<string> = new EventEmitter<string>();
-  private _componentStr!: string
-  private _data: Perfil = new Perfil();
-  private _esModal: boolean = false;
-  private _muestraTexto: boolean = false;
-  private _dinamicLink: string = "";
-  private _titulo: string = "";
+  @Output() component: EventEmitter<string> = new EventEmitter<string>();
+  @Input() componentStr: string = '';
+  @Input() data: Perfil = new Perfil();
+  @Input() esModal: boolean = false;
+  @Input() dinamicLink: string = '';
+  @Input() titulo: string = '';
+
   constructor(
-    private router: Router,
-    private mainService: AuthServices,
+    private authServices: AuthServices,
     private modalService: NgbModal,
     private mySesion: Sesion,
     private config: NgbModalConfig,
-    private _service: NotificationsService,
-    private localSt: LocalStorageService,
   ) {
     config.backdrop = 'static';
     config.keyboard = true;
     config.size = 'lg'
   }
   ngOnInit() {
-    $('html, body').animate({ scrollTop: 0 }, '300');
+    this.mySesion.scrollTop();
     if (this.esModal) {
       let temp = Modal
       if (this.titulo) {
@@ -59,130 +52,73 @@ export class RecoveryComponent implements OnInit, OnDestroy {
       evento.stopPropagation();
     }
     if (this.modalService.hasOpenModals()) {
-      this._componentStr = data.url
-      this._component.emit(this._componentStr);
+      this.componentStr = data.url
+      this.component.emit(this.componentStr);
     } else {
-      this.router.navigate([`${data.url}`])
+      this.mySesion.navegar({ url: `${data.url}` })
     }
   }
-  async recovery() {
-    let token = await this.mySesion.validateCaptcha('recovery');
-    let Fresponse: { status: number, objeto: any }
-    if (token) {
-      let dat = {
-        // token: btoa(token)
-      }
-      this.blockUI.start();
-      const authServ = this.mainService.validarCaptcha(dat)
-        .subscribe({
-          next: (response: { status: number, objeto: any }) => {
-            Fresponse = response
-            this.blockUI.stop();
-            if (Fresponse && Fresponse.objeto.success) {
-              this.blockUI.start();
-              // if (this.data.username.length > 0) {
-              //   let dat: any = {
-              //     username: btoa(this.data.username),
-              //     url: btoa("http://www.ordenes.online/" + (this.myProveedor.provs ? this.myProveedor.provs.nombre + "/" : "") + "inicio"),
-              //     empresa: btoa(this.myProveedor.provs ? this.myProveedor.provs.nombre : "Ordenes Online"),
-              //     nombre: btoa(this.myProveedor.provs ? this.myProveedor.provs.nombre : "Ordenes Online")
-              //   }
-              //   await this.mainService.recovery(dat)
-              //     .then((response: { status: number, objeto: any }) => {
-              //       if (response.status == 200) {
-              //         $(".grecaptcha-badge").removeClass("visible");
-              //         let url = "./" + (this.myProveedor.provs ? this.myProveedor.provs.nombre + "/" : "inicio")
-              //         if (this.mySesion.lastLink) {
-              //           let urls = this.mySesion.lastLink
-              //           url = urls
-              //         }
-              //         this.router.navigate([url])
-              //         this.blockUI.stop();
-              //       }
-              //     })
-              //     .catch(exception => {
-              //       console.log(exception);
-              //       if (exception.status && exception.status == 400) {
-              //         this.createError("No se encuentra el usuario ingresado")
-              //       } else {
-              //         this.createError("No se encuentra el usuario ingresado")
-              //       }
-              //       this.blockUI.stop();
-              //     })
-              // }
-            }
-          },
-          error: error => {
-            console.log(error);
-          },
-          complete: () => { authServ.unsubscribe(); }
-        })
-    } else {
-      token = await this.mySesion.validateCaptcha('recovery');
-      this.recovery()
+  async recovery(form: NgForm) {
+    let perfil: Perfil = new Perfil(form.value);
+    let validateCaptcha = await this.mySesion.validateCaptcha('recovery');
+    if (!validateCaptcha) {
+      this.mySesion.createError("Error validando Captcha.");
+      this.mySesion.loadingStop();
+      validateCaptcha = await this.mySesion.validateCaptcha('recovery');
+      this.recovery(form);
+      return;
     }
+    const captchaData = {
+      token: btoa(validateCaptcha)
+    };
+    const authServ = this.authServices.validarCaptcha(captchaData)
+      .subscribe({
+        next: (response: { status: number, objeto: any }) => {
+          if (response.objeto.success) {
+            if (perfil.email) {
+              this.restore(perfil.email);
+            }
+          }
+        },
+        error: (error: any) => {
+          this.mySesion.createError('Error iniciando sesion');
+          this.mySesion.loadingStop();
+        },
+        complete: () => { authServ.unsubscribe(); }
+      });
 
+  }
+  restore(email: string) {
+    let dat: any = {
+      email: btoa(email)
+    }
+    const authServ = this.authServices.restore(dat)
+      .subscribe({
+        next: (response: { status: number, objeto: any }) => {
+          if (response.status != 200) {
+            this.mySesion.createError('No se encuentra el usuario ingresado');
+            this.mySesion.loadingStop();
+            return;
+          }
+          $(".grecaptcha-badge").removeClass("visible");
+          let url = "../";
+          if (this.mySesion.lastLink) {
+            url = this.mySesion.lastLink
+          }
+          this.mySesion.navegar({ url });
+          this.mySesion.loadingStop();
+        },
+        error: async (error: any) => {
+          this.mySesion.createError('No se encuentra el usuario ingresado');
+          this.mySesion.loadingStop();
+        },
+        complete: () => { authServ.unsubscribe(); }
+      });
   }
   closeModal() {
     this.modalService.dismissAll();
   }
-  public options = {
-    timeOut: 2000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200
-  };
-  createSuccess(success: string) {
-    this._service.success('¡Éxito!', success)
-  }
-  createError(error: string) {
-    this._service.error('¡Error!', error)
-  }
-  @Input()
-  set esModal(value: boolean) {
-    this._esModal = value
-  }
-  get esModal(): boolean {
-    return this._esModal;
-  }
-  @Input()
-  set muestraTexto(value: boolean) {
-    this._muestraTexto = value
-  }
-  get muestraTexto(): boolean {
-    return this._muestraTexto;
-  }
-  @Input()
-  set titulo(value: string) {
-    this._titulo = value
-  }
-  get titulo(): string {
-    return this._titulo;
-  }
-  set data(value: Perfil) {
-    this._data = value
-  }
-  get data(): Perfil {
-    return this._data;
-  }
-  @Input()
-  set dinamicLink(value: string) {
-    if (value) {
-      this.mySesion.lastLink = value
-    }
-    this._dinamicLink = value
-  }
-  @Output()
-  get component(): EventEmitter<string> {
-    this._component.emit(this._componentStr);
-    return this._component;
-  }
-  get componentStr(): string {
-    return this._componentStr;
-  }
-  public ngOnDestroy() {
+  ngOnDestroy() {
     if (this.mySesion.captchaSubscription) {
       this.mySesion.captchaSubscription.unsubscribe();
     }

@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Models\AuthMetodUserModel;
+use App\Models\AuthMetodUser;
 use App\Models\User;
 use App\Models\Rol;
+use App\Models\PasswordRecovery;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Response;
@@ -58,7 +59,7 @@ class AuthenticationController extends Controller
                     $user->google_token = $request->get('google_token');
                     $user->google_id_token = $request->get('google_id_token');
                     $user->google_id = $request->get('google_id');
-                    $authObj = AuthMetodUserModel::whereRaw("user_id = ? AND auth_method_id = ?",[$user->id, User::AUTH_METHOD_SIMPLE])->first();
+                    $authObj = AuthMetodUser::whereRaw("user_id = ? AND auth_method_id = ?",[$user->id, User::AUTH_METHOD_SIMPLE])->first();
                     if(!$authObj){
                         $returnData = [
                             'status' => 200,
@@ -149,7 +150,7 @@ class AuthenticationController extends Controller
         $user->google_id_token = $request->get('google_id_token');
         $user->google_id = $google_id;
         $user->picture = $request->get('picture');
-        $authObj = AuthMetodUserModel::whereRaw("user_id = ? AND auth_method_id != ?",[$user->id, User::AUTH_METHOD_SIMPLE])->first();
+        $authObj = AuthMetodUser::whereRaw("user_id = ? AND auth_method_id != ?",[$user->id, User::AUTH_METHOD_SIMPLE])->first();
         if(!$authObj){
             $returnData = [
                 'status' => 200,
@@ -220,7 +221,7 @@ class AuthenticationController extends Controller
                         $objectSee->last_conection = $last_conection;
                         $objectSee->token = $token;
                         $objectSee->save();
-                        $authObj = new AuthMetodUserModel();
+                        $authObj = new AuthMetodUser();
                         $authObj->token = $token;
                         $authObj->auth_method_id = User::AUTH_METHOD_SIMPLE;
                         $authObj->user_id = $objectSee->id;
@@ -258,7 +259,7 @@ class AuthenticationController extends Controller
         if ($email_exists > 0) {
             DB::beginTransaction();
             $objectSee = User::whereRaw("email = ?", $email)->first();
-            $authCount = AuthMetodUserModel::whereRaw("user_id = ? AND auth_method_id = ?",[$objectSee->id, User::AUTH_METHOD_SIMPLE])->count();
+            $authCount = AuthMetodUser::whereRaw("user_id = ? AND auth_method_id = ?",[$objectSee->id, User::AUTH_METHOD_SIMPLE])->count();
             if($authCount == 0){
                 $returnData = [
                     'status' => 200,
@@ -276,6 +277,123 @@ class AuthenticationController extends Controller
                 'objeto' => $encript->encript(mb_convert_encoding(json_encode($objectSee), 'UTF-8', 'UTF-8'))
             ];
             return Response::json($returnData, $returnData['status']);
+        }
+    }
+
+    public function restorePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email'  => 'required',
+        ]);
+        if ($validator->fails()) {
+            $returnData = [
+                'status' => 400,
+                'msg' => 'Invalid Parameters',
+                'validator' => $validator
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $email = base64_decode($request->get('email'));
+        $objectUser = User::whereRaw('email=? or username=?', [$email, $email])->first();
+        if (!$objectUser) {
+            $returnData = [
+                'status' => 404,
+                'msg' => 'No record found'
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        try {
+            $authObj = AuthMetodUser::whereRaw("user_id = ?",$objectUser->id)->first();
+            if(!$authObj){
+                $returnData = [
+                    'status' => 400,
+                    'msg' => "Error Auth Method",
+                    'objeto' => null
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+            $encript = new Encripter();
+            $faker = Faker::create();
+            $fake = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
+            $uuid = $encript->encript(mb_convert_encoding(json_encode($fake), 'UTF-8', 'UTF-8'));
+            $passRecovery = new PasswordRecovery();
+            $passRecovery->uuid = $fake;
+            $passRecovery->current_password = $objectUser->password;
+            $passRecovery->password = null;
+            $passRecovery->password_rep = null;
+            $passRecovery->state = 2;
+            $passRecovery->current_auth_method_id = User::AUTH_METHOD_SIMPLE;
+            $passRecovery->auth_method_id = $authObj->auth_method_id;
+            $passRecovery->user_id = $objectUser->id;
+            $passRecovery->save();
+            EmailsController::enviarRestoreLink($objectUser, $uuid);
+            $authObj->auth_method_id = User::AUTH_METHOD_SIMPLE;
+            $authObj->save();
+            $returnData = [
+                'status' => 200,
+                'msg' => "Password was sent",
+                'objeto' => null
+            ];
+            return Response::json($returnData, $returnData['status']);
+        } catch (Exception $e) {
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage()
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+    }
+
+    public function recoveryPassword(Request $request)
+    {
+        $encript = new Encripter();
+        $objectRequest = (object)[
+            "user" => $request->get('uuid') ? json_decode(mb_convert_encoding($encript->desencript($request->get('uuid')), 'UTF-8', 'UTF-8')) : null,
+        ];
+        if (!$encript->getValidSalt()) {
+            $returnData = [
+                'status' => 404,
+                'objeto' => null,
+                'msg' => "Error de seguridad"
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $objectUpdate = User::whereRaw('email=? or username=?', [base64_decode($request->get('email')), base64_decode($request->get('email'))])->first();
+
+        if ($objectUpdate) {
+            try {
+                $faker = Faker::create();
+                $fake = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
+                $uuid = $encript->encript(mb_convert_encoding(json_encode($fake), 'UTF-8', 'UTF-8'));
+                try {
+                    EmailsController::enviarRecovery($objectUpdate, $pass);
+                    $returnData = [
+                        'status' => 200,
+                        'msg' => "Password was sent",
+                        'objeto' => null
+                    ];
+                    return Response::json($returnData, $returnData['status']);
+                } catch (Exception $e) {
+                    $returnData = [
+                        'status' => 501,
+                        'msg' => "Error sending email.",
+                        'objeto' => null
+                    ];
+                    return Response::json($returnData, $returnData['status']);
+                }
+            } catch (Exception $e) {
+                $returnData = [
+                    'status' => 500,
+                    'msg' => $e->getMessage()
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+        } else {
+            $returnData = [
+                'status' => 404,
+                'msg' => 'No record found'
+            ];
+            return Response::json($returnData, 404);
         }
     }
 

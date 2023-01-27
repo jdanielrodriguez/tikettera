@@ -48,12 +48,36 @@ abstract class EmailsController extends Controller
                     'password' => $pass,
                     'username' => $objectUpdate->username,
                     'email' => $objectUpdate->email,
-                    'name' => $objectUpdate->namesProveedor
+                    'name' => $objectUpdate->names
                 ],
                 function (Message $message) use ($objectUpdate) {
                     $message->from($objectUpdate->email, $objectUpdate->names)
                         ->sender($objectUpdate->email, $objectUpdate->names)
-                        ->to($objectUpdate->email, $objectUpdate->namesProveedor)
+                        ->to($objectUpdate->email, $objectUpdate->names)
+                        ->replyTo($objectUpdate->email, $objectUpdate->names)
+                        ->subject('Contraseña Reestablecida');
+                }
+            );
+        }
+    }
+
+    public static function enviarRestoreLink($objectUpdate, $uuid)
+    {
+        if (env('MAIL_USERNAME') && env('MAIL_DRIVER') == 'smtp') {
+            Mail::send(
+                'emails.restore',
+                [
+                    'empresa' => self::EMPRESA,
+                    'url' => 'https://www.tikettera.com/auth/',
+                    'uuid' => $uuid,
+                    'username' => $objectUpdate->username,
+                    'email' => $objectUpdate->email,
+                    'name' => $objectUpdate->names
+                ],
+                function (Message $message) use ($objectUpdate) {
+                    $message->from($objectUpdate->email, $objectUpdate->names)
+                        ->sender($objectUpdate->email, $objectUpdate->names)
+                        ->to($objectUpdate->email, $objectUpdate->names)
                         ->replyTo($objectUpdate->email, $objectUpdate->names)
                         ->subject('Contraseña Reestablecida');
                 }

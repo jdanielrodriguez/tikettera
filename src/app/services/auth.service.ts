@@ -37,6 +37,16 @@ export class AuthServices {
     }
   }
 
+  restore(form: { email: string }): Observable<any> {
+    const url = `${this.basePath}/api/restore-password`;
+    try {
+      const response = this.http.post(url, form);
+      return response;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
   recovery(form: any): Observable<any> {
     const url = `${this.basePath}/api/users/password/reset`;
     try {

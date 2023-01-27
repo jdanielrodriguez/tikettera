@@ -395,6 +395,8 @@ class AuthenticationController extends Controller
             ];
             return Response::json($returnData, 404);
         }
+        $objectUser->state = 2;
+        $objectUser->save();
         $returnData = [
             'status' => 200,
             'msg' => "User found",
@@ -450,7 +452,6 @@ class AuthenticationController extends Controller
         $validator = Validator::make($request->all(), [
             'id'        => 'required',
             'new_pass'  => 'required|min:3',
-            'old_pass'  => 'required'
         ]);
         if ($validator->fails()) {
             $returnData = [
@@ -461,7 +462,7 @@ class AuthenticationController extends Controller
             return Response::json($returnData, $returnData['status']);
         }
         $id = base64_decode($request->get('id'));
-        $old_pass = base64_decode($request->get('old_pass'));
+        $old_pass = $request->get('old_pass') ?? base64_decode($request->get('old_pass'));
         $new_pass_rep = base64_decode($request->get('new_pass_rep'));
         $new_pass = base64_decode($request->get('new_pass'));
         if ($new_pass_rep != $new_pass) {
@@ -471,7 +472,7 @@ class AuthenticationController extends Controller
             ];
             return Response::json($returnData, $returnData['status']);
         }
-        if ($old_pass == $new_pass) {
+        if ($old_pass && $old_pass == $new_pass) {
             $returnData = [
                 'status' => 404,
                 'msg' => 'New passwords it is same the old password'
@@ -487,13 +488,15 @@ class AuthenticationController extends Controller
             return Response::json($returnData, $returnData['status']);
         }
         try {
-            $isOldValid = Hash::check($old_pass, $objectUpdate->password);
-            if (!$isOldValid) {
-                $returnData = [
-                    'status' => 404,
-                    'msg' => 'Invalid Password'
-                ];
-                return Response::json($returnData, $returnData['status']);
+            if($old_pass){
+                $isOldValid = Hash::check($old_pass, $objectUpdate->password);
+                if (!$isOldValid) {
+                    $returnData = [
+                        'status' => 404,
+                        'msg' => 'Invalid Password'
+                    ];
+                    return Response::json($returnData, $returnData['status']);
+                }
             }
             $objectUpdate->password = Hash::make($new_pass);
             $objectUpdate->estado = 1;

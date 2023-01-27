@@ -1,6 +1,6 @@
 <form class="my-3 col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto" autocomplete="off" #recoveryForm="ngForm"
   (ngSubmit)="changePass(recoveryForm.value,recoveryForm)" *ngIf="!esModal">
-  <div class="modal-header" *ngIf="titulo && (muestraTexto)">
+  <div class="modal-header" *ngIf="titulo">
     <h4 class="modal-title" id="modal-basic-title">{{titulo}}</h4>
   </div>
   <div class="modal-body">
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary"
+    <button type="submit" class="btn btn-primary mx-auto"
       [disabled]="(new_pass.value!=new_pass_rep.value) || new_pass.value==''">Cambiar Contraseña</button>
     <button type="button" class="btn btn-outline-primary" (click)="closeModal()" *ngIf="esModal">Close</button>
   </div>

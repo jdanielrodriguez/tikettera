@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 use DB;
 class UsersSeeder extends Seeder
 {
@@ -13,13 +14,14 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
+        $timeZone = 'America/Guatemala';
         DB::table('roles')->insert([
             'id'                => 1,
             'name'              => 'Administrador',
             'description'       => 'Administrador del sistema',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('roles')->insert([
@@ -27,8 +29,8 @@ class UsersSeeder extends Seeder
             'name'              => 'Promotor',
             'description'       => 'Vendedor de Entradas',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('roles')->insert([
@@ -36,8 +38,17 @@ class UsersSeeder extends Seeder
             'name'              => 'Cliente',
             'description'       => 'Comprador de Entradas',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
+        ]);
+
+        DB::table('roles')->insert([
+            'id'                => 4,
+            'name'              => 'Subscriptor',
+            'description'       => 'Usuario sin password',
+            'state'             => 1,
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('categories')->insert([
@@ -45,8 +56,8 @@ class UsersSeeder extends Seeder
             'name'              => 'Educacion',
             'description'       => 'Actividades Educativas',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('categories')->insert([
@@ -54,8 +65,8 @@ class UsersSeeder extends Seeder
             'name'              => 'Concierto',
             'description'       => 'Conciertos de Musica',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('categories')->insert([
@@ -63,8 +74,8 @@ class UsersSeeder extends Seeder
             'name'              => 'Conferencias',
             'description'       => 'Conferencias Educativas',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
 
@@ -73,8 +84,8 @@ class UsersSeeder extends Seeder
             'name'              => 'Convivio',
             'description'       => 'Convivio de Grupo',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
 
@@ -83,8 +94,8 @@ class UsersSeeder extends Seeder
             'name'              => 'Otros',
             'description'       => 'Otro tipo de eventos',
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('auth_method')->insert([
@@ -95,8 +106,8 @@ class UsersSeeder extends Seeder
             'time_out'          => null,
             'type'              => 1,
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('auth_method')->insert([
@@ -107,8 +118,8 @@ class UsersSeeder extends Seeder
             'time_out'          => null,
             'type'              => 1,
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('auth_method')->insert([
@@ -119,8 +130,8 @@ class UsersSeeder extends Seeder
             'time_out'          => null,
             'type'              => 1,
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('auth_method')->insert([
@@ -131,8 +142,8 @@ class UsersSeeder extends Seeder
             'time_out'          => null,
             'type'              => 1,
             'state'             => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('users')->insert([
@@ -146,8 +157,8 @@ class UsersSeeder extends Seeder
             'birth'             => "1995-01-06",
             'state'             => 1,
             'rol_id'            => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
 
@@ -156,8 +167,8 @@ class UsersSeeder extends Seeder
             'user_id'           => 1,
             'auth_method_id'    => 1,
             'time_out'          => null,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('users')->insert([
@@ -172,8 +183,8 @@ class UsersSeeder extends Seeder
             'birth'             => "1995-01-06",
             'state'             => 1,
             'rol_id'            => 2,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
 
@@ -182,8 +193,8 @@ class UsersSeeder extends Seeder
             'user_id'           => 2,
             'auth_method_id'    => 1,
             'time_out'          => null,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
         DB::table('users')->insert([
@@ -198,8 +209,8 @@ class UsersSeeder extends Seeder
             'birth'             => "1999-01-01",
             'state'             => 1,
             'rol_id'            => 3,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
 
@@ -208,8 +219,8 @@ class UsersSeeder extends Seeder
             'user_id'           => 3,
             'auth_method_id'    => 1,
             'time_out'          => null,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
     }
 }

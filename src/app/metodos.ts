@@ -162,6 +162,18 @@ export class Sesion {
   loadingStop() {
     this.blockUI.stop();
   }
+  showCaptcha() {
+    setTimeout(() => {
+      $(".grecaptcha-badge").removeClass("visible");
+      $(".grecaptcha-badge").addClass("visible");
+    }, 1000);
+  }
+  hideCaptcha() {
+    $(".grecaptcha-badge").removeClass("visible");
+    setTimeout(() => {
+      $(".grecaptcha-badge").removeClass("visible");
+    }, 1000);
+  }
 }
 
 @Injectable()

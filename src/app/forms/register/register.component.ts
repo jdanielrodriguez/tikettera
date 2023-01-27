@@ -44,10 +44,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       temp.prototype.titulo = this.titulo
       this.modalService.open(temp);
     }
-    setTimeout(() => {
-      $(".grecaptcha-badge").removeClass("visible");
-      $(".grecaptcha-badge").addClass("visible");
-    }, 1000);
+    this.mySesion.showCaptcha();
   }
   socialSignIn(socialProvider: string) {
     // this.mySesion.loadingStart();
@@ -145,7 +142,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.mySesion.createError("Error iniciando sesion");
             return;
           }
-          $(".grecaptcha-badge").removeClass("visible");
+          this.mySesion.hideCaptcha();
           if (this.modalService.hasOpenModals()) {
             this.closeModal()
           }

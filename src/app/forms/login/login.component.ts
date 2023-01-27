@@ -172,10 +172,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       temp.prototype.titulo = this.titulo;
       this.modalService.open(temp);
     }
-    setTimeout(() => {
-      $('.grecaptcha-badge').removeClass('visible');
-      $('.grecaptcha-badge').addClass('visible');
-    }, 1000);
+    this.mySesion.showCaptcha();
   }
   registrar(perfil: Perfil) {
     perfil.picture = perfil.picture ? perfil.picture : 'https://robohash.org/68.186.255.198.png';
@@ -190,7 +187,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
           } else {
             this.mySesion.actualizaPerfil(response.objeto);
             if (this.mySesion.validarSesion()) {
-              $('.grecaptcha-badge').removeClass('visible');
+              this.mySesion.hideCaptcha();
               // if (this.modalService.hasOpenModals) {
               //   this.closeModal();
               // }

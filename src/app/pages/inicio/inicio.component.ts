@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationsService } from 'angular2-notifications';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { listaBusqueda, sliders } from './../../default';
 import { ListaBusqueda, Locality } from './../../interfaces';
+import { Sesion } from "./../../metodos";
 import { LocalitiesService } from './../../services/localities.service';
+declare var $: any;
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
@@ -11,7 +11,7 @@ import { LocalitiesService } from './../../services/localities.service';
 })
 export class InicioComponent implements OnInit {
   constructor(
-    private _service: NotificationsService,
+    private mySesion: Sesion,
     private localitiesService: LocalitiesService
   ) { }
 
@@ -23,36 +23,30 @@ export class InicioComponent implements OnInit {
     this._offset = actual;
     return this._offset;
   }
-  get mainLista(): ListaBusqueda[] {
-    return this._mainList;
-  }
-  get mainListaAuxiliar(): ListaBusqueda[] {
-    return this._mainList;
-  }
 
-  @BlockUI() blockUI!: NgBlockUI;
-  public numReg = 0;
-  public limit = 10;
+  numReg = 0;
+  limit = 10;
   private _offset = 0;
-  public page = 1;
-  public active = 1;
-  public galleryType = 'grid';
-  public sliders = sliders(5);
-  private _mainList: ListaBusqueda[] = listaBusqueda(20);
-  private _mainListAuxiliar: ListaBusqueda[] = this._mainList;
+  page = 1;
+  active = 1;
+  galleryType = 'grid';
+  sliders = sliders(5);
+  mainLista: ListaBusqueda[] = listaBusqueda(20);
+  mainListaAuxiliar: ListaBusqueda[] = this.mainLista;
 
   ngOnInit(): void {
+    this.mySesion.hideCaptcha();
     this.getMainList();
   }
 
   getMainList() {
-    this.blockUI.start();
+    this.mySesion.loadingStart();
     const request = this.localitiesService.getAllActive()
       .subscribe({
         next: (response: { status: number, count: number, data: Locality[] }) => {
           this.numReg = response.count;
-          this._mainList.length = 0;
-          this._mainListAuxiliar.length = 0;
+          this.mainLista.length = 0;
+          this.mainListaAuxiliar.length = 0;
           try {
             response.data.forEach((element: Locality) => {
               const datas: ListaBusqueda = {
@@ -62,18 +56,18 @@ export class InicioComponent implements OnInit {
                 slug: element.slug,
                 validacion: 5,
               };
-              this._mainList.push(datas);
+              this.mainLista.push(datas);
             });
-            this._mainListAuxiliar = this._mainList;
+            this.mainListaAuxiliar = this.mainLista;
           } catch (exception) {
             console.log(exception);
           } finally {
-            this.blockUI.stop();
+            this.mySesion.loadingStop();
           }
         },
         error: (error) => {
-          this.blockUI.stop();
-          this.createError(error);
+          this.mySesion.loadingStop();
+          this.mySesion.createError(error);
         },
         complete: () => { request.unsubscribe(); }
       });
@@ -86,13 +80,5 @@ export class InicioComponent implements OnInit {
 
   needMax() {
     return (this.sliders.length === 0 && ((this.mainLista.length <= 4 && this.galleryType === 'grid') || (this.mainLista.length < 4 && this.galleryType === 'list')))
-  }
-
-  createSuccess(success: string) {
-    this._service.success('¡Éxito!', success);
-  }
-
-  createError(error: string) {
-    this._service.error('¡Error!', error);
   }
 }

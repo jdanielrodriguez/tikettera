@@ -42,10 +42,7 @@ export class RecoveryComponent implements OnInit, OnDestroy {
       temp.prototype.titulo = this.titulo
       this.modalService.open(temp);
     }
-    setTimeout(() => {
-      $(".grecaptcha-badge").removeClass("visible");
-      $(".grecaptcha-badge").addClass("visible");
-    }, 1000);
+    this.mySesion.showCaptcha();
   }
   navegar(data: Menus, evento?: MouseEvent) {
     if (evento) {
@@ -100,7 +97,7 @@ export class RecoveryComponent implements OnInit, OnDestroy {
             this.mySesion.loadingStop();
             return;
           }
-          $(".grecaptcha-badge").removeClass("visible");
+          this.mySesion.hideCaptcha();
           let url = "../";
           if (this.mySesion.lastLink) {
             url = this.mySesion.lastLink

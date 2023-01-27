@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 use DB;
 
 class EventsSeeder extends Seeder
@@ -14,6 +15,7 @@ class EventsSeeder extends Seeder
      */
     public function run()
     {
+        $timeZone = 'America/Guatemala';
         DB::table('events_reason')->insert([
             'id'                => 1,
             'name'              => 'Inauguración Jardin y Salon de Eventos Martisa',
@@ -23,8 +25,8 @@ class EventsSeeder extends Seeder
             'state'             => 1,
             'user_id'           => 2,
             'category_id'       => 3,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
 
 
@@ -46,8 +48,8 @@ class EventsSeeder extends Seeder
             'type'         => 2,
             'state'        => 1,
             'reason_id'     => 1,
-            'created_at'   => date('Y-m-d H:m:s'),
-            'updated_at'   => date('Y-m-d H:m:s')
+            'created_at'   => Carbon::now($timeZone),
+            'updated_at'   => Carbon::now($timeZone)
         ]);
 
         DB::table('events_img')->insert([
@@ -57,8 +59,8 @@ class EventsSeeder extends Seeder
             'state'       => 1,
             'event_id' => 1,
             'url'         => "https://scontent.faqb1-1.fna.fbcdn.net/v/t39.30808-6/314409566_113849668192137_947743175572885139_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=340051&_nc_ohc=7qAk1GOtoDwAX9g_8hy&_nc_ht=scontent.faqb1-1.fna&oh=00_AfA5H8KgieaYsRLP_wziDJEjy8P9S0g7SYLkSFLdnLEDJg&oe=6375752A",
-            'created_at'  => date('Y-m-d H:m:s'),
-            'updated_at'  => date('Y-m-d H:m:s')
+            'created_at'  => Carbon::now($timeZone),
+            'updated_at'  => Carbon::now($timeZone)
         ]);
 
 
@@ -71,8 +73,8 @@ class EventsSeeder extends Seeder
             'state'               => 1,
             'user_id'             => 2,
             'user_admin_id'       => 2,
-            'created_at'          => date('Y-m-d H:m:s'),
-            'updated_at'          => date('Y-m-d H:m:s')
+            'created_at'          => Carbon::now($timeZone),
+            'updated_at'          => Carbon::now($timeZone)
         ]);
 
         DB::table('localities')->insert([
@@ -86,8 +88,8 @@ class EventsSeeder extends Seeder
             'type'              => 1,
             'state'             => 1,
             'event_id'          => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
         for ($i = 0; $i < 100; $i++) {
             DB::table('places')->insert([
@@ -102,8 +104,8 @@ class EventsSeeder extends Seeder
                 'type'              => 1,
                 'state'             => 1,
                 'locality_id'       => 1,
-                'created_at'        => date('Y-m-d H:m:s'),
-                'updated_at'        => date('Y-m-d H:m:s')
+                'created_at'        => Carbon::now($timeZone),
+                'updated_at'        => Carbon::now($timeZone)
             ]);
         }
 
@@ -118,8 +120,8 @@ class EventsSeeder extends Seeder
             'type'              => 1,
             'state'             => 1,
             'event_id'          => 1,
-            'created_at'        => date('Y-m-d H:m:s'),
-            'updated_at'        => date('Y-m-d H:m:s')
+            'created_at'        => Carbon::now($timeZone),
+            'updated_at'        => Carbon::now($timeZone)
         ]);
         for ($i = 0; $i < 100; $i++) {
             DB::table('places')->insert([
@@ -134,8 +136,8 @@ class EventsSeeder extends Seeder
                 'type'              => 1,
                 'state'             => 1,
                 'locality_id'       => 2,
-                'created_at'        => date('Y-m-d H:m:s'),
-                'updated_at'        => date('Y-m-d H:m:s')
+                'created_at'        => Carbon::now($timeZone),
+                'updated_at'        => Carbon::now($timeZone)
             ]);
         }
     }

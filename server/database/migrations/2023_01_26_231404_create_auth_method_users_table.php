@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('auth_method_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('token')->nullable()->default(null);
-            $table->string('auth_token')->nullable()->default(null);
-            $table->string('google_token')->nullable()->default(null);
-            $table->string('fb_token')->nullable()->default(null);
-            $table->string('tw_token')->nullable()->default(null);
-            $table->string('tk_token')->nullable()->default(null);
+            $table->text('token')->nullable()->default(null);
+            $table->text('auth_token')->nullable()->default(null);
+            $table->text('google_token')->nullable()->default(null);
+            $table->text('fb_token')->nullable()->default(null);
+            $table->text('tw_token')->nullable()->default(null);
+            $table->text('tk_token')->nullable()->default(null);
             $table->dateTime('last_conection')->useCurrent();
             $table->integer('type')->nullable()->default(1);
             $table->integer('readonly')->nullable()->default(0);

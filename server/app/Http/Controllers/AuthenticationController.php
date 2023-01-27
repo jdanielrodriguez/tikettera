@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Models\AuthMetodUserModel;
 use App\Models\User;
 use App\Models\Rol;
 use Carbon\Carbon;
+use Faker\Factory as Faker;
 use Response;
 use DB;
 use Validator;
@@ -49,14 +51,27 @@ class AuthenticationController extends Controller
                 $userData['username'] = $email_exists->username;
                 $token = JWTAuth::attempt($userData);
                 if ($token) {
+                    $last_conection = Carbon::now('America/Guatemala');
                     $user = User::find(Auth::user()->id);
-                    $user->last_conection = Carbon::now('America/Guatemala');
+                    $user->last_conection = $last_conection;
                     $user->token = $token;
                     $user->google_token = $request->get('google_token');
                     $user->google_id_token = $request->get('google_id_token');
                     $user->google_id = $request->get('google_id');
+                    $authObj = AuthMetodUserModel::whereRaw("user_id = ? AND auth_method_id = ?",[$user->id, User::AUTH_METHOD_SIMPLE])->first();
+                    if(!$authObj){
+                        $returnData = [
+                            'status' => 200,
+                            'msg' => "Error Auth Method",
+                            'objeto' => null
+                        ];
+                        return Response::json($returnData, $returnData['status']);
+                    }
+                    $authObj->token = $token;
+                    $authObj->last_conection = $last_conection;
+                    $authObj->save();
+
                     $user->save();
-                    $user = User::find($user->id);
                     $returnData = [
                         'status' => 200,
                         'msg' => 'OK',
@@ -64,24 +79,90 @@ class AuthenticationController extends Controller
                     ];
                     return Response::json($returnData, $returnData['status']);
                 }
-                $returnData = array(
+                $returnData = [
                     'status' => 401,
                     'msg' => 'No valid Password',
-                );
+                    'obj'=> null
+                ];
                 return Response::json($returnData, $returnData['status']);
             }
-            $returnData = array(
+            $returnData = [
                 'status' => 401,
                 'msg' => 'No valid Email',
-            );
+                'obj'=> null
+            ];
             return Response::json($returnData, $returnData['status']);
         } catch (Exception $e) {
-            $returnData = array(
+            $returnData = [
                 'status' => 500,
                 'msg' => $e->getMessage()
-            );
+            ];
             return Response::json($returnData, $returnData['status']);
         }
+    }
+
+    function socialLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'google_id'  => 'required',
+        ]);
+        if ($validator->fails()) {
+            $returnData = [
+                'status' => 400,
+                'msg' => 'Debe iniciar sesion con su red social.',
+                'validator' => $validator
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $email = $request->get('email');
+        $google_id = $request->get('google_id');
+
+        $user = User::whereRaw('email=? and (google_id=? OR facebook_id=?)', [$email, $google_id, $google_id])->first();
+        if (!$user) {
+            $returnData = [
+                'status' => 401,
+                'msg' => 'Usuario no encontrado.'
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $userdata = [
+            'username'  => $user->username,
+            'password'  => $google_id
+        ];
+        $token = JWTAuth::attempt($userdata);
+        if (!$token) {
+            $user->password = Hash::make($google_id);
+            $user->save();
+            $token = JWTAuth::attempt($userdata);
+            if (!$token) {
+                $returnData = [
+                    'status' => 401,
+                    'msg' => 'Token error.'
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+        }
+        $last_conection = Carbon::now('America/Guatemala');
+        $user->last_conection = $last_conection;
+        $user->token = $token;
+        $user->google_token = $request->get('google_token');
+        $user->google_id_token = $request->get('google_id_token');
+        $user->google_id = $google_id;
+        $user->picture = $request->get('picture');
+        $authObj = AuthMetodUserModel::whereRaw("user_id = ? AND auth_method_id != ?",[$user->id, User::AUTH_METHOD_SIMPLE])->first();
+        if(!$authObj){
+            $returnData = [
+                'status' => 200,
+                'msg' => "Error Auth Method",
+                'objeto' => null
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $authObj->token = $token;
+        $authObj->last_conection = $last_conection;
+        $authObj->save();
+        $user->save();
+        return Response::json($user, 200);
     }
 
     public function signUp(Request $request)
@@ -135,9 +216,18 @@ class AuthenticationController extends Controller
                     } catch (Exception $e) {
                         DB::rollback();
                     } finally {
-                        $objectSee->last_conection = Carbon::now('America/Guatemala');
+                        $last_conection = Carbon::now('America/Guatemala');
+                        $objectSee->last_conection = $last_conection;
                         $objectSee->token = $token;
                         $objectSee->save();
+                        $authObj = new AuthMetodUserModel();
+                        $authObj->token = $token;
+                        $authObj->auth_method_id = User::AUTH_METHOD_SIMPLE;
+                        $authObj->user_id = $objectSee->id;
+                        $authObj->time_out = null;
+                        $authObj->readonly = 1;
+                        $authObj->last_conection = $last_conection;
+                        $authObj->save();
                         DB::commit();
                         $returnData = [
                             'status' => 200,
@@ -168,6 +258,15 @@ class AuthenticationController extends Controller
         if ($email_exists > 0) {
             DB::beginTransaction();
             $objectSee = User::whereRaw("email = ?", $email)->first();
+            $authCount = AuthMetodUserModel::whereRaw("user_id = ? AND auth_method_id = ?",[$objectSee->id, User::AUTH_METHOD_SIMPLE])->count();
+            if($authCount == 0){
+                $returnData = [
+                    'status' => 200,
+                    'msg' => "Error Auth Method",
+                    'objeto' => null
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
             $objectSee->rol_id = Rol::ROL_CLIENT;
             $objectSee->save();
             DB::commit();
@@ -180,106 +279,109 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function resetPassword(Request $request)
+    public function sendNewPassword(Request $request)
     {
-        $objectUpdate = User::whereRaw('email=? or username=?', [base64_decode($request->get('username')), base64_decode($request->get('username'))])->with('proveedores', 'clientes')->first();
+        $objectUpdate = User::whereRaw('email=? or username=?', [base64_decode($request->get('email')), base64_decode($request->get('email'))])->first();
         if ($objectUpdate) {
             try {
                 $faker = Faker::create();
-                // $pass = $faker->password(8,15,true,true);
                 $pass = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
                 $objectUpdate->password = Hash::make($pass);
-                $objectUpdate->estado = 21;
                 $objectUpdate->save();
-                $objectUpdate->nombreProveedor = count($objectUpdate->proveedores) > 0 ? $objectUpdate->proveedores[0]->nombre : (count($objectUpdate->clientes) > 0 ? $objectUpdate->clientes[0]->nombre : "INGRESAR NOMBRE");
-                $objectUpdate->nombreMostrar = $request->get('nombre') ? base64_decode($request->get('nombre')) : 'Ordenes Online';
-                $objectUpdate->empresaMostrar = $request->get('empresa') ? base64_decode($request->get('empresa')) : 'Ordenes Online';
-                $objectUpdate->correoMostar = $request->get('correo') ? base64_decode($request->get('correo')) : 'send@ordenes.online';
-                $objectUpdate->url = $request->get('url') ? base64_decode($request->get('url')) : 'https://www.ordenes.online/inicio';
-                EmailsController::enviarRecovery($objectUpdate, $pass);
-                $returnData = array(
-                    'status' => 200,
-                    'objeto' => $objectUpdate
-                );
-                return Response::json($returnData, 200);
+                $objectUpdate->url = $request->get('url') ? base64_decode($request->get('url')) : 'https://www.tikettera.com';
+                try {
+                    EmailsController::enviarRecovery($objectUpdate, $pass);
+                    $returnData = [
+                        'status' => 200,
+                        'msg' => "Password was sent",
+                        'objeto' => null
+                    ];
+                    return Response::json($returnData, $returnData['status']);
+                } catch (Exception $e) {
+                    $returnData = [
+                        'status' => 501,
+                        'msg' => "Error sending email.",
+                        'objeto' => null
+                    ];
+                    return Response::json($returnData, $returnData['status']);
+                }
             } catch (Exception $e) {
-                $returnData = array(
+                $returnData = [
                     'status' => 500,
                     'msg' => $e->getMessage()
-                );
-                return Response::json($returnData, 500);
+                ];
+                return Response::json($returnData, $returnData['status']);
             }
         } else {
-            $returnData = array(
+            $returnData = [
                 'status' => 404,
                 'msg' => 'No record found'
-            );
+            ];
             return Response::json($returnData, 404);
         }
     }
 
-    public function changePassword(Request $request, $id)
+    public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'new_pass' => 'required|min:3',
-            'old_pass'      => 'required'
+            'id'        => 'required',
+            'new_pass'  => 'required|min:3',
+            'old_pass'  => 'required'
         ]);
-
         if ($validator->fails()) {
-            $returnData = array(
+            $returnData = [
                 'status' => 400,
                 'msg' => 'Invalid Parameters',
                 'validator' => $validator->messages()->toJson()
-            );
-            return Response::json($returnData, 400);
-        } else {
-            $old_pass = base64_decode($request->get('old_pass'));
-            $new_pass_rep = base64_decode($request->get('new_pass_rep'));
-            $new_pass = base64_decode($request->get('new_pass'));
-            $objectUpdate = User::find($id);
-            if ($objectUpdate) {
-                try {
-                    if (Hash::check($old_pass, $objectUpdate->password)) {
-                        if ($new_pass_rep != $new_pass) {
-                            $returnData = array(
-                                'status' => 404,
-                                'msg' => 'Passwords do not match'
-                            );
-                            return Response::json($returnData, 404);
-                        }
-
-                        if ($old_pass == $new_pass) {
-                            $returnData = array(
-                                'status' => 404,
-                                'msg' => 'New passwords it is same the old password'
-                            );
-                            return Response::json($returnData, 404);
-                        }
-                        $objectUpdate->password = Hash::make($new_pass);
-                        $objectUpdate->estado = 1;
-                        $objectUpdate->save();
-
-                        return Response::json($objectUpdate, 200);
-                    } else {
-                        $returnData = array(
-                            'status' => 404,
-                            'msg' => 'Invalid Password'
-                        );
-                        return Response::json($returnData, 404);
-                    }
-                } catch (Exception $e) {
-                    $returnData = array(
-                        'status' => 500,
-                        'msg' => $e->getMessage()
-                    );
-                }
-            } else {
-                $returnData = array(
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $id = base64_decode($request->get('id'));
+        $old_pass = base64_decode($request->get('old_pass'));
+        $new_pass_rep = base64_decode($request->get('new_pass_rep'));
+        $new_pass = base64_decode($request->get('new_pass'));
+        if ($new_pass_rep != $new_pass) {
+            $returnData = [
+                'status' => 404,
+                'msg' => 'Passwords do not match'
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        if ($old_pass == $new_pass) {
+            $returnData = [
+                'status' => 404,
+                'msg' => 'New passwords it is same the old password'
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $objectUpdate = User::find($id);
+        if (!$objectUpdate) {
+            $returnData = [
+                'status' => 404,
+                'msg' => 'No record found'
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        try {
+            $isOldValid = Hash::check($old_pass, $objectUpdate->password);
+            if (!$isOldValid) {
+                $returnData = [
                     'status' => 404,
-                    'msg' => 'No record found'
-                );
-                return Response::json($returnData, 404);
+                    'msg' => 'Invalid Password'
+                ];
+                return Response::json($returnData, $returnData['status']);
             }
+            $objectUpdate->password = Hash::make($new_pass);
+            $objectUpdate->estado = 1;
+            $objectUpdate->save();
+            return Response::json($objectUpdate, 200);
+
+        } catch (Exception $e) {
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage()
+            ];
+            return Response::json($returnData, $returnData['status']);
         }
     }
 

@@ -19,7 +19,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 });
 Route::post('signup', [App\Http\Controllers\AuthenticationController::class,'signUp']);
 Route::post('login', [App\Http\Controllers\AuthenticationController::class,'login']);
-Route::post('reset-password', [App\Http\Controllers\AuthenticationController::class,'resetPassword']);
+Route::post('reset-password', [App\Http\Controllers\AuthenticationController::class,'sendNewPassword']);
 Route::post('validate-captcha', [App\Http\Controllers\AuthenticationController::class,'validarCaptcha']);
 
 Route::get('events/active', [App\Http\Controllers\EventsController::class,'getActives']);

@@ -155,6 +155,7 @@ class UsersSeeder extends Seeder
             'id'                => 1,
             'user_id'           => 1,
             'auth_method_id'    => 1,
+            'time_out'          => null,
             'created_at'        => date('Y-m-d H:m:s'),
             'updated_at'        => date('Y-m-d H:m:s')
         ]);
@@ -180,6 +181,7 @@ class UsersSeeder extends Seeder
             'id'                => 2,
             'user_id'           => 2,
             'auth_method_id'    => 1,
+            'time_out'          => null,
             'created_at'        => date('Y-m-d H:m:s'),
             'updated_at'        => date('Y-m-d H:m:s')
         ]);
@@ -205,6 +207,7 @@ class UsersSeeder extends Seeder
             'id'                => 3,
             'user_id'           => 3,
             'auth_method_id'    => 1,
+            'time_out'          => null,
             'created_at'        => date('Y-m-d H:m:s'),
             'updated_at'        => date('Y-m-d H:m:s')
         ]);

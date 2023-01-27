@@ -7,6 +7,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
+    public const AUTH_METHOD_SIMPLE = 1;
+    public const AUTH_METHOD_GOOGLE = 2;
+    public const AUTH_METHOD_FACEBOOK = 3;
+    public const AUTH_METHOD_TIKTOK = 4;
     protected $table = 'users';
 
     /**

@@ -400,7 +400,7 @@ class AuthenticationController extends Controller
         $returnData = [
             'status' => 200,
             'msg' => "User found",
-            'objeto' => $objectUser
+            'objeto' => $encript->encript(mb_convert_encoding(json_encode($objectUser), 'UTF-8', 'UTF-8'))
         ];
         return Response::json($returnData, $returnData['status']);
     }
@@ -499,9 +499,15 @@ class AuthenticationController extends Controller
                 }
             }
             $objectUpdate->password = Hash::make($new_pass);
-            $objectUpdate->estado = 1;
+            $objectUpdate->state = 1;
             $objectUpdate->save();
-            return Response::json($objectUpdate, 200);
+            $encript = new Encripter();
+            $returnData = [
+                'status' => 200,
+                'msg' => 'Change password correctly',
+                'objeto' => $encript->encript(mb_convert_encoding(json_encode($objectUpdate), 'UTF-8', 'UTF-8'))
+            ];
+            return Response::json($returnData, $returnData['status']);
         } catch (Exception $e) {
             $returnData = [
                 'status' => 500,

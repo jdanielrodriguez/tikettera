@@ -78,13 +78,14 @@ export class ChangePassComponent implements OnInit {
       const perfil = this.authProfile ? JSON.parse(this.mySesion.desencriptar(this.authProfile)) : null;
       formValue.id = perfil ? btoa(perfil.id) : null;
       formValue.perfil = perfil;
+      formValue.old_pass = null;
       formValue.token = perfil.token;
     }
     this.mySesion.loadingStart();
     const authServ = this.AuthService.updatePass(formValue)
       .subscribe({
         next: (response: Response) => {
-          if (response.status === 201) {
+          if (response.status === 200) {
             const mySesionPerfil = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
             this.mySesion.actualizaPerfil(mySesionPerfil);
             this.mySesion.createSuccess('Su Clave fue Cambiada');

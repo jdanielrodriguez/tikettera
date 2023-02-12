@@ -161,7 +161,7 @@ export class ChangePasswordForm {
     }
   }
   id?: number | null | undefined | string;
-  old_pass?: string;
+  old_pass?: string | null;
   new_pass?: string;
   new_pass_rep?: string;
   token?: string;

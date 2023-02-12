@@ -27,7 +27,7 @@
                     </div>
                     <div class="mb-3 row">
                         <div
-                            class="ml-3 col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-10 offset-sm-10 offset-md-10 offset-lg-10 text-left ">
+                            class="mx-auto col-xs-10 col-sm-10 col-md-10 col-lg-10 offset-xs-10 offset-sm-10 offset-md-10 offset-lg-10 text-center ">
                             Recientemente solicitaste un cambio de contraseña en nuestro sitio, si no reconoces esta
                             accion, deberias cambiar tu contraseña ahora.
                         </div>

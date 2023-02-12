@@ -58,6 +58,7 @@ export class RecoveryComponent implements OnInit, OnDestroy {
   async recovery(form: NgForm) {
     let perfil: Perfil = new Perfil(form.value);
     let validateCaptcha = await this.mySesion.validateCaptcha('recovery');
+    this.mySesion.loadingStart();
     if (!validateCaptcha) {
       this.mySesion.createError("Error validando Captcha.");
       this.mySesion.loadingStop();

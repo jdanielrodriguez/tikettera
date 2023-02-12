@@ -501,6 +501,26 @@ class AuthenticationController extends Controller
             $objectUpdate->password = Hash::make($new_pass);
             $objectUpdate->state = 1;
             $objectUpdate->save();
+
+            $passRecoveryObj = PasswordRecovery::whereRaw("user_id = ? AND current_auth_method_id = ?", [$objectUpdate->id, User::AUTH_METHOD_SIMPLE])->first();
+            if (!$passRecoveryObj) {
+                $returnData = [
+                    'status' => 400,
+                    'msg' => "Error Auth Method Used",
+                    'objeto' => null,
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+            if ($passRecoveryObj->state < 1) {
+                $returnData = [
+                    'status' => 400,
+                    'msg' => "Token Used",
+                    'objeto' => null,
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+            $passRecoveryObj->state = 0;
+            $passRecoveryObj->save();
             $encript = new Encripter();
             $returnData = [
                 'status' => 200,

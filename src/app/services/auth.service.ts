@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
+import { ChangePasswordForm } from '../interfaces';
 import { environment } from './../../environments/environment';
 import { Sesion } from './../metodos';
 @Injectable({
@@ -56,9 +57,9 @@ export class AuthServices {
       return this.handleError(error);
     }
   }
-  updatePass(form: any): Observable<any> {
-    const url = `${this.basePath}/api/users/${form.id}/changepassword`;
-    this.mySesion.reloadToken();
+  updatePass(form: ChangePasswordForm): Observable<any> {
+    const url = `${this.basePath}/api/change-password`;
+    this.mySesion.reloadToken(form.token);
     try {
       const response = this.http.post(url, form, { headers: this.mySesion.headers });
       return response;

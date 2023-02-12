@@ -154,16 +154,17 @@ export class ChangePasswordForm {
     this.new_pass = '';
     this.new_pass_rep = '';
     this.perfil = new Perfil();
-    if(form){
-      this.old_pass = form.old_pass;
-      this.new_pass = form.new_pass;
-      this.new_pass_rep = form.new_pass_rep;
+    if (form) {
+      this.old_pass = btoa(form.old_pass);
+      this.new_pass = btoa(form.new_pass);
+      this.new_pass_rep = btoa(form.new_pass_rep);
     }
   }
-  id?: number | null | undefined;
+  id?: number | null | undefined | string;
   old_pass?: string;
   new_pass?: string;
   new_pass_rep?: string;
+  token?: string;
   perfil?: Perfil;
 
 }

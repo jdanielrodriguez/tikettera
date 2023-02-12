@@ -123,8 +123,8 @@ export class Sesion {
       this.perfil = perfil;
     }
   }
-  reloadToken(): void {
-    const token = this.perfil.token ? this.perfil.token : '';
+  reloadToken(strToken?: string): void {
+    const token = strToken ? strToken : this.perfil.token ? this.perfil.token : '';
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: token ? 'Bearer ' + token : ''

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ChangePasswordForm } from '../../interfaces';
+import { ChangePasswordForm, Response, ResponseCAPTCHA } from '../../interfaces';
 import { Sesion } from '../../metodos';
 import { AuthServices } from '../../services/auth.service';
 import { ChangePassFormulario } from './change-pass-form.component';
@@ -24,9 +25,8 @@ export class ChangePassComponent implements OnInit {
   @Input() esModal = false;
   @Input() muestraTexto = false;
   @Input() titulo = '';
-  open(content: any) {
-    this.modalService.open(content);
-  }
+  @Input() oldRequired = true;
+  @Input() authProfile: string = '';
   ngOnInit(): void {
     if (this.esModal) {
       const temp = ChangePassFormulario;
@@ -38,32 +38,65 @@ export class ChangePassComponent implements OnInit {
       temp.prototype.titulo = this.titulo;
       this.modalService.open(temp);
     }
+    this.mySesion.scrollTop();
+    this.mySesion.showCaptcha();
   }
-  changePass(formValue: ChangePasswordForm, form: any) {
+  async simpleRestore(form: NgForm) {
+    let validateCaptcha = await this.mySesion.validateCaptcha('passwordRestore');
+    if (!validateCaptcha) {
+      this.mySesion.createError("Error validando Captcha.");
+      this.mySesion.loadingStop();
+      validateCaptcha = await this.mySesion.validateCaptcha('passwordRestore');
+      this.simpleRestore(form);
+      return;
+    }
+    const captchaData = {
+      token: btoa(validateCaptcha)
+    };
+    const authServ = this.AuthService.validarCaptcha(captchaData)
+      .subscribe({
+        next: (response: ResponseCAPTCHA) => {
+          if (response.objeto.success) {
+            this.mySesion.loadingStop();
+            this.changePass(form);
+          }
+        },
+        error: async error => {
+          this.mySesion.createError('Error iniciando sesion');
+          this.mySesion.loadingStop();
+        },
+        complete: () => { authServ.unsubscribe(); }
+      });
+  }
+  changePass(form: NgForm) {
     this.mySesion.validarSesion();
-    formValue.perfil = this.mySesion.perfil;
-    formValue.id = this.mySesion.perfil.id;
-    // formValue.new_pass_rep = btoa(formValue.new_pass_rep);
-    // formValue.new_pass = btoa(formValue.new_pass);
-    // formValue.old_pass = btoa(formValue.old_pass);
+    let formValue: ChangePasswordForm = new ChangePasswordForm(form.value);
+    if (this.oldRequired) {
+      formValue.id = this.mySesion.perfil.id;
+      formValue.perfil = this.mySesion.perfil;
+    } else {
+      const perfil = this.authProfile ? JSON.parse(this.mySesion.desencriptar(this.authProfile)) : null;
+      formValue.id = perfil ? btoa(perfil.id) : null;
+      formValue.perfil = perfil;
+      formValue.token = perfil.token;
+    }
     this.mySesion.loadingStart();
     const authServ = this.AuthService.updatePass(formValue)
       .subscribe({
-        next: (response: { estado: number }) => {
-          if (response.estado === 1) {
-            // formValue.perfil.estado = response.estado;
-            this.mySesion.actualizaPerfil(formValue.perfil);
+        next: (response: Response) => {
+          if (response.status === 201) {
+            const mySesionPerfil = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
+            this.mySesion.actualizaPerfil(mySesionPerfil);
             this.mySesion.createSuccess('Su Clave fue Cambiada');
             this.mySesion.loadingStop();
             this.closeModal();
-            formValue.new_pass = '';
-            formValue.new_pass_rep = '';
-            formValue.old_pass = '';
-            form.reset();
+            form.value.new_pass = '';
+            form.value.new_pass_rep = '';
+            form.value.old_pass = '';
+            this.mySesion.navegar({ url: `./` });
           }
         },
         error: error => {
-          console.log(formValue);
           this.mySesion.createError(error);
           this.mySesion.loadingStop();
         },
@@ -72,6 +105,9 @@ export class ChangePassComponent implements OnInit {
   }
   closeModal() {
     this.modalService.dismissAll();
+  }
+  open(content: any) {
+    this.modalService.open(content);
   }
 
 }

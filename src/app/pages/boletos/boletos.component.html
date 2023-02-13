@@ -1,9 +1,9 @@
 <app-sliders [sliders]="sliders"></app-sliders>
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs container">
   <li [ngbNavItem]="1">
-    <a ngbNavLink>Compra de Boletos</a>
+    <a ngbNavLink>Compra de Boletos </a>
     <ng-template ngbNavContent class="w-100 d-flex">
-      <app-stepper-places></app-stepper-places>
+      <app-stepper-places [data]="data"></app-stepper-places>
     </ng-template>
   </li>
 </ul>

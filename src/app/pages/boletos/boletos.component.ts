@@ -36,16 +36,18 @@ export class BoletosComponent implements OnInit {
   private _offset = 0;
   public page = 1;
   public slug = '';
-  public galleryType = 'list';
+  public galleryType = 'grid';
   public active = 1;
   public sliders = sliders(0);
   private _mainList: ListaBusqueda[] = listaBusqueda(4);
   private _mainListAuxiliar: ListaBusqueda[] = this._mainList;
+  public data: ListaBusqueda = new ListaBusqueda();
 
   ngOnInit(): void {
     this.mySesion.scrollTop();
     this.getParams();
     this.getMainList();
+    this.data.name = this.route.snapshot.paramMap.get("slug") || '';
   }
 
   getParams() {
@@ -64,26 +66,26 @@ export class BoletosComponent implements OnInit {
             this.mySesion.loadingStop();
             return;
           }
-          this.numReg = response.count ?? 0;
+          this.numReg = response.count || 0;
           try {
             const obj = response.objeto;
             obj.localities.forEach((element: Locality) => {
               const datas: ListaBusqueda = {
                 imagen: ('https://via.placeholder.com/250x200'),
-                nombre: element.name ? element.name : 'No Name',
+                nombre: element.name || 'No Name',
                 id: element.id,
                 slug: element.slug,
-                event_slug: obj.slug ?? '',
+                event_slug: obj.slug || '',
                 validacion: 5,
                 date_start: obj.date_start ? new Date(obj.date_start) : new Date(),
-                time_start: obj.time_start ?? '',
-                name: element.name ?? '',
-                description: element.description ?? '',
-                address: obj.address ?? '',
-                price: element.price ?? 0,
-                total: element.total ?? 0,
-                tasa_iva: element.tasa_iva ?? 0,
-                tasa_cambio: element.tasa_cambio ?? 0,
+                time_start: obj.time_start || '',
+                name: element.name || '',
+                description: element.description || '',
+                address: obj.address || '',
+                price: element.price || 0,
+                total: element.total || 0,
+                tasa_iva: element.tasa_iva || 0,
+                tasa_cambio: element.tasa_cambio || 0,
               };
               this._mainList.push(datas);
             });

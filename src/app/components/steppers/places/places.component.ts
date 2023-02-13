@@ -13,6 +13,7 @@ export class StepperPlacesComponent implements OnInit {
 
   private _mainList: ListaBusqueda[] = listaBusqueda(4);
   public galleryType = 'grid';
+  @Input() public data: ListaBusqueda = new ListaBusqueda();
 
   get mainLista(): ListaBusqueda[] {
     return this._mainList;

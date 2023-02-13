@@ -64,26 +64,26 @@ export class LocalidadesComponent implements OnInit {
             this.mySesion.loadingStop();
             return;
           }
-          this.numReg = response.count ?? 0;
+          this.numReg = response.count || 0;
           try {
             const obj = response.objeto;
             obj.localities.forEach((element: Locality) => {
               const datas: ListaBusqueda = {
                 imagen: ('https://via.placeholder.com/250x200'),
-                nombre: element.name ? element.name : 'No Name',
+                nombre: element.name || 'No Name',
                 id: element.id,
                 slug: element.slug,
-                event_slug: obj.slug ?? '',
+                event_slug: obj.slug || '',
                 validacion: 5,
                 date_start: obj.date_start ? new Date(obj.date_start) : new Date(),
-                time_start: obj.time_start ?? '',
-                name: element.name ?? '',
-                description: element.description ?? '',
-                address: obj.address ?? '',
-                price: element.price ?? 0,
-                total: element.total ?? 0,
-                tasa_iva: element.tasa_iva ?? 0,
-                tasa_cambio: element.tasa_cambio ?? 0,
+                time_start: obj.time_start || '',
+                name: element.name || '',
+                description: element.description || '',
+                address: obj.address || '',
+                price: element.price || 0,
+                total: element.total || 0,
+                tasa_iva: element.tasa_iva || 0,
+                tasa_cambio: element.tasa_cambio || 0,
               };
               this._mainList.push(datas);
             });

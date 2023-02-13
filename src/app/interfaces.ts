@@ -578,6 +578,16 @@ export class ResponseUser extends RSP {
   }
   objeto: Perfil | null;
 }
+export class ResponseEvent extends RSP {
+  constructor() {
+    super();
+    this.status = 500;
+    this.objeto = null;
+    this.count = null;
+  }
+  count: number | null;
+  objeto: Event | null;
+}
 
 export class ResponseCAPTCHA extends RSP {
   constructor() {

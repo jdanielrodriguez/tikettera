@@ -17,6 +17,7 @@ import { BlockUIModule } from 'ng-block-ui';
 import { ChangePassFormulario } from './change-pass/change-pass-form.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { ChatComponent } from './chat/chat.component';
+import { CalendarComponent } from './calendar/calendar.component';
 import { ColorBackgroundComponent } from './color-background/color-background.component';
 import { FooterComponent } from './footer/footer.component';
 import { GaleriaComponent } from './galeria/galeria.component';
@@ -79,6 +80,7 @@ const modules = [
   PreciosComponent,
   CardsComponent,
   AccordeonComponent,
+  CalendarComponent
 ]
 @NgModule({
   declarations: modules,

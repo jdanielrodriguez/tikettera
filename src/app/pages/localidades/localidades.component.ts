@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationsService } from 'angular2-notifications';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Locality, ListaBusqueda, Event } from './../../interfaces';
+import { ActivatedRoute } from '@angular/router';
+import { listaBusqueda, sliders } from './../../default';
+import { ListaBusqueda, Locality, ResponseEvent } from './../../interfaces';
+import { Sesion } from './../../metodos';
 import { LocalitiesService } from './../../services/localities.service';
-import { Encript } from './../../metodos';
-import { sliders, listaBusqueda } from './../../default';
 
 @Component({
   selector: 'app-localidades',
@@ -15,8 +13,7 @@ import { sliders, listaBusqueda } from './../../default';
 export class LocalidadesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private _service: NotificationsService,
-    private encript: Encript,
+    private mySesion: Sesion,
     private localitiesService: LocalitiesService
   ) { }
   set offset(value: number) {
@@ -34,7 +31,6 @@ export class LocalidadesComponent implements OnInit {
     return this._mainList;
   }
 
-  @BlockUI() blockUI!: NgBlockUI;
   public numReg = 0;
   public limit = 10;
   private _offset = 0;
@@ -56,16 +52,20 @@ export class LocalidadesComponent implements OnInit {
   }
 
   getMainList() {
-    this.blockUI.start();
-    const slug = this.encript.encriptar(JSON.stringify(this.slug)) || '';
-    console.log(slug);
+    this.mySesion.loadingStart();
+    const slug = this.mySesion.encriptar(JSON.stringify(this.slug)) || '';
     const request = this.localitiesService.getAllByEvent(slug)
       .subscribe({
-        next: (response: { status: number, count: number, objeto: Event }) => {
-          this.numReg = response.count;
+        next: (response: ResponseEvent) => {
           this._mainList.length = 0;
           this._mainListAuxiliar.length = 0;
+          if (!response.objeto) {
+            this.mySesion.loadingStop();
+            return;
+          }
+          this.numReg = response.count ?? 0;
           try {
+            console.log(response.objeto);
             response.objeto.localities.forEach((element: Locality) => {
               const datas: ListaBusqueda = {
                 imagen: ('https://via.placeholder.com/250x200'),
@@ -80,12 +80,12 @@ export class LocalidadesComponent implements OnInit {
           } catch (exception) {
             console.log(exception);
           } finally {
-            this.blockUI.stop();
+            this.mySesion.loadingStop();
           }
         },
         error: (error) => {
-          this.blockUI.stop();
-          this.createError(error);
+          this.mySesion.loadingStop();
+          this.mySesion.createError(error);
         },
         complete: () => { request.unsubscribe(); }
       });
@@ -98,13 +98,5 @@ export class LocalidadesComponent implements OnInit {
 
   needMax() {
     return (this.sliders.length === 0 && ((this.mainLista.length <= 4 && this.galleryType === 'grid') || (this.mainLista.length < 4 && this.galleryType === 'list')))
-  }
-
-  createSuccess(success: string) {
-    this._service.success('¡Éxito!', success);
-  }
-
-  createError(error: string) {
-    this._service.error('¡Error!', error);
   }
 }

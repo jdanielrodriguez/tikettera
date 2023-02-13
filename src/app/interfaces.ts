@@ -284,6 +284,7 @@ export class ListaBusqueda {
   tasa_cambio?: number;
   tasa_iva?: number;
   slug?: string;
+  event_slug?: string;
   imagenes?: Imagen[];
   objeto?: any;
   validacion?: number;

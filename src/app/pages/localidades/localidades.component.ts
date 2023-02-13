@@ -73,6 +73,7 @@ export class LocalidadesComponent implements OnInit {
                 nombre: element.name ? element.name : 'No Name',
                 id: element.id,
                 slug: element.slug,
+                event_slug: obj.slug ?? '',
                 validacion: 5,
                 date_start: obj.date_start ? new Date(obj.date_start) : new Date(),
                 time_start: obj.time_start ?? '',

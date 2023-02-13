@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ListaBusqueda } from '../../interfaces';
+import { Sesion } from '../../metodos';
 
 @Component({
   selector: 'app-accordeon',
@@ -8,7 +9,9 @@ import { ListaBusqueda } from '../../interfaces';
   styleUrls: ['./accordeon.component.scss']
 })
 export class AccordeonComponent implements OnInit {
-  constructor() { }
+  constructor(
+    private mySesion: Sesion,
+  ) { }
   @Input() data: ListaBusqueda = new ListaBusqueda();
   @Input() editar!: boolean;
   @Input() esAdmin = false;
@@ -17,6 +20,9 @@ export class AccordeonComponent implements OnInit {
   @Input() disabled = false;
   ngOnInit(): void {
     // console.log(this.data);
+  }
+  comprarBoletos(data: ListaBusqueda): void {
+    this.mySesion.navegar({ url: `./localidades/${data.event_slug}/localidad/${data.slug}` });
   }
   getUrl(data: ListaBusqueda): string {
     return ((data.imagenes != null && data.imagenes.length > 0) ? data.imagenes[0].url : data.picture ? data.picture : 'https://via.placeholder.com/200X100?text=X');

@@ -367,7 +367,7 @@ class AuthenticationController extends Controller
             ];
             return Response::json($returnData, $returnData['status']);
         }
-        $passRecoveryObj = PasswordRecovery::whereRaw("uuid = ? AND current_auth_method_id = ?", [$realUUID, User::AUTH_METHOD_SIMPLE])->first();
+        $passRecoveryObj = PasswordRecovery::whereRaw("uuid = ? AND current_auth_method_id = ? and state = 2", [$realUUID, User::AUTH_METHOD_SIMPLE])->first();
         if (!$passRecoveryObj) {
             $returnData = [
                 'status' => 400,
@@ -488,7 +488,7 @@ class AuthenticationController extends Controller
             return Response::json($returnData, $returnData['status']);
         }
         try {
-            if($old_pass){
+            if ($old_pass) {
                 $isOldValid = Hash::check($old_pass, $objectUpdate->password);
                 if (!$isOldValid) {
                     $returnData = [
@@ -502,7 +502,7 @@ class AuthenticationController extends Controller
             $objectUpdate->state = 1;
             $objectUpdate->save();
 
-            $passRecoveryObj = PasswordRecovery::whereRaw("user_id = ? AND current_auth_method_id = ?", [$objectUpdate->id, User::AUTH_METHOD_SIMPLE])->first();
+            $passRecoveryObj = PasswordRecovery::whereRaw("user_id = ? AND current_auth_method_id = ? and state = 1", [$objectUpdate->id, User::AUTH_METHOD_SIMPLE])->first();
             if (!$passRecoveryObj) {
                 $returnData = [
                     'status' => 400,

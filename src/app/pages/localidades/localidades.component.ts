@@ -43,6 +43,7 @@ export class LocalidadesComponent implements OnInit {
   private _mainListAuxiliar: ListaBusqueda[] = this._mainList;
 
   ngOnInit(): void {
+    this.mySesion.scrollTop();
     this.getParams();
     this.getMainList();
   }

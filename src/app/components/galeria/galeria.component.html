@@ -8,8 +8,8 @@
 </div>
 <!-- List View -->
 <div class=" pt-3 mb-3 w-100 px-5" *ngIf="galleryType === 'list'">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mp-0-mini mb-3 service-card" (click)="abrir(data)"
-    style="cursor: pointer" *ngFor="let data of lista">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mp-0-mini mb-3 service-card" style="cursor: pointer"
+    *ngFor="let data of lista">
     <app-accordeon [data]="data">
     </app-accordeon>
   </div>

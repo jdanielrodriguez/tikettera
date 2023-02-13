@@ -273,11 +273,22 @@ export class ListaBusqueda {
   }
   id?: number | null | undefined;
   nombre?: string;
+  description?: string;
+  address?: string;
   imagen?: string;
+  picture?: string;
+  name?: string;
+  price?: number;
+  total?: number;
+  withdrawall?: number;
+  tasa_cambio?: number;
+  tasa_iva?: number;
   slug?: string;
   imagenes?: Imagen[];
   objeto?: any;
   validacion?: number;
+  date_start?: Date;
+  time_start?: string;
   cantidad?: number;
 }
 export class Producto {
@@ -526,6 +537,10 @@ export class Locality {
   date_end?: Date;
   start?: Date;
   end?: Date;
+  price?: number;
+  total?: number;
+  tasa_cambio?: number;
+  tasa_iva?: number;
 
   lat?: number;
   lng?: number;

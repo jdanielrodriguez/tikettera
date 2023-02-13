@@ -6,9 +6,8 @@
           <label for="uploadImagenFuncion" class="text icon">Seleccionar archivo</label>
           <progress value="0" max="100" class="loader_img barra_de_progreso"></progress>
           <ngb-progressbar *ngIf="mostrarProgreso" [value]="avance" type="primary"></ngb-progressbar>
-          <input type="file" id="uploadImagenFuncion"
-            (change)="subirImagenes($event,{id:0},'uploadImagenFuncion');blockUI.start()" />
-          <button type="button" (click)="blockUI.stop();a.toggle('inputSubirImagen')" id="stopLoader"
+          <input type="file" id="uploadImagenFuncion" (change)="subirImagenes($event,{id:0},'uploadImagenFuncion')" />
+          <button type="button" (click)="mySesion.loadingStop();a.toggle('inputSubirImagen')" id="stopLoader"
             class="form-control border-morado text icon d-none" placeholder="">Detener loader </button>
         </div>
       </div>

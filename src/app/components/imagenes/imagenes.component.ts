@@ -1,9 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { Imagen } from '../../interfaces';
-import { NotificationsService } from 'angular2-notifications';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { environment } from '../../../environments/environment';
+import { Imagen } from '../../interfaces';
+import { Sesion } from '../../metodos';
 declare var $: any;
 @Component({
   selector: 'app-imagenes',
@@ -12,7 +11,7 @@ declare var $: any;
 })
 export class ImagenesComponent implements OnInit {
   constructor(
-    private _service: NotificationsService,
+    public mySesion: Sesion,
     private config: NgbProgressbarConfig
   ) {
     config.max = 100;
@@ -67,7 +66,6 @@ export class ImagenesComponent implements OnInit {
   get imagen(): Imagen {
     return this._imagen;
   }
-  @BlockUI() blockUI!: NgBlockUI;
   private _imagenPrincipal: EventEmitter<Imagen> = new EventEmitter<Imagen>();
   private _imagenEliminar: EventEmitter<Imagen> = new EventEmitter<Imagen>();
   private _lista: Imagen[] = [];
@@ -78,18 +76,11 @@ export class ImagenesComponent implements OnInit {
   private _mostrarProgreso = false;
   private _esAdmin = false;
   private basePath: string = environment.url;
-  public options = {
-    timeOut: 2000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200
-  };
   ngOnInit(): void {
     this._imagenPrincipal.emit(this._imagen);
   }
   subirImagenes(archivo?: any, form?: any, id?: any) {
+    this.mySesion.loadingStart();
     const archivos = archivo.srcElement.files;
     const url = `${this.basePath}/api/upload`;
     const i = 0;
@@ -110,8 +101,8 @@ export class ImagenesComponent implements OnInit {
             this._mostrarProgreso = false;
             $('#guardarImagenes').attr('disabled', false);
             $('#stopLoader').click();
-            this.blockUI.stop();
-            this.createSuccess('Se a subido la imagen Exitosamente!');
+            this.mySesion.loadingStop();
+            this.mySesion.createSuccess('Se a subido la imagen Exitosamente!');
           },
           (progreso: any, valor: any) => {
             this._mostrarProgreso = true;
@@ -123,12 +114,12 @@ export class ImagenesComponent implements OnInit {
           }
         );
       } else {
-        this.createError('El tipo de imagen no es valido');
-        this.blockUI.stop();
+        this.mySesion.createError('El tipo de imagen no es valido');
+        this.mySesion.loadingStop();
       }
     } else {
-      this.createError('La imagen es demaciado grande, seleccione una imagen de menos de 3MB');
-      this.blockUI.stop();
+      this.mySesion.createError('La imagen es demaciado grande, seleccione una imagen de menos de 3MB');
+      this.mySesion.loadingStop();
     }
   }
   eliminarImagen(value: Imagen) {
@@ -140,11 +131,5 @@ export class ImagenesComponent implements OnInit {
   }
   enviarImagen() {
     this._imagenPrincipal.emit(this._imagen);
-  }
-  createSuccess(success: any) {
-    this._service.success('¡Éxito!', success);
-  }
-  createError(error: any) {
-    this._service.error('¡Error!', error);
   }
 }

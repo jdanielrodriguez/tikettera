@@ -14,10 +14,10 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { BlockUIModule } from 'ng-block-ui';
 
+import { CalendarComponent } from './calendar/calendar.component';
 import { ChangePassFormulario } from './change-pass/change-pass-form.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { ChatComponent } from './chat/chat.component';
-import { CalendarComponent } from './calendar/calendar.component';
 import { ColorBackgroundComponent } from './color-background/color-background.component';
 import { FooterComponent } from './footer/footer.component';
 import { GaleriaComponent } from './galeria/galeria.component';
@@ -47,6 +47,9 @@ import { ComentariosComponent } from './comentarios/comentarios.component';
 import { PreciosComponent } from './precios/precios.component';
 import { ReaccionesComponent } from './reacciones/reacciones.component';
 import { BusquedaComponent } from './search/busqueda.component';
+
+// Steppers
+import { StepperPlacesComponent } from './steppers/places/places.component';
 
 const modules = [
   BusquedaComponent,
@@ -80,7 +83,8 @@ const modules = [
   PreciosComponent,
   CardsComponent,
   AccordeonComponent,
-  CalendarComponent
+  CalendarComponent,
+  StepperPlacesComponent
 ]
 @NgModule({
   declarations: modules,

@@ -18,15 +18,14 @@ class EventsController extends Controller
         $objectList = Event::all();
         $count = count($objectList);
         if ($objectList) {
-            $returnData = array(
+            $returnData = [
                 'status' => 200,
                 'msg' => 'Events Returned',
                 'count' => $count,
                 'data' => $objectList
-            );
+            ];
             return new Response($returnData, $returnData['status']);
         }
-
     }
 
     /**
@@ -38,24 +37,55 @@ class EventsController extends Controller
     {
         $nowDate = date('Y-m-d');
         $nowTime = date('H:i:s');
-        $objectSee = Event::whereRaw("date_start > ? or (date_start = ? and time_start > ?) and state = 1",[$nowDate, $nowDate, $nowTime])->get();
+        $objectSee = Event::whereRaw("date_start > ? or (date_start = ? and time_start > ?) and state = 1", [$nowDate, $nowDate, $nowTime])->get();
         $count = count(Event::all());
-        if ($objectSee) {
-            $returnData = array(
-                'status' => 200,
-                'msg' => 'Events Returned',
-                'count' => $count,
-                'data' => $objectSee
-            );
-            return new Response($returnData, $returnData['status']);
-        }
-        else {
-            $returnData = array (
+        if (!$objectSee) {
+            $returnData = [
                 'status' => 404,
                 'message' => 'No record found'
-            );
+            ];
             return new Response($returnData, $returnData['status']);
         }
+        $returnData = [
+            'status' => 200,
+            'msg' => 'Events Returned',
+            'count' => $count,
+            'objeto' => $objectSee
+        ];
+        return new Response($returnData, $returnData['status']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLocalities($slug)
+    {
+        $encript = new Encripter();
+        $id = $slug ? json_decode(mb_convert_encoding($encript->desencript($slug), 'UTF-8', 'UTF-8')) : null;
+        if (!$encript->getValidSalt()) {
+            $returnData = [
+                'status' => 404,
+                'objeto' => null,
+                'msg' => "Error de seguridad"
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $objectSee = Event::whereRaw("slug = ? and state = 1", $id)->with('localities')->first();
+        if (!$objectSee) {
+            $returnData = [
+                'status' => 404,
+                'message' => 'No record found'
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
+        $returnData = [
+            'status' => 200,
+            'msg' => 'Events Returned',
+            'objeto' => $objectSee
+        ];
+        return new Response($returnData, $returnData['status']);
     }
 
     /**
@@ -90,20 +120,17 @@ class EventsController extends Controller
         $objectSee = Event::find($id);
         if ($objectSee) {
             $returnData = array(
-                'status' => 200,
-                'msg' => 'Event Returned',
-                'data' => $objectSee
-            );
-            return new Response($returnData, $returnData['status']);
-
-        }
-        else {
-            $returnData = array (
                 'status' => 404,
                 'message' => 'No record found'
             );
             return new Response($returnData, $returnData['status']);
         }
+        $returnData = array(
+            'status' => 200,
+            'msg' => 'Event Returned',
+            'data' => $objectSee
+        );
+        return new Response($returnData, $returnData['status']);
     }
 
     /**

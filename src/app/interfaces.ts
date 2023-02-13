@@ -480,7 +480,31 @@ export class HistoricoCaja {
 }
 
 // Tikettera
-
+export class Event {
+  constructor() {
+    this.localities = []
+  }
+  localities: Locality[];
+  address?: null | string;
+  created_at?: null | string;
+  date_end?: null | string;
+  date_start?: null | string;
+  description?: null | string;
+  end?: null | string;
+  id?: null | string;
+  lat?: null | string;
+  lng?: null | string;
+  name?: null | string;
+  picture?: null | string;
+  reason_id?: null | string;
+  slug?: null | string;
+  start?: null | string;
+  state?: null | string;
+  time_end?: null | string;
+  time_start?: null | string;
+  type?: null | string;
+  updated_at?: null | string;
+}
 export class Locality {
   constructor() {
     this.id = null;

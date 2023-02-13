@@ -43,12 +43,12 @@ export class InicioComponent implements OnInit {
     this.mySesion.loadingStart();
     const request = this.localitiesService.getAllActive()
       .subscribe({
-        next: (response: { status: number, count: number, data: Locality[] }) => {
+        next: (response: { status: number, count: number, objeto: Locality[] }) => {
           this.numReg = response.count;
           this.mainLista.length = 0;
           this.mainListaAuxiliar.length = 0;
           try {
-            response.data.forEach((element: Locality) => {
+            response.objeto.forEach((element: Locality) => {
               const datas: ListaBusqueda = {
                 imagen: ('https://via.placeholder.com/250x200'),
                 nombre: element.name ? element.name : 'No Name',

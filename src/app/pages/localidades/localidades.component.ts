@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Locality, ListaBusqueda } from './../../interfaces';
+import { Locality, ListaBusqueda, Event } from './../../interfaces';
 import { LocalitiesService } from './../../services/localities.service';
 import { Encript } from './../../metodos';
 import { sliders, listaBusqueda } from './../../default';
@@ -59,14 +59,14 @@ export class LocalidadesComponent implements OnInit {
     this.blockUI.start();
     const slug = this.encript.encriptar(JSON.stringify(this.slug)) || '';
     console.log(slug);
-    const request = this.localitiesService.getAllActive()
+    const request = this.localitiesService.getAllByEvent(slug)
       .subscribe({
-        next: (response: { status: number, count: number, data: Locality[] }) => {
+        next: (response: { status: number, count: number, objeto: Event }) => {
           this.numReg = response.count;
           this._mainList.length = 0;
           this._mainListAuxiliar.length = 0;
           try {
-            response.data.forEach((element: Locality) => {
+            response.objeto.localities.forEach((element: Locality) => {
               const datas: ListaBusqueda = {
                 imagen: ('https://via.placeholder.com/250x200'),
                 nombre: element.name ? element.name : 'No Name',

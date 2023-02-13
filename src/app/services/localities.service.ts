@@ -1,5 +1,5 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { environment } from './../../environments/environment';
 import { Sesion } from './../metodos';
@@ -30,6 +30,16 @@ export class LocalitiesService {
   getAllActive(): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/events/active`;
+    try {
+      const response = this.http.get(url, { headers: this.mySesion.headers });
+      return response;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  getAllByEvent(slug: string): Observable<any> {
+    this.mySesion.reloadToken();
+    const url = `${this.basePath}/api/events/localities/${slug}`;
     try {
       const response = this.http.get(url, { headers: this.mySesion.headers });
       return response;

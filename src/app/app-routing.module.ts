@@ -17,8 +17,7 @@ import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuent
 import { AuthComponent } from './auth/auth.component';
 import { LoginComponent } from './login/login.component';
 import { BoletosComponent } from './pages/boletos/boletos.component';
-import { BuscarEventoComponent } from './pages/buscar-evento/buscar-evento.component';
-import { ComprarComponent } from './pages/comprar/comprar.component';
+import { ExplorarComponent } from './pages/explorar/explorar.component';
 import { FacturaComponent } from './pages/factura/factura.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { LocalidadesComponent } from './pages/localidades/localidades.component';
@@ -38,10 +37,9 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   { path: 'localidades/:slug', component: LocalidadesComponent },
   { path: 'localidades/:event_slug/localidad/:slug', component: BoletosComponent },
-  { path: 'detalle-compra/:uuid', component: ComprarComponent },
   { path: 'pagar/:uuid', component: PagoComponent },
   { path: 'factura/:uuid', component: FacturaComponent },
-  { path: 'buscar-evento/:slug', component: BuscarEventoComponent },
+  { path: 'explorar/:slug', component: ExplorarComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,

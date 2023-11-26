@@ -291,6 +291,8 @@ export class ListaBusqueda {
   date_start?: Date;
   time_start?: string;
   cantidad?: number;
+  defaultPlaces?: Place[];
+  selectedPlaces?: Place[];
 }
 export class Producto {
   constructor() {
@@ -524,7 +526,8 @@ export class Locality {
     this.picture = '';
     this.description = '';
     this.address = '';
-    this.event = {};
+    this.places = [];
+    this.config = {};
   }
   id?: number | null | undefined;
   name?: string;
@@ -549,9 +552,33 @@ export class Locality {
   state?: number;
 
   event_id?: number;
-  event?: Configuracion;
+  config?: Configuracion;
   created_at!: Date;
   updated_at!: Date;
+
+  places: Place[];
+}
+export class Place {
+  constructor() {
+    this.number = 0;
+    this.state = 1;
+    this.price = 1;
+    this.no = '0';
+  }
+  id?: number | null | undefined;
+  state?: string | number;
+  name?: string;
+  description?: string;
+  slug?: string;
+  no?: string;
+  number?: number;
+  price?: number;
+  x?: number;
+  y?: number;
+  chaild?: string;
+  sold?: number;
+  avaliable?: number;
+  type?: number;
 }
 
 // HTTP
@@ -603,6 +630,16 @@ export class ResponseEvent extends RSP {
   }
   count: number | null;
   objeto: Event | null;
+}
+export class ResponseLocality extends RSP {
+  constructor() {
+    super();
+    this.status = 500;
+    this.objeto = null;
+    this.count = null;
+  }
+  count: number | null;
+  objeto: Locality | null;
 }
 
 export class ResponseCAPTCHA extends RSP {

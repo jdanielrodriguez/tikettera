@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Event;
+use App\Models\Locality;
 
 class EventsController extends Controller
 {
@@ -83,6 +84,41 @@ class EventsController extends Controller
         $returnData = [
             'status' => 200,
             'msg' => 'Events Returned',
+            'objeto' => $objectSee
+        ];
+        return new Response($returnData, $returnData['status']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLocality($event_slug, $slug)
+    {
+        $encript = new Encripter();
+        $event_slug = $event_slug ? json_decode(mb_convert_encoding($encript->desencript($event_slug), 'UTF-8', 'UTF-8')) : null;
+        $slug = $slug ? json_decode(mb_convert_encoding($encript->desencript($slug), 'UTF-8', 'UTF-8')) : null;
+        if (!$encript->getValidSalt()) {
+            $returnData = [
+                'status' => 404,
+                'objeto' => null,
+                'msg' => "Error de seguridad"
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+        $event = Event::whereRaw("slug = ? and state = 1", $event_slug)->first();
+        $objectSee = Locality::whereRaw("slug = ? and state = 1 and event_id = ?", [$slug, $event->id])->with('places')->first();
+        if (!$objectSee) {
+            $returnData = [
+                'status' => 404,
+                'message' => 'No record found'
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
+        $returnData = [
+            'status' => 200,
+            'msg' => 'Locality Returned',
             'objeto' => $objectSee
         ];
         return new Response($returnData, $returnData['status']);

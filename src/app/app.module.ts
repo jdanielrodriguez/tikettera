@@ -27,8 +27,7 @@ import { SocialLoginModule } from 'angularx-social-login';
 import { NgxPayPalModule } from 'ngx-paypal';
 
 import { BoletosComponent } from './pages/boletos/boletos.component';
-import { BuscarEventoComponent } from './pages/buscar-evento/buscar-evento.component';
-import { ComprarComponent } from './pages/comprar/comprar.component';
+import { ExplorarComponent } from './pages/explorar/explorar.component';
 import { FacturaComponent } from './pages/factura/factura.component';
 import { LocalidadesComponent } from './pages/localidades/localidades.component';
 import { PagoComponent } from './pages/pago/pago.component';
@@ -53,12 +52,11 @@ import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuent
     AppComponent,
     AutorizarProveedoresComponent,
     BoletosComponent,
-    BuscarEventoComponent,
+    ExplorarComponent,
     CajaComponent,
     CategoriaComponent,
     ClasificacionesComponent,
     ConfiguracionComponent,
-    ComprarComponent,
     DashboardComponent,
     FacturaComponent,
     InicioComponent,

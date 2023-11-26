@@ -96,6 +96,17 @@ services:
     networks:
       tikettera_network:
           ipv4_address: 172.16.0.6
+  tikettera_mailhog:
+    platform: linux/x86_64
+    image: mailhog/mailhog
+    container_name: tikettera_mailhog
+    logging:
+      driver: 'none'
+    ports:
+      - 30250:8025
+    networks:
+      tikettera_network:
+          ipv4_address: 172.16.0.8
 networks:
     tikettera_network:
         external: true

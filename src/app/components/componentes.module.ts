@@ -49,7 +49,10 @@ import { ReaccionesComponent } from './reacciones/reacciones.component';
 import { BusquedaComponent } from './search/busqueda.component';
 
 // Steppers
-import { StepperPlacesComponent } from './steppers/places/places.component';
+import { StepperComponent } from './stepper/stepper.component';
+import { StepperPlacesComponent } from './stepper/places/places.component';
+import { StepperBoletosComponent } from './stepper/boletos/boletos.component';
+import { StepperDetalleCompraComponent } from './stepper/detalle-compra/detalle-compra.component';
 
 const modules = [
   BusquedaComponent,
@@ -84,7 +87,10 @@ const modules = [
   CardsComponent,
   AccordeonComponent,
   CalendarComponent,
-  StepperPlacesComponent
+  StepperComponent,
+  StepperPlacesComponent,
+  StepperBoletosComponent,
+  StepperDetalleCompraComponent
 ]
 @NgModule({
   declarations: modules,

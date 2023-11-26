@@ -8,14 +8,7 @@
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <div id="test-l-1" class="content">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
-          </div>
-          <button class="btn btn-primary">Next</button>
-        </div>
-
+        <app-stepper-places [data]="data"></app-stepper-places>
       </ng-template>
     </li>
     <div class="line"></div>
@@ -23,18 +16,11 @@
       <a ngbNavLink>
         <button class="step-trigger">
           <span class="bs-stepper-circle">2</span>
-          <span class="bs-stepper-label">Boletos Disponibles</span>
+          <span class="bs-stepper-label">Reservar Boletos</span>
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <div id="test-l-2" class="content">
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-          </div>
-          <button class="btn btn-primary">Next</button>
-        </div>
-
+        <app-stepper-boletos [data]="data"></app-stepper-boletos>
       </ng-template>
     </li>
     <div class="line"></div>
@@ -46,11 +32,9 @@
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <div id="test-l-3" class="content text-center">
-          <button type="submit" class="btn btn-primary mt-5">Submit</button>
-        </div>
+        <app-stepper-detalle-compra [data]="data"></app-stepper-detalle-compra>
       </ng-template>
     </li>
   </ul>
 </div>
-<div [ngbNavOutlet]="stepper" class="w-100 container bs-stepper-content d-flex" [ngClass]="{'h-max': needMax()}"></div>
+<div [ngbNavOutlet]="stepper" class="w-100 container bs-stepper-content d-flex"></div>

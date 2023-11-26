@@ -27,6 +27,7 @@ Route::post('validate-captcha', [App\Http\Controllers\AuthenticationController::
 
 Route::get('events/active', [App\Http\Controllers\EventsController::class, 'getActives']);
 Route::get('events/localities/{slug}', [App\Http\Controllers\EventsController::class, 'getLocalities']);
+Route::get('events/{event_slug}/localities/{slug}', [App\Http\Controllers\EventsController::class, 'getLocality']);
 Route::resource('events', App\Http\Controllers\EventsController::class);
 Route::get('advertisers/active', [App\Http\Controllers\AdvertisersController::class, 'getActives']);
 Route::resource('advertisers', App\Http\Controllers\AdvertisersController::class);

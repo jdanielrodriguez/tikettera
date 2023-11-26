@@ -3,8 +3,8 @@
   <li [ngbNavItem]="1">
     <a ngbNavLink>Compra de Boletos </a>
     <ng-template ngbNavContent class="w-100 d-flex">
-      <app-stepper-places [data]="data"></app-stepper-places>
+      <app-stepper [data]="data"></app-stepper>
     </ng-template>
   </li>
 </ul>
-<div [ngbNavOutlet]="nav" class="w-100 container d-flex" [ngClass]="{'h-max': needMax()}"></div>
+<div [ngbNavOutlet]="nav" class="w-100 container d-flex h-max"></div>

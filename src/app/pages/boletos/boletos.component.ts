@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { listaBusqueda, sliders } from './../../default';
-import { ListaBusqueda, Locality, ResponseEvent } from './../../interfaces';
+import { sliders } from './../../default';
+import { ListaBusqueda, ResponseLocality } from './../../interfaces';
 import { Sesion } from './../../metodos';
 import { LocalitiesService } from './../../services/localities.service';
 
@@ -16,80 +16,58 @@ export class BoletosComponent implements OnInit {
     private mySesion: Sesion,
     private localitiesService: LocalitiesService
   ) { }
-  set offset(value: number) {
-    this._offset = value;
-  }
-  get offset(): number {
-    const actual = (this.page - 1) * this.limit;
-    this._offset = actual;
-    return this._offset;
-  }
-  get mainLista(): ListaBusqueda[] {
-    return this._mainList;
-  }
-  get mainListaAuxiliar(): ListaBusqueda[] {
-    return this._mainList;
-  }
 
-  public numReg = 0;
-  public limit = 10;
-  private _offset = 0;
-  public page = 1;
   public slug = '';
-  public galleryType = 'grid';
+  public event_slug = '';
   public active = 1;
   public sliders = sliders(0);
-  private _mainList: ListaBusqueda[] = listaBusqueda(4);
-  private _mainListAuxiliar: ListaBusqueda[] = this._mainList;
   public data: ListaBusqueda = new ListaBusqueda();
 
   ngOnInit(): void {
     this.mySesion.scrollTop();
     this.getParams();
-    this.getMainList();
-    this.data.name = this.route.snapshot.paramMap.get("slug") || '';
+    this.getMain();
+    this.data.name = this.event_slug;
   }
 
   getParams() {
-    this.slug = this.route.snapshot.paramMap.get("event_slug") || '';
+    this.event_slug = this.route.snapshot.paramMap.get("event_slug") || '';
+    this.slug = this.route.snapshot.paramMap.get("slug") || '';
   }
 
-  getMainList() {
+  getMain() {
     this.mySesion.loadingStart();
     const slug = this.mySesion.encriptar(JSON.stringify(this.slug)) || '';
-    const request = this.localitiesService.getAllByEvent(slug)
+    const event_slug = this.mySesion.encriptar(JSON.stringify(this.event_slug)) || '';
+    const request = this.localitiesService.getLocalityByEvent([event_slug, slug])
       .subscribe({
-        next: (response: ResponseEvent) => {
-          this._mainList.length = 0;
-          this._mainListAuxiliar.length = 0;
+        next: (response: ResponseLocality) => {
           if (!response.objeto) {
             this.mySesion.loadingStop();
             return;
           }
-          this.numReg = response.count || 0;
           try {
             const obj = response.objeto;
-            obj.localities.forEach((element: Locality) => {
-              const datas: ListaBusqueda = {
-                imagen: ('https://via.placeholder.com/250x200'),
-                nombre: element.name || 'No Name',
-                id: element.id,
-                slug: element.slug,
-                event_slug: obj.slug || '',
-                validacion: 5,
-                date_start: obj.date_start ? new Date(obj.date_start) : new Date(),
-                time_start: obj.time_start || '',
-                name: element.name || '',
-                description: element.description || '',
-                address: obj.address || '',
-                price: element.price || 0,
-                total: element.total || 0,
-                tasa_iva: element.tasa_iva || 0,
-                tasa_cambio: element.tasa_cambio || 0,
-              };
-              this._mainList.push(datas);
-            });
-            this._mainListAuxiliar = this._mainList;
+            const datas: ListaBusqueda = {
+              imagen: ('https://via.placeholder.com/250x200'),
+              nombre: obj.name || 'No Name',
+              id: obj.id,
+              slug: obj.slug,
+              event_slug: obj.slug || '',
+              validacion: 5,
+              date_start: obj.date_start ? new Date(obj.date_start) : new Date(),
+              time_start: obj.time_start?.toString() || '',
+              name: obj.name || '',
+              description: obj.description || '',
+              address: obj.address || '',
+              price: obj.price || 0,
+              total: obj.total || 0,
+              tasa_iva: obj.tasa_iva || 0,
+              tasa_cambio: obj.tasa_cambio || 0,
+              defaultPlaces: obj.places || [],
+              selectedPlaces: []
+            };
+            this.data = datas;
           } catch (exception) {
             console.log(exception);
           } finally {
@@ -102,14 +80,5 @@ export class BoletosComponent implements OnInit {
         },
         complete: () => { request.unsubscribe(); }
       });
-  }
-
-  cambioPagina(value: any) {
-    this.page = value;
-    this.getMainList();
-  }
-
-  needMax() {
-    return (this.sliders.length === 0 && ((this.mainLista.length <= 4 && this.galleryType === 'grid') || (this.mainLista.length < 4 && this.galleryType === 'list')))
   }
 }

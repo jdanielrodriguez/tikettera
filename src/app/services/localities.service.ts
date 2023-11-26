@@ -47,6 +47,19 @@ export class LocalitiesService {
       return this.handleError(error);
     }
   }
+  getLocalityByEvent(slugs: string[]): Observable<any> {
+    if (slugs.length !== 2) {
+      return this.handleError("Necesita tenes dos parametros");
+    }
+    this.mySesion.reloadToken();
+    const url = `${this.basePath}/api/events/${slugs[0]}/localities/${slugs[1]}`;
+    try {
+      const response = this.http.get(url, { headers: this.mySesion.headers });
+      return response;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
   async create(form: any): Promise<any> {
     const url = `${this.basePath}/api/proveedores`;
     this.mySesion.reloadToken();

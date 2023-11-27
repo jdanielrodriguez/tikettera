@@ -5,10 +5,10 @@
         <h3 class="card-title">Detalles de los Asientos Seleccionados</h3>
         <div class="card-text w-100">
           <ul>
-            <li *ngFor="let place of selectedPlaces">{{ place.name }} {{ place.no }} - Precio: {{getCurrency()}}
-              {{data.price ? data.price.toFixed(2) : '0.00'}}</li>
+            <li *ngFor="let place of selectedPlaces">{{ place.name }} {{ place.no }} - Precio:
+              {{(data.price ? data.price.toFixed(2) : '0.00') | currency: 'GTQ' : 'symbol-narrow' }}</li>
           </ul>
-          <p>Total: {{getCurrency()}} {{ calculateTotalStr() }}</p>
+          <p>Total: {{ calculateTotalStr() | currency: 'GTQ' : 'symbol-narrow'  }}</p>
         </div>
       </div>
     </div>
@@ -30,11 +30,11 @@
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
               {{selectedPlaces.length}}<br>
-              {{getCurrency()}} {{data.price ? data.price.toFixed(2) : '0.00'}}<br>
-              {{getCurrency()}} {{calculateTotalStr()}}<br>
-              {{getCurrency()}} {{calculateTotalSinIva()}}<br>
-              {{getCurrency()}} {{calculateIva()}}<br>
-              {{getCurrency()}} {{calculateTotalStr()}}<br>
+              {{(data.price ? data.price.toFixed(2) : '0.00') | currency: 'GTQ' : 'symbol-narrow' }}<br>
+              {{calculateTotalStr() | currency: 'GTQ' : 'symbol-narrow' }}<br>
+              {{calculateTotalSinIva() | currency: 'GTQ' : 'symbol-narrow' }}<br>
+              {{calculateIva() | currency: 'GTQ' : 'symbol-narrow' }}<br>
+              {{calculateTotalStr() | currency: 'GTQ' : 'symbol-narrow' }}<br>
             </div>
           </div>
           <ng-content></ng-content>

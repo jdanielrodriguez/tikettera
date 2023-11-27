@@ -32,8 +32,4 @@ export class OrderSummaryComponent implements OnInit {
   calculateTotalSinIva(): string {
     return (this.calculateTotal() - (this.calculateTotal() * IVA_RATE)).toFixed(2);
   }
-
-  getCurrency(): string {
-    return "Q.";
-  }
 }

@@ -1,0 +1,12 @@
+<div class="svg-container">
+  <svg [attr.width]="width" [attr.height]="height">
+    <image [attr.href]="getImg('escenario')" width="100%" height="100%" />
+    <image [attr.href]="getImg('background')" width="100%" height="100%" />
+    <g *ngFor="let place of places" (click)="toggleSeat(place)" [attr.id]="place.slug">
+      <rect [attr.x]="place.x" [attr.y]="place.y" [attr.width]="svgWidth" [attr.height]="svgHeight" fill="transparent">
+      </rect>
+      <image [attr.x]="place.x" [attr.y]="place.y" [attr.href]="imgPlace(place)" [attr.width]="svgWidth"
+        [attr.height]="svgHeight"></image>
+    </g>
+  </svg>
+</div>

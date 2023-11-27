@@ -8,7 +8,7 @@
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <app-stepper-places [data]="data"></app-stepper-places>
+        <app-stepper-places [data]="data" (changeStep)="onChangeStep($event)"></app-stepper-places>
       </ng-template>
     </li>
     <div class="line"></div>

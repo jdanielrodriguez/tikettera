@@ -25,6 +25,7 @@ import { ImagenesComponent } from './imagenes/imagenes.component';
 import { LogoutComponent } from './logout/logout.component';
 import { FormularioComponent } from './metodo-pago/formulario/formulario.component';
 import { MetodoPagoComponent } from './metodo-pago/metodo-pago.component';
+import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { PerfilViewComponent } from './perfil-view/perfil-view.component';
 import { SlidersComponent } from './sliders/sliders.component';
 import { TarjetaComponent } from './tarjeta/tarjeta.component';
@@ -45,6 +46,7 @@ import { SendComponent } from './chat/send/send.component';
 import { AddComentarioComponent } from './comentarios/add-comentario/add-comentario.component';
 import { ComentariosComponent } from './comentarios/comentarios.component';
 import { PreciosComponent } from './precios/precios.component';
+import { PlacesComponent } from './places/places.component';
 import { ReaccionesComponent } from './reacciones/reacciones.component';
 import { BusquedaComponent } from './search/busqueda.component';
 
@@ -84,9 +86,11 @@ const modules = [
   ViewHistorialComponent,
   ViewRetiroComponent,
   PreciosComponent,
+  PlacesComponent,
   CardsComponent,
   AccordeonComponent,
   CalendarComponent,
+  OrderSummaryComponent,
   StepperComponent,
   StepperPlacesComponent,
   StepperBoletosComponent,

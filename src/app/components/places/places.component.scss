@@ -1,0 +1,12 @@
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  g {
+    cursor: pointer;
+    &:hover {
+      filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+    }
+  }
+}

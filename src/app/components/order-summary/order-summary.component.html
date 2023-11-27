@@ -1,0 +1,46 @@
+<div class="row container">
+  <div *ngIf="selectedPlaces && selectedPlaces.length > 0" class="col-xs-4 col-sm-4 col-md-4 col-lg-6 mb-5 details">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Detalles de los Asientos Seleccionados</h3>
+        <div class="card-text w-100">
+          <ul>
+            <li *ngFor="let place of selectedPlaces">{{ place.name }} {{ place.no }} - Precio: {{getCurrency()}}
+              {{data.price ? data.price.toFixed(2) : '0.00'}}</li>
+          </ul>
+          <p>Total: {{getCurrency()}} {{ calculateTotalStr() }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-6 mb-5 summary"
+    [ngClass]="{'offset-md-4 offset-lg-6': selectedPlaces.length === 0}">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Costo</h5>
+        <div class="card-text w-100">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+              Cantidad:<br>
+              Precio:<br>
+              subtotal:<br>
+              Total (Sin Iva):<br>
+              IVA:<br>
+              Total:<br>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+              {{selectedPlaces.length}}<br>
+              {{getCurrency()}} {{data.price ? data.price.toFixed(2) : '0.00'}}<br>
+              {{getCurrency()}} {{calculateTotalStr()}}<br>
+              {{getCurrency()}} {{calculateTotalSinIva()}}<br>
+              {{getCurrency()}} {{calculateIva()}}<br>
+              {{getCurrency()}} {{calculateTotalStr()}}<br>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

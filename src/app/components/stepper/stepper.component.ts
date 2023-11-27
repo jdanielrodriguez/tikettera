@@ -14,4 +14,8 @@ export class StepperComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  onChangeStep(step: number) {
+    this.step = step;
+  }
 }

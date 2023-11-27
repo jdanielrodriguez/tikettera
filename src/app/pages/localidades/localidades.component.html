@@ -9,5 +9,8 @@
         [numReg]="numReg" [size]="limit" (paginaActual)="cambioPagina($event)"></app-galeria>
     </ng-template>
   </li>
+  <li [ngbNavItem]="2">
+    <a ngbNavLink class="disabled" (click)="$event.preventDefault()">Compra de Boletos </a>
+  </li>
 </ul>
 <div [ngbNavOutlet]="nav" class="w-100 container d-flex" [ngClass]="{'h-max': needMax()}"></div>

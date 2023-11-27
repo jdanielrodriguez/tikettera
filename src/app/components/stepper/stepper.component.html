@@ -20,7 +20,7 @@
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <app-stepper-boletos [data]="data"></app-stepper-boletos>
+        <app-stepper-boletos [data]="data" (changeStep)="onChangeStep($event)"></app-stepper-boletos>
       </ng-template>
     </li>
     <div class="line"></div>
@@ -32,7 +32,7 @@
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <app-stepper-detalle-compra [data]="data"></app-stepper-detalle-compra>
+        <app-stepper-detalle-compra [data]="data" (changeStep)="onChangeStep($event)"></app-stepper-detalle-compra>
       </ng-template>
     </li>
   </ul>

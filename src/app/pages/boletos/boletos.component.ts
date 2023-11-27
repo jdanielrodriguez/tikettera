@@ -19,7 +19,7 @@ export class BoletosComponent implements OnInit {
 
   public slug = '';
   public event_slug = '';
-  public active = 1;
+  public active = 2;
   public sliders = sliders(0);
   public data: ListaBusqueda = new ListaBusqueda();
 

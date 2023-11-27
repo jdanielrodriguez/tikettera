@@ -1,11 +1,12 @@
 <div id="test-l-1" class="content container">
   <app-places [places]="getPlaces()" [selectedPlaces]="getSelectedPlaces()"
     (selectedPlacesChange)="onSelectedPlacesChange($event)"></app-places>
-  <app-order-summary [selectedPlaces]="getSelectedPlaces()" [data]="data"></app-order-summary>
-  <div class="row container">
-    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 offset-md-11 offset-lg-11 offset-sm-11 text-end">
-      <button class="btn btn-primary" [ngClass]="{'disabled': getSelectedPlaces().length === 0}"
-        [disabled]="getSelectedPlaces().length === 0" (click)="moveToStep(2)">Continuar</button>
+  <app-order-summary [selectedPlaces]="getSelectedPlaces()" [data]="data">
+    <div class="row container">
+      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 offset-md-10 offset-lg-10 offset-sm-10 text-end">
+        <button class="btn btn-primary" [ngClass]="{'disabled': getSelectedPlaces().length === 0}"
+          [disabled]="getSelectedPlaces().length === 0" (click)="moveToStep(2)">Continuar</button>
+      </div>
     </div>
-  </div>
+  </app-order-summary>
 </div>

@@ -1,5 +1,14 @@
-<div id="test-l-3" class="content text-center">
+<div id="test-l-3" class="content container">
+  <app-places [places]="getPlaces()" [selectedPlaces]="getSelectedPlaces()"
+    (selectedPlacesChange)="onSelectedPlacesChange($event)"></app-places>
+  <app-order-summary [selectedPlaces]="getSelectedPlaces()" [data]="data">
+    <div class="row container">
+      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 offset-md-10 offset-lg-10 offset-sm-10 text-end">
+        <button class="btn btn-primary" [ngClass]="{'disabled': getSelectedPlaces().length === 0}"
+          [disabled]="getSelectedPlaces().length === 0" (click)="moveToStep(1)">Continuar</button>
+      </div>
+    </div>
+  </app-order-summary>
   <!-- a este paso solo se puede entrar cuando este logiado aqui vera el detalle de su compra y sus formas de pago
   si ya tiene una ceunta existente que la pueda ligar -->
-  <button type="submit" class="btn btn-primary mt-5">Submit</button>
 </div>

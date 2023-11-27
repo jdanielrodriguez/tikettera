@@ -1,8 +1,13 @@
-<div id="test-l-2" class="content">
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-  </div>
-  <button class="btn btn-primary">Next</button>
+<div id="test-l-2" class="content container">
+  <app-places [places]="getPlaces()" [selectedPlaces]="getSelectedPlaces()"
+    (selectedPlacesChange)="onSelectedPlacesChange($event)"></app-places>
+  <app-order-summary [selectedPlaces]="getSelectedPlaces()" [data]="data">
+    <div class="row container">
+      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 offset-md-10 offset-lg-10 offset-sm-10 text-end">
+        <button class="btn btn-primary" [ngClass]="{'disabled': getSelectedPlaces().length === 0}"
+          [disabled]="getSelectedPlaces().length === 0" (click)="moveToStep(3)">Continuar</button>
+      </div>
+    </div>
+  </app-order-summary>
   <!-- agregar contador con tiempo limite para pasar a comprar los boletos, minimo 10 mins, detalle de boletos adquiridos y total, luego de este paso, solicita registro -->
 </div>

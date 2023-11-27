@@ -1,6 +1,9 @@
 <app-sliders [sliders]="sliders"></app-sliders>
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs container">
   <li [ngbNavItem]="1">
+    <a ngbNavLink [routerLink]="['./../../']">Localidades </a>
+  </li>
+  <li [ngbNavItem]="2">
     <a ngbNavLink>Compra de Boletos </a>
     <ng-template ngbNavContent class="w-100 d-flex">
       <app-stepper [data]="data"></app-stepper>

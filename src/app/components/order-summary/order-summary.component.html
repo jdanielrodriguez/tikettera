@@ -23,14 +23,14 @@
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
               Cantidad:<br>
               Precio:<br>
-              subtotal:<br>
+              Subtotal:<br>
               Total (Sin Iva):<br>
               IVA:<br>
-              Total:<br>
+              Total (Con Iva):<br>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
               {{selectedPlaces.length}}<br>
-              {{(data.price ? data.price.toFixed(2) : '0.00') | currency: 'GTQ' : 'symbol-narrow' }}<br>
+              {{data.price | currency: 'GTQ' : 'symbol-narrow' }}<br>
               {{calculateTotalStr() | currency: 'GTQ' : 'symbol-narrow' }}<br>
               {{calculateTotalSinIva() | currency: 'GTQ' : 'symbol-narrow' }}<br>
               {{calculateIva() | currency: 'GTQ' : 'symbol-narrow' }}<br>

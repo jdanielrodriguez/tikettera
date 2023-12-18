@@ -5,7 +5,7 @@ import { ConfiguracionesService } from 'src/app/services/configuraciones.service
 import { NotificationsService } from 'angular2-notifications';
 import { ImagenesComponent } from './../../components/imagenes/imagenes.component';
 import { Imagen, FilterGET, Configuracion } from 'src/app/interfaces';
-import { Sesion } from 'src/app/metodos';
+import { Sesion } from 'src/app/common/sesion';
 declare var $: any;
 @Component({
   selector: 'app-encabezado',

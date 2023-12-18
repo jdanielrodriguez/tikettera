@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ListaBusqueda } from '../../interfaces';
-import { Sesion } from '../../metodos';
+import { Sesion } from '../../common/sesion';
 
 @Component({
   selector: 'app-accordeon',

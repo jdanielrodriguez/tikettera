@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { InteresesService } from './../../services/intereses.service';
 import { NotificationsService } from 'angular2-notifications';
-import { Sesion } from './../../metodos';
+import { Sesion } from './../../common/sesion';
 import { FilterGET, Reaccion } from './../../interfaces';
 @Component({
   selector: 'app-reacciones',

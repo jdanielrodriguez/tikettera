@@ -6,7 +6,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { ImagenesComponent } from "./../../components/imagenes/imagenes.component";
 import { ClientesService } from "src/app/services/clientes.service";
 import { Perfil, Imagen } from 'src/app/interfaces';
-import { Sesion, Formatos } from "src/app/metodos";
+import { Sesion } from 'src/app/common/sesion';
+import { Formatos } from 'src/app/common/format';
 declare var $: any
 @Component({
   selector: 'app-perfil',

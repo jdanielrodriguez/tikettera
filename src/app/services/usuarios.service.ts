@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
 import { Perfil } from '../interfaces';
 import { environment } from './../../environments/environment';
-import { Sesion } from './../metodos';
+import { Sesion } from './../common/sesion';
 @Injectable({
   providedIn: 'root'
 })

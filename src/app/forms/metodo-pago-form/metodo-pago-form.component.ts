@@ -3,7 +3,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import Swal from 'sweetalert2'
 import { FormasPagoService } from "./../../services/formas-pago.service";
 import { Perfil, MetodoPago } from 'src/app/interfaces';
-import { Sesion } from 'src/app/metodos';
+import { Sesion } from 'src/app/common/sesion';
 @Component({
   selector: 'app-metodo-pago-form',
   templateUrl: './metodo-pago-form.component.html',

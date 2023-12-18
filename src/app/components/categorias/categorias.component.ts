@@ -3,7 +3,8 @@ import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Inventario, Menus, TipoItem } from 'src/app/interfaces';
-import { Formatos, Sesion } from '../../metodos';
+import { Formatos } from '../../common/format';
+import { Sesion } from '../../common/sesion';
 @Component({
   selector: 'app-edicion-categorias',
   templateUrl: './categorias.component.html',

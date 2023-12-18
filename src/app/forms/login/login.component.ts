@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@a
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Menus, Perfil, Response, ResponseCAPTCHA, Socialusers } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { Sesion } from './../../common/sesion';
 import { AuthServices } from './../../services/auth.service';
 import { UsuariosService } from './../../services/usuarios.service';
 import { Modal } from './../modal.component';

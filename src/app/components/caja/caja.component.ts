@@ -3,7 +3,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ComisionesService } from './../../services/comisiones.service';
 import { Perfil, Pasarela, Comision, Caja } from 'src/app/interfaces';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { Sesion, Constantes } from 'src/app/metodos';
+import { Constantes } from 'src/app/common/constant';
+import { Sesion } from 'src/app/common/sesion';
 declare const $: any;
 @Component({
   selector: 'app-caja-view',

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Menus, Perfil, Response, ResponseCAPTCHA } from "./../../interfaces";
-import { Sesion } from "./../../metodos";
+import { Sesion } from './../../common/sesion';
 import { AuthServices } from "./../../services/auth.service";
 import { Modal } from "./../modal.component";
 declare var $: any

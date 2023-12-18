@@ -3,7 +3,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { CategoriasService } from './../../services/categorias.service';
 import { ListaBusqueda, Menus } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { Sesion } from './../../common/sesion';
 @Component({
   selector: 'app-clasificaciones',
   templateUrl: './clasificaciones.component.html',

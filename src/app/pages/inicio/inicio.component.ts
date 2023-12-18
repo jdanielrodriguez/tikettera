@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { listaBusqueda, sliders } from './../../default';
 import { ListaBusqueda, Locality } from './../../interfaces';
-import { Sesion } from "./../../metodos";
+import { Sesion } from './../../common/sesion';
 import { LocalitiesService } from './../../services/localities.service';
 declare var $: any;
 @Component({

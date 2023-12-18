@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewChecked } fro
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NotificationsService } from 'angular2-notifications';
 import { ComentariosService } from './../../services/comentarios.service';
-import { Sesion } from './../../metodos';
+import { Sesion } from '../../common/sesion';
 import { Perfil, Comentario, FilterGET } from './../../interfaces';
 declare var $: any;
 @Component({

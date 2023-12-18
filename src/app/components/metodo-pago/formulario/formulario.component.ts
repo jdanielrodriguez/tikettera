@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { MetodoPago, Pasarela } from './../../../interfaces';
-import { Encript } from './../../../metodos';
+import { Encript } from './../../../common/encript';
 declare const $: any;
 declare const TwoPayClient: any;
 @Component({

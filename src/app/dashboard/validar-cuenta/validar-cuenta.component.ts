@@ -4,7 +4,7 @@ import { ProveedoresService } from './../../services/proveedores.service';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Perfil } from './../../interfaces';
-import { Sesion } from '../../metodos';
+import { Sesion } from '../../common/sesion';
 @Component({
   selector: 'app-validar-cuenta',
   templateUrl: './validar-cuenta.component.html',

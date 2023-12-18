@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Sesion } from './../../metodos';
+import { Sesion } from '../../common/sesion';
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',

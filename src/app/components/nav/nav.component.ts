@@ -2,7 +2,7 @@ import { Component, AfterViewInit, HostListener, OnInit, Input, ChangeDetectorRe
 import { Router } from '@angular/router';
 import { LocalStorageService, LocalStorage } from 'ngx-webstorage';
 import { Menus, Perfil, Configuracion } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { Sesion } from './../../common/sesion';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',

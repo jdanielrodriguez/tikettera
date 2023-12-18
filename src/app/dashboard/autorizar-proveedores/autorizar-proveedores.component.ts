@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ListaBusqueda } from './../../interfaces';
-import { Formatos, Sesion } from '../../metodos';
+import { Sesion } from '../../common/sesion';
+import { Formatos } from '../../common/format';
 @Component({
   selector: 'app-autorizar-proveedores',
   templateUrl: './autorizar-proveedores.component.html',

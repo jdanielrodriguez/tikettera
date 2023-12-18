@@ -6,7 +6,7 @@ import { CategoriasService } from './../../services/categorias.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ImagenesComponent } from './../../components/imagenes/imagenes.component';
 import { Imagen, Menus } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { Sesion } from './../../common/sesion';
 @Component({
   selector: 'app-categoria',
   templateUrl: './categoria.component.html',

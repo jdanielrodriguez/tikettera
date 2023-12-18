@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { MetodoPago, Pasarela } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { Sesion } from './../../common/sesion';
 import { ComisionesService } from './../../services/comisiones.service';
 
 @Component({

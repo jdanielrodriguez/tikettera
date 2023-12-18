@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Sesion } from '../../metodos';
+import { Sesion } from '../../common/sesion';
 import { Perfil } from './../../interfaces';
 import { UsuariosService } from './../../services/usuarios.service';
 @Component({

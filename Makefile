@@ -21,6 +21,10 @@ init:
 	docker-compose up -d
 
 .PHONY:
+rebuild:
+	docker-compose -f docker-compose.yml up --build --force-recreate -d
+
+.PHONY:
 node-restart:
 	docker stop tikettera_node
 	docker start tikettera_node

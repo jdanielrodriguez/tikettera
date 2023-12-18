@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
 import { Perfil } from 'src/app/interfaces';
-import { Sesion } from 'src/app/metodos';
+import { Sesion } from 'src/app/common/sesion';
 @Component({
   selector: 'app-caja',
   templateUrl: './caja.component.html',

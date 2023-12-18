@@ -59,7 +59,7 @@ services:
       tikettera_network:
           ipv4_address: 172.16.0.3
   tikettera_db:
-    image: mysql:latest
+    image: mysql:8.0
     container_name: tikettera_db
     command: --default-authentication-plugin=mysql_native_password
     restart: always

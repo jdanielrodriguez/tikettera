@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Sesion } from './../../../metodos';
+import { Sesion } from './../../../common/sesion';
 import { Perfil, Comentario } from './../../../interfaces';
 
 @Component({

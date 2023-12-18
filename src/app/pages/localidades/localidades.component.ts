@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { listaBusqueda, sliders } from './../../default';
 import { ListaBusqueda, Locality, ResponseEvent } from './../../interfaces';
-import { Sesion } from './../../metodos';
+import { Sesion } from './../../common/sesion';
 import { LocalitiesService } from './../../services/localities.service';
 
 @Component({

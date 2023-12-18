@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { Imagen } from '../../interfaces';
-import { Sesion } from '../../metodos';
+import { Sesion } from '../../common/sesion';
 declare var $: any;
 @Component({
   selector: 'app-imagenes',

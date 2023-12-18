@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-import { Sesion } from './../metodos';
+import { Sesion } from './../common/sesion';
 
 @Injectable({
   providedIn: 'root'

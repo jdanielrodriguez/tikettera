@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Sesion } from './../../metodos';
+import { Sesion } from '../../common/sesion';
 import { Perfil } from './../../interfaces';
 @Component({
   selector: 'app-chat',

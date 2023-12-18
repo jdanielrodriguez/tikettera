@@ -9,7 +9,8 @@ import {
   Imagen,
   FilterGET,
 } from "src/app/interfaces";
-import { Sesion, Formatos } from "src/app/metodos";
+import { Sesion } from 'src/app/common/sesion';
+import { Formatos } from 'src/app/common/format';
 declare var $: any;
 @Component({
   selector: "app-sliders-form",

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from "./../interfaces";
-import { Sesion } from "./../metodos";
+import { Sesion } from "./../common/sesion";
 import { AuthServices } from "./../services/auth.service";
 
 @Component({

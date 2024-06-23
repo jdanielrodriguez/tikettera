@@ -1,1 +1,54 @@
-<app-perfil-view [perfil]="perfil"> </app-perfil-view>
+<div class="d-flex w-100 ">
+  <ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-pills flex-column w-10 ml-5 " orientation="vertical">
+    <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/events'})">
+      <a ngbNavLink>Mis Eventos</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-perfil-view [perfil]="perfil"> </app-perfil-view>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/information'})">
+      <a ngbNavLink>Mi Informacion</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-perfil-view [perfil]="perfil"> </app-perfil-view>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/credit-cards'})">
+      <a ngbNavLink>Mis Tarjetas</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/orders'})">
+      <a ngbNavLink>Mis Ordenes</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/bills'})">
+      <a ngbNavLink>Mis Registros</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/categorias'})">
+      <a ngbNavLink>Mis Categorias</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/inventario'})">
+      <a ngbNavLink>Mi Inventario</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="8" (click)="navegar({url:'./dashboard/settings'})">
+      <a ngbNavLink>Configuraciones</a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-configuraciones [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-configuraciones>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="w-100 container d-flex "></div>
+</div>

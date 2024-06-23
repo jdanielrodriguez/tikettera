@@ -40,7 +40,7 @@
                 </div>
               </div>
               <a ngbDropdownItem [routerLink]="['./']" *ngFor="let sub of data.submenu;"
-                [class.d-none]="(sub.rol && rol<sub.rol)" [ngStyle]="getColor()">{{sub.nombre}}</a>
+                [class.d-none]="(sub.rol && rol>sub.rol)" [ngStyle]="getColor()">{{sub.nombre}}</a>
             </div>
           </div>
         </li>
@@ -83,7 +83,7 @@
                 </div>
               </div>
               <a ngbDropdownItem [routerLink]="['./']" class="text-right" *ngFor="let sub of data.submenu;"
-                [class.d-none]="(sub.rol && rol<sub.rol)" [ngStyle]="getColor()">{{sub.nombre}}</a>
+                [class.d-none]="(sub.rol && rol>sub.rol)" [ngStyle]="getColor()">{{sub.nombre}}</a>
             </div>
           </div>
         </li>
@@ -135,7 +135,7 @@
                 </div>
               </div>
               <a ngbDropdownItem [routerLink]="['./']" (click)="navegar(sub,0,$event,sub.inicio)"
-                *ngFor="let sub of data.submenu;" [class.d-none]="(sub.rol && rol<sub.rol)"
+                *ngFor="let sub of data.submenu;" [class.d-none]="(sub.rol && rol>sub.rol)"
                 [ngStyle]="getColor()">{{sub.nombre}}</a>
             </div>
           </div>
@@ -181,7 +181,7 @@
               </div>
               <a ngbDropdownItem [routerLink]="['./']" class="text-right"
                 (click)="navegar(sub,0,$event,sub.inicio);isMenuCollapsed = !isMenuCollapsed"
-                *ngFor="let sub of data.submenu;" [class.d-none]="(sub.rol && rol<sub.rol)"
+                *ngFor="let sub of data.submenu;" [class.d-none]="(sub.rol && rol>sub.rol)"
                 [ngStyle]="getColor()">{{sub.nombre}}</a>
             </div>
           </div>

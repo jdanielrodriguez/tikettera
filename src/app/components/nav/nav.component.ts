@@ -175,56 +175,69 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
-            url: '../dashboard/perfil',
+            url: '../dashboard/events',
             evento: null,
-            nombre: 'Perfil'
+            nombre: 'Mis Eventos'
+          },{
+            sesion: true,
+            select: false,
+            url: '../dashboard/created-event',
+            evento: null,
+            rol: 2,
+            nombre: 'Producir Evento'
+          },
+          {
+            sesion: true,
+            select: false,
+            url: '../dashboard/information',
+            evento: null,
+            nombre: 'Mi Informacion'
+          },
+          {
+            sesion: true,
+            select: false,
+            url: '../dashboard/credit-cards',
+            evento: null,
+            nombre: 'Mis Tarjetas'
+          },
+          {
+            sesion: true,
+            select: false,
+            url: '../dashboard/orders',
+            evento: null,
+            nombre: 'Mis Ordenes'
+          },
+          {
+            sesion: true,
+            select: false,
+            url: '../dashboard/bills',
+            evento: null,
+            nombre: 'Mis Registros'
           },
           {
             sesion: true,
             select: false,
             url: '../dashboard/categorias',
+            clienteOnly: true,
+            rol: 2,
             evento: null,
-            rol: 4,
-            nombre: 'Categorias'
+            nombre: 'Mis Categorias'
           },
           {
             sesion: true,
             select: false,
             url: '../dashboard/inventario',
             evento: null,
-            rol: 4,
-            nombre: 'Inventario'
-          },
-          {
-            sesion: true,
-            select: false,
-            url: '../dashboard/ordenes',
-            evento: null,
             rol: 2,
-            nombre: 'Ordenes'
-          },
-          {
-            sesion: true,
-            select: false,
-            url: '../dashboard/caja',
-            evento: null,
-            rol: 2,
-            nombre: 'Caja'
+            nombre: 'Mi Inventario'
           },
           {
             sesion: true,
             select: false,
             url: '../dashboard/autorizar-proveedores',
             evento: null,
-            rol: 5,
+            rol: 1,
             nombre: 'Autorizar Proveedores'
-          },
-          {
-            sesion: true,
-            select: false,
-            url: '../dashboard/configuracion',
-            evento: null,
-            nombre: 'Configuraciones'
           },
           {
             sesion: true,
@@ -318,8 +331,8 @@ export class NavComponent implements OnInit, AfterViewInit {
     let ret = 0;
     this.mySesion.actualizaPerfil();
     const perfil: Perfil = this.mySesion.perfil ? this.mySesion.perfil : (new Perfil());
-    if (perfil.rol) {
-      ret = perfil.rol.id ? perfil.rol.id : 0;
+    if (perfil.rol_id) {
+      ret = perfil.rol_id ? perfil.rol_id : 0;
     }
     return ret;
   }

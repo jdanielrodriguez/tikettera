@@ -40,19 +40,25 @@ const routes: Routes = [
   { path: 'pagar/:uuid', component: PagoComponent },
   { path: 'factura/:uuid', component: FacturaComponent },
   { path: 'explorar/:slug', component: ExplorarComponent },
+  { path: 'dashboard', redirectTo: 'dashboard/information', pathMatch: 'full' },
+  { path: 'dashboard/:tipo', component: DashboardComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
     children: [
-      { path: 'settings', redirectTo: 'settings/profile' },
       { path: 'settings/:tipo', component: ConfiguracionComponent },
-      { path: 'profile', component: PerfilComponent },
+      { path: 'information', component: ConfiguracionComponent },
+      { path: 'events', component: PerfilComponent },
+      { path: 'created-event', component: PerfilComponent },
+      { path: 'credit-cards', component: PerfilComponent },
+      { path: 'orders', component: PerfilComponent },
+      { path: 'bills', component: PerfilComponent },
       { path: 'caja', component: CajaComponent },
       { path: 'categorias', component: ClasificacionesComponent },
       { path: 'categorias/:producto', component: CategoriaComponent },
       { path: 'autorizar-proveedores', component: AutorizarProveedoresComponent },
       { path: 'autorizar/:token', component: ValidarCuentaComponent },
-      { path: '**', redirectTo: '', pathMatch: 'full' }
+      { path: '**', redirectTo: 'information', pathMatch: 'full' }
     ], canActivate: [AuthGuard]
   },
   { path: '**', redirectTo: '' }

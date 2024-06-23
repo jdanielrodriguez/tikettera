@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Perfil, Menus } from 'src/app/interfaces';
 import { Sesion } from 'src/app/common/sesion';
 @Component({
@@ -11,9 +12,15 @@ export class ConfiguracionComponent implements OnInit {
   private _perfil: Perfil = new Perfil();
   private _type!: string;
   constructor(
+    private route: ActivatedRoute,
     private mySesion: Sesion
   ) { }
   ngOnInit(): void {
+    this.getParams();
+  }
+  getParams() {
+    const paramType = this.route.firstChild?.snapshot.paramMap.get('tipo');
+    this._type = paramType ?? 'profile';
   }
   navegar(data: Menus) {
     this.mySesion.navegar(data);
@@ -43,34 +50,17 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   get active(): number {
-    switch (this._type) {
-      case 'perfil': {
-        return 1;
-      }
-      case 'sliders': {
-        return 2;
-      }
-      case 'direcciones': {
-        return 3;
-      }
-      case 'metodos-pago': {
-        return 4;
-      }
-      case 'encabezado': {
-        return 5;
-      }
-      case 'correos': {
-        return 6;
-      }
-      case 'password': {
-        return 7;
-      }
-      case 'cuentas': {
-        return 8;
-      }
-      default: {
-        return 1;
-      }
-    }
+    const tabMap: { [key: string]: number } = {
+        'profile': 1,
+        'sliders': 2,
+        'direcciones': 3,
+        'metodos-pago': 4,
+        'encabezado': 5,
+        'correos': 6,
+        'password': 7,
+        'cuentas': 8
+    };
+
+    return tabMap[this._type] ?? 1;
   }
 }

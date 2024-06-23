@@ -4,31 +4,31 @@
   </div>
   <div class="modal-body">
     <ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-tabs">
-      <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/configuracion/perfil'})">
+      <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/settings/profile'})">
         <a ngbNavLink>Perfil</a>
         <ng-template ngbNavContent class="w-100 d-flex">
-          <app-perfil [perfil]="perfil"></app-perfil>
+          <app-perfil-view [perfil]="perfil"> </app-perfil-view>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/configuracion/sliders'})">
+      <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/settings/sliders'})">
         <a ngbNavLink>Sliders</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <!-- <app-sliders-form *ngIf="proveedor" [perfil]="proveedor"></app-sliders-form> -->
         </ng-template>
       </li>
-      <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/configuracion/direcciones'})">
+      <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/settings/direcciones'})">
         <a ngbNavLink>Direcciones</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <app-direcciones [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-direcciones>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/configuracion/metodos-pago'})">
+      <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/settings/metodos-pago'})">
         <a ngbNavLink>Metodos de Pago</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
         </ng-template>
       </li>
-      <!-- <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/configuracion/encabezado'})">
+      <!-- <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/settings/encabezado'})">
         <a ngbNavLink>Encabezado</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <div class="alert alert-info" *ngIf="proveedor && proveedor.estado==2">
@@ -46,13 +46,13 @@
           </div>
         </ng-template>
       </li> -->
-      <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/configuracion/correos'})">
+      <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/settings/correos'})">
         <a ngbNavLink>Correos</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <!-- <app-correos *ngIf="proveedor" [perfil]="proveedor"></app-correos> -->
         </ng-template>
       </li>
-      <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/configuracion/password'})">
+      <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/settings/password'})">
         <a ngbNavLink>Contraseña</a>
         <ng-template ngbNavContent class="w-100 d-flex">
           <app-change-pass [muestraTexto]="true" [esModal]="false" titulo="Cambiar Contraseña"></app-change-pass>

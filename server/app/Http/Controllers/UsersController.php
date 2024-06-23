@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\User;
 use App\Models\Rol;
 use Illuminate\Support\Facades\Hash;
@@ -79,7 +80,20 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $objectSee = User::find($id);
+        if (!$objectSee) {
+            $returnData = array(
+                'status' => 404,
+                'message' => 'No record found'
+            );
+            return new Response($returnData, $returnData['status']);
+        }
+        $returnData = array(
+            'status' => 200,
+            'msg' => 'Event Returned',
+            'data' => $objectSee
+        );
+        return new Response($returnData, $returnData['status']);
     }
 
     /**

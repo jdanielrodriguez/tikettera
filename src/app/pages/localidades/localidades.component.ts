@@ -60,13 +60,13 @@ export class LocalidadesComponent implements OnInit {
         next: (response: ResponseEvent) => {
           this._mainList.length = 0;
           this._mainListAuxiliar.length = 0;
-          if (!response.objeto) {
+          if (!response.cripto) {
             this.mySesion.loadingStop();
             return;
           }
           this.numReg = response.count || 0;
           try {
-            const obj = response.objeto;
+            const obj = response.cripto ? JSON.parse(this.mySesion.desencriptar(response.cripto)) : null;
             obj.localities.forEach((element: Locality) => {
               const datas: ListaBusqueda = {
                 imagen: ('https://via.placeholder.com/250x200'),

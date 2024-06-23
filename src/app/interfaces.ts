@@ -627,9 +627,11 @@ export class ResponseEvent extends RSP {
     this.status = 500;
     this.objeto = null;
     this.count = null;
+    this.cripto = null;
   }
   count: number | null;
   objeto: Event | null;
+  cripto: string | null;
 }
 export class ResponseLocality extends RSP {
   constructor() {

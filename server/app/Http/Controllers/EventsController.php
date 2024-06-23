@@ -84,7 +84,8 @@ class EventsController extends Controller
         $returnData = [
             'status' => 200,
             'msg' => 'Events Returned',
-            'objeto' => $objectSee
+            'cripto' => $encript->encript(mb_convert_encoding(json_encode($objectSee), 'UTF-8', 'UTF-8')),
+            'objeto' => null
         ];
         return new Response($returnData, $returnData['status']);
     }

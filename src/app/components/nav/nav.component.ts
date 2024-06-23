@@ -184,7 +184,7 @@ export class NavComponent implements OnInit, AfterViewInit {
             url: '../dashboard/created-event',
             evento: null,
             rol: 2,
-            nombre: 'Producir Evento'
+            nombre: 'Mis Eventos Producidos'
           },
           {
             sesion: true,
@@ -234,10 +234,17 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
+            url: '../dashboard/settings',
+            evento: null,
+            nombre: 'Configuracion'
+          },
+          {
+            sesion: true,
+            select: false,
             url: '../dashboard/autorizar-proveedores',
             evento: null,
             rol: 1,
-            nombre: 'Autorizar Proveedores'
+            nombre: 'Autorizar productores'
           },
           {
             sesion: true,

@@ -15,9 +15,9 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
 import { BlockUIModule } from 'ng-block-ui';
 
 import { CalendarComponent } from './calendar/calendar.component';
-import { ChangePassFormulario } from './change-pass/change-pass-form.component';
-import { ChangePassComponent } from './change-pass/change-pass.component';
-import { ChatComponent } from './chat/chat.component';
+import { ChangePassFormulario } from './pages/change-pass/change-pass-form.component';
+import { ChangePassComponent } from './pages/change-pass/change-pass.component';
+import { ChatComponent } from './pages/chat/chat.component';
 import { ColorBackgroundComponent } from './color-background/color-background.component';
 import { FooterComponent } from './footer/footer.component';
 import { GaleriaComponent } from './galeria/galeria.component';
@@ -25,8 +25,8 @@ import { ImagenesComponent } from './imagenes/imagenes.component';
 import { LogoutComponent } from './logout/logout.component';
 import { FormularioComponent } from './metodo-pago/formulario/formulario.component';
 import { MetodoPagoComponent } from './metodo-pago/metodo-pago.component';
-import { OrderSummaryComponent } from './order-summary/order-summary.component';
-import { PerfilViewComponent } from './perfil-view/perfil-view.component';
+import { OrderSummaryComponent } from './pages/order-summary/order-summary.component';
+import { PerfilViewComponent } from './pages/perfil-view/perfil-view.component';
 import { SlidersComponent } from './sliders/sliders.component';
 import { TarjetaComponent } from './tarjeta/tarjeta.component';
 
@@ -35,26 +35,26 @@ import { JustTextPipe } from '../pipes/just-text.pipe';
 import { NumTCPipe } from '../pipes/num-tc.pipe';
 
 import { AccordeonComponent } from './accordeon/accordeon.component';
-import { CajaComponent } from './caja/caja.component';
-import { HistorialComponent } from './caja/transacciones/historial/historial.component';
-import { ViewHistorialComponent } from './caja/transacciones/historial/view/view.component';
-import { RetiroComponent } from './caja/transacciones/retiro/retiro.component';
-import { ViewRetiroComponent } from './caja/transacciones/retiro/view/view.component';
-import { TransferenciaComponent } from './caja/transacciones/transferencia/transferencia.component';
+import { CajaComponent } from './pages/caja/caja.component';
+import { HistorialComponent } from './pages/caja/transacciones/historial/historial.component';
+import { ViewHistorialComponent } from './pages/caja/transacciones/historial/view/view.component';
+import { RetiroComponent } from './pages/caja/transacciones/retiro/retiro.component';
+import { ViewRetiroComponent } from './pages/caja/transacciones/retiro/view/view.component';
+import { TransferenciaComponent } from './pages/caja/transacciones/transferencia/transferencia.component';
 import { CardsComponent } from './cards/cards.component';
-import { SendComponent } from './chat/send/send.component';
-import { AddComentarioComponent } from './comentarios/add-comentario/add-comentario.component';
-import { ComentariosComponent } from './comentarios/comentarios.component';
-import { PreciosComponent } from './precios/precios.component';
-import { PlacesComponent } from './places/places.component';
-import { ReaccionesComponent } from './reacciones/reacciones.component';
+import { SendComponent } from './pages/chat/send/send.component';
+import { AddComentarioComponent } from './pages/comentarios/add-comentario/add-comentario.component';
+import { ComentariosComponent } from './pages/comentarios/comentarios.component';
+import { PreciosComponent } from './pages/precios/precios.component';
+import { PlacesComponent } from './pages/places/places.component';
+import { ReaccionesComponent } from './pages/reacciones/reacciones.component';
 import { BusquedaComponent } from './search/busqueda.component';
 
 // Steppers
-import { StepperComponent } from './stepper/stepper.component';
-import { StepperPlacesComponent } from './stepper/places/places.component';
-import { StepperBoletosComponent } from './stepper/boletos/boletos.component';
-import { StepperDetalleCompraComponent } from './stepper/detalle-compra/detalle-compra.component';
+import { StepperComponent } from './pages/stepper/stepper.component';
+import { StepperPlacesComponent } from './pages/stepper/places/places.component';
+import { StepperBoletosComponent } from './pages/stepper/boletos/boletos.component';
+import { StepperDetalleCompraComponent } from './pages/stepper/detalle-compra/detalle-compra.component';
 
 const modules = [
   BusquedaComponent,

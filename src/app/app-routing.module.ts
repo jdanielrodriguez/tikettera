@@ -2,16 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 
-import { ChangePassComponent } from './components/change-pass/change-pass.component';
+import { ChangePassComponent } from './components/pages/change-pass/change-pass.component';
 import { LogoutComponent } from './components/logout/logout.component';
 
-import { AutorizarProveedoresComponent } from './dashboard/autorizar-proveedores/autorizar-proveedores.component';
-import { CajaComponent } from './dashboard/caja/caja.component';
-import { CategoriaComponent } from './dashboard/categoria/categoria.component';
-import { ClasificacionesComponent } from './dashboard/clasificaciones/clasificaciones.component';
-import { ConfiguracionComponent } from './dashboard/configuracion/configuracion.component';
+import { SettingsComponent } from './dashboard/settings/settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { PerfilComponent } from './dashboard/perfil/perfil.component';
 import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuenta.component';
 
 import { AuthComponent } from './auth/auth.component';
@@ -46,17 +41,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     children: [
-      { path: 'settings/:tipo', component: ConfiguracionComponent },
-      { path: 'information', component: ConfiguracionComponent },
-      { path: 'events', component: PerfilComponent },
-      { path: 'created-event', component: PerfilComponent },
-      { path: 'credit-cards', component: PerfilComponent },
-      { path: 'orders', component: PerfilComponent },
-      { path: 'bills', component: PerfilComponent },
-      { path: 'caja', component: CajaComponent },
-      { path: 'categorias', component: ClasificacionesComponent },
-      { path: 'categorias/:producto', component: CategoriaComponent },
-      { path: 'autorizar-proveedores', component: AutorizarProveedoresComponent },
+      { path: 'settings/:tipo', component: SettingsComponent },
       { path: 'autorizar/:token', component: ValidarCuentaComponent },
       { path: '**', redirectTo: 'information', pathMatch: 'full' }
     ], canActivate: [AuthGuard]

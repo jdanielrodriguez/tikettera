@@ -5,7 +5,7 @@ import { Sesion } from 'src/app/common/sesion';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: []
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   private _perfil: Perfil = new Perfil();
@@ -50,15 +50,35 @@ export class DashboardComponent implements OnInit {
   get active(): number {
     const tabMap: { [key: string]: number } = {
         'events': 1,
-        'information': 2,
-        'credit-cards': 3,
-        'orders': 4,
-        'bills': 5,
-        'categorias': 6,
-        'inventario': 7,
-        'settings': 8
+        'produced-events': 2,
+        'information': 3,
+        'credit-cards': 4,
+        'orders': 5,
+        'bills': 6,
+        'categorias': 7,
+        'inventario': 8,
+        'settings': 9,
+        'autorizar-productores': 10
     };
 
-    return tabMap[this._type] ?? 8;
+    return tabMap[this._type] ?? tabMap['settings'];
+  }
+
+  get rolAdmin(): number {
+    return 1;
+  }
+
+  get rolProducer(): number {
+    return 2;
+  }
+
+  get rol(): number {
+    let ret = 0;
+    this.mySesion.actualizaPerfil();
+    const perfil: Perfil = this.mySesion.perfil ? this.mySesion.perfil : (new Perfil());
+    if (perfil.rol_id) {
+      ret = perfil.rol_id ? perfil.rol_id : 0;
+    }
+    return ret;
   }
 }

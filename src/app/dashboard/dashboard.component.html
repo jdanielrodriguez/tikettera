@@ -1,54 +1,74 @@
-<div class="d-flex w-100 ">
-  <ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-pills flex-column w-10 ml-5 " orientation="vertical">
-    <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/events'})">
-      <a ngbNavLink>Mis Eventos</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-perfil-view [perfil]="perfil"> </app-perfil-view>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/information'})">
-      <a ngbNavLink>Mi Informacion</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-perfil-view [perfil]="perfil"> </app-perfil-view>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/credit-cards'})">
-      <a ngbNavLink>Mis Tarjetas</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/orders'})">
-      <a ngbNavLink>Mis Ordenes</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/bills'})">
-      <a ngbNavLink>Mis Registros</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/categorias'})">
-      <a ngbNavLink>Mis Categorias</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/inventario'})">
-      <a ngbNavLink>Mi Inventario</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="8" (click)="navegar({url:'./dashboard/settings'})">
-      <a ngbNavLink>Configuraciones</a>
-      <ng-template ngbNavContent class="w-100 d-flex">
-        <app-configuraciones [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-configuraciones>
-      </ng-template>
-    </li>
-  </ul>
-
-  <div [ngbNavOutlet]="nav" class="w-100 container d-flex "></div>
+<div class="container-fluid container">
+  <div class="row">
+    <div class="fixed-menu col-xs-2 col-sm-2 col-md-2 col-lg-2 ml-auto">
+      <ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-pills flex-column" orientation="vertical">
+        <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/events'})">
+          <a ngbNavLink>Mis Eventos</a>
+          <ng-template ngbNavContent>
+            <app-my-events [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-events>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/produced-events'})" [class.d-none]="(rol>rolProducer)">
+          <a ngbNavLink>Mis Eventos Producidos</a>
+          <ng-template ngbNavContent>
+            <app-my-produced-events [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)">
+            </app-my-produced-events>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/information'})">
+          <a ngbNavLink>Mi Informacion</a>
+          <ng-template ngbNavContent>
+            <app-my-information [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-information>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/credit-cards'})">
+          <a ngbNavLink>Mis Tarjetas</a>
+          <ng-template ngbNavContent>
+            <app-my-cards [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-cards>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/orders'})">
+          <a ngbNavLink>Mis Ordenes</a>
+          <ng-template ngbNavContent>
+            <app-my-orders [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-orders>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/bills'})">
+          <a ngbNavLink>Mis Registros</a>
+          <ng-template ngbNavContent>
+            <app-my-records [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-records>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/categorias'})" [class.d-none]="(rol>rolProducer)">
+          <a ngbNavLink>Mis Categorias</a>
+          <ng-template ngbNavContent>
+            <app-my-categories [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-categories>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="8" (click)="navegar({url:'./dashboard/inventario'})" [class.d-none]="(rol>rolProducer)">
+          <a ngbNavLink>Mi Inventario</a>
+          <ng-template ngbNavContent>
+            <app-my-inventory [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-inventory>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="9" (click)="navegar({url:'./dashboard/settings'})">
+          <a ngbNavLink>Configuraciones</a>
+          <ng-template ngbNavContent>
+            <app-settings [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-settings>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="10" (click)="navegar({url:'./dashboard/autorizar-productores'})" [class.d-none]="(rol>rolAdmin)">
+          <a ngbNavLink>Autorizar Productores</a>
+          <ng-template ngbNavContent>
+            <app-authorize-producers [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)">
+            </app-authorize-producers>
+          </ng-template>
+        </li>
+      </ul>
+    </div>
+    <div class="scrollable-content col-xs-9 col-sm-9 col-md-9 col-lg-9 mr-auto">
+      <h3 class="pl-4"> {{ perfil.names }} </h3>
+      <div [ngbNavOutlet]="nav" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+    </div>
+  </div>
 </div>

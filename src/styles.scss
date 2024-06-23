@@ -3,7 +3,7 @@ html, body {
   height: 100vh;
 }
 *{
-  // outline: solid 2px red;
+  // outline: solid 2pt red; // Debug Css
 }
 .h-max {
   height: calc(100% - 225px)!important;
@@ -473,6 +473,7 @@ ngb-datepicker.dropdown-menu {
 
 .tab-content>.active {
   width: 100%!important;
+  max-height: calc(100vh - 80px);
 }
 
 ngb-typeahead-window.dropdown-menu.show {
@@ -554,6 +555,8 @@ app-lista-producto {
     height: auto!important;
   }
 }
+
+// Payform se puede borrar al verificar que el css del componente se aplique correctamente
 
 /* Espaciado de botones de pago */
 

@@ -27,6 +27,8 @@ export class NavComponent implements OnInit, AfterViewInit {
   ) { }
   public isMenuCollapsed = true;
   public isFullScreeen = window.screen.width > 500;
+  public defaultProfilePicture = 'https://robohash.org/68.186.255.198.png';
+
   ngOnInit(): void {
     this.iniciarMenus();
     this.validarSesion();
@@ -61,36 +63,35 @@ export class NavComponent implements OnInit, AfterViewInit {
       // }
     }
   }
-  navegar(data: Menus, id?: number, evento?: MouseEvent, inicio?: boolean) {
+  navegar(data: Menus, id?: number, evento?: MouseEvent, inicio?: boolean): void {
     if (data.evento) {
       eval.call(data.evento, '');
     }
     if (evento) {
       evento.stopPropagation();
     }
-    if (inicio) {
-      // this.myProveedor.actualizar();
-      const urls = data.url.split('/');
-      // this._proveedor = this.myProveedor.provs ? this.myProveedor.provs.nombre : '';
-      // data.url = urls[0] + '/' + this.proveedor + 'inicio';
-    }
-    this.router.navigate([data.url]);
+
+    this.router.navigate([data.url]).then((success) => {
+      if (success) {
+        this.isMenuCollapsed = true;
+      }
+    });
+
     if (id && id > 0) {
-      this.localSt.store('currentSelectedId', btoa(id + ''));
+      this.localSt.store('currentSelectedId', btoa(id.toString()));
     }
   }
+
   @HostListener('window:resize', [])
-  private onResize() {
+  onResize(): void {
     this.detectScreen();
   }
-  ngAfterViewInit() {
-    this._sesion = this.mySesion.validarSesion();
+
+  ngAfterViewInit(): void {
     this.detectScreen();
-    // this.myProveedor.actualizar();
     this.validarSesion();
-    this.mySesion.actualizaPerfil();
   }
-  // tslint:disable-next-line: use-lifecycle-interface
+
   ngAfterContentChecked() {
     this.cargarConfig();
     if (this._logo && this._logo.length <= 0) {
@@ -98,9 +99,11 @@ export class NavComponent implements OnInit, AfterViewInit {
     }
     this.cdref.detectChanges();
   }
-  private detectScreen() {
-    this.isFullScreeen = window.screen.width > 500;
+
+  detectScreen(): void {
+    this.isFullScreeen = window.innerWidth > 500;
   }
+
   iniciarMenus(): void {
     this._menus = [
       {
@@ -178,10 +181,10 @@ export class NavComponent implements OnInit, AfterViewInit {
             url: '../dashboard/events',
             evento: null,
             nombre: 'Mis Eventos'
-          },{
+          }, {
             sesion: true,
             select: false,
-            url: '../dashboard/created-event',
+            url: '../dashboard/produced-events',
             evento: null,
             rol: 2,
             nombre: 'Mis Eventos Producidos'
@@ -241,7 +244,7 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
-            url: '../dashboard/autorizar-proveedores',
+            url: '../dashboard/autorizar-productores',
             evento: null,
             rol: 1,
             nombre: 'Autorizar productores'
@@ -255,6 +258,23 @@ export class NavComponent implements OnInit, AfterViewInit {
         ]
       }
     ];
+  }
+
+  shouldDisplayMenu(data: Menus): boolean {
+    return data.sesion === this.sesion && (!data.rol || data.rol === this.rol);
+  }
+
+  canAccessSubmenu(sub: Menus): boolean {
+    return !(sub.rol && this.rol > sub.rol);
+  }
+
+  handleMenuClick(data: Menus): void {
+    this.navegar(data);
+    this.toggleMenuState();
+  }
+
+  toggleMenuState(): void {
+    this.isMenuCollapsed = !this.isMenuCollapsed;
   }
   @Input()
   set menus(values: Menus[]) {
@@ -342,8 +362,5 @@ export class NavComponent implements OnInit, AfterViewInit {
       ret = perfil.rol_id ? perfil.rol_id : 0;
     }
     return ret;
-  }
-  get actualizarPass(): boolean {
-    return this.perfil.state === 21;
   }
 }

@@ -18,6 +18,8 @@ network-remove:
 init:
 	docker network inspect tikettera_network >/dev/null 2>&1 || docker network create --subnet=172.16.0.0/24 tikettera_network
 	docker volume inspect tikettera_db_data >/dev/null 2>&1 || docker volume create tikettera_db_data
+	docker volume inspect tikettera_node_modules >/dev/null 2>&1 || docker volume create tikettera_node_modules
+	docker volume inspect tikettera_redis_data >/dev/null 2>&1 || docker volume create tikettera_redis_data
 	docker-compose build
 	docker-compose up -d
 

@@ -8,8 +8,8 @@ import { Sesion } from 'src/app/common/sesion';
   styleUrls: ['./my-cards.component.scss']
 })
 export class MyCardsComponent implements OnInit {
-  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
-  private _perfil: Perfil = new Perfil();
+  @Output() perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  @Input() perfil: Perfil = new Perfil();
   constructor(
     private mySesion: Sesion
   ) { }
@@ -19,19 +19,12 @@ export class MyCardsComponent implements OnInit {
     this.mySesion.navegar(data);
   }
   obtenerPerfilConf(value: Perfil) {
-    this._perfil = value;
-    this._perfilEmit.emit(this._perfil);
+    this.perfil = value;
+    this.perfilEmit.emit(this.perfil);
   }
   @Output()
   get obtenerPerfil(): EventEmitter<Perfil> {
-    this._perfilEmit.emit(this._perfil);
-    return this._perfilEmit;
-  }
-  @Input()
-  set perfil(value: Perfil) {
-    this._perfil = value;
-  }
-  get perfil(): Perfil {
-    return this._perfil;
+    this.perfilEmit.emit(this.perfil);
+    return this.perfilEmit;
   }
 }

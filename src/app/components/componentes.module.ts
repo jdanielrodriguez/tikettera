@@ -23,8 +23,6 @@ import { FooterComponent } from './footer/footer.component';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { ImagenesComponent } from './imagenes/imagenes.component';
 import { LogoutComponent } from './logout/logout.component';
-import { FormularioComponent } from './metodo-pago/formulario/formulario.component';
-import { MetodoPagoComponent } from './metodo-pago/metodo-pago.component';
 import { OrderSummaryComponent } from './pages/order-summary/order-summary.component';
 import { PerfilViewComponent } from './pages/perfil-view/perfil-view.component';
 import { SlidersComponent } from './sliders/sliders.component';
@@ -63,8 +61,6 @@ const modules = [
   SlidersComponent,
   FooterComponent,
   LogoutComponent,
-  MetodoPagoComponent,
-  FormularioComponent,
   NumTCPipe,
   ImagenesComponent,
   JustTextPipe,

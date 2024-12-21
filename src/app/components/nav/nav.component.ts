@@ -178,9 +178,9 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
-            url: '../dashboard/events',
+            url: '../dashboard/information',
             evento: null,
-            nombre: 'Mis Eventos'
+            nombre: 'Mi Informacion'
           }, {
             sesion: true,
             select: false,
@@ -192,9 +192,9 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
-            url: '../dashboard/information',
+            url: '../dashboard/entries',
             evento: null,
-            nombre: 'Mi Informacion'
+            nombre: 'Mis Entradas'
           },
           {
             sesion: true,
@@ -206,33 +206,9 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
-            url: '../dashboard/orders',
-            evento: null,
-            nombre: 'Mis Ordenes'
-          },
-          {
-            sesion: true,
-            select: false,
             url: '../dashboard/bills',
             evento: null,
             nombre: 'Mis Registros'
-          },
-          {
-            sesion: true,
-            select: false,
-            url: '../dashboard/categorias',
-            clienteOnly: true,
-            rol: 2,
-            evento: null,
-            nombre: 'Mis Categorias'
-          },
-          {
-            sesion: true,
-            select: false,
-            url: '../dashboard/inventario',
-            evento: null,
-            rol: 2,
-            nombre: 'Mi Inventario'
           },
           {
             sesion: true,

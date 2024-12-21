@@ -1,205 +1,177 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import Swal from 'sweetalert2'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormasPagoService } from "./../../services/formas-pago.service";
-import { Perfil, MetodoPago } from 'src/app/interfaces';
+import { MetodoPago, Perfil } from 'src/app/interfaces';
 import { Sesion } from 'src/app/common/sesion';
+
 @Component({
   selector: 'app-metodo-pago-form',
   templateUrl: './metodo-pago-form.component.html',
   styleUrls: ['./metodo-pago-form.component.css']
 })
 export class MetodoPagoFormComponent implements OnInit {
-  @BlockUI() blockUI!: NgBlockUI;
-  private _perfil: Perfil = new Perfil()
-  today: any
-  private _frente: boolean = false;
-  private _isCollapsed: boolean = true;
-  public expDate = {
-    months: [],
-    years: []
-  }
-  nacimientoToday: any
-  private _listaEmit: EventEmitter<MetodoPago[]> = new EventEmitter<MetodoPago[]>();
-  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
-  private _lista: MetodoPago[] = [];
-  private _listaEliminar: MetodoPago[] = [];
-  private _data: MetodoPago = new MetodoPago();
+  @Input() perfil: Perfil = new Perfil();
+  frente: boolean = false;
+  isCollapsed: boolean = true;
+  expDate: { months: string[], years: string[] } = { months: [], years: [] };
+  listaEmit: EventEmitter<MetodoPago[]> = new EventEmitter<MetodoPago[]>();
+  perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  lista: MetodoPago[] = [];
+  listaEliminar: MetodoPago[] = [];
+  metodoPagoForm!: FormGroup; // Declaración de la propiedad
+
   constructor(
     private mainService: FormasPagoService,
-    private encrypt: Sesion
+    private fb: FormBuilder,
+    private mySesion: Sesion
   ) { }
+
   ngOnInit(): void {
-    this.iniciarCombos();
-    this._listaEliminar = [];
-  }
-  cargar() {
-    this._listaEmit.emit(this.lista);
-  }
-  addNew() {
-    this.isCollapsed = false
-    this._data = new MetodoPago();
+    this.listaEliminar = [];
+    this.inicializarFormulario(); // Inicializa el formulario reactivo
     this.iniciarCombos();
   }
-  iniciarCombos() {
-    this.expDate.months.length = 0
-    for (let i = 1; i <= 12; i++) {
-      // this.expDate.months.push(i < 10 ? '0' + i : '' + i)
-    }
-    this.expDate.years.length = 0
+
+  inicializarFormulario(): void {
+    this.metodoPagoForm = this.fb.group({
+      id: [null],
+      numeroTC: ['', [Validators.required, Validators.pattern(/^\d{4} \d{4} \d{4} \d{4}$/)]],
+      exp_montTC: ['', [Validators.required]],
+      exp_yearTC: ['', [Validators.required]],
+      nombreTC: ['', [Validators.required, Validators.minLength(3)]],
+      cvvTC: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
+    });
+  }
+
+  addNew(): void {
+    this.isCollapsed = false;
+    this.metodoPagoForm.reset(); // Resetea el formulario para un nuevo ingreso
+    this.frente = false;
+  }
+
+
+  iniciarCombos(): void {
+    this.expDate.months = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
+    const currentYear = new Date().getFullYear();
+    this.expDate.years = Array.from({ length: 10 }, (_, i) => (currentYear + i).toString());
     const yearActual = new Date().getFullYear();
-    for (let i = yearActual; i <= yearActual + 8; i++) {
-      // this.expDate.years.push(i)
-    }
-    if (!this._data.exp_yearTC || this._data.exp_yearTC == '') {
-      this._data.exp_yearTC = "2021"
-      this._data.exp_montTC = "10"
-    }
+    const currentMonth = `${new Date().getMonth() + 1}`.padStart(2, '0');
+
+    this.metodoPagoForm?.patchValue({
+      exp_yearTC: yearActual.toString(),
+      exp_montTC: currentMonth,
+    });
+
   }
-  girarTarjeta(value?: boolean) {
-    this.frente = (value != null) ? value : !this._frente
+  girarTarjeta(value?: boolean): void {
+    this.frente = value !== undefined ? value : !this.frente;
   }
+
   async guardar() {
     let dat = {
-      formasPago: this.encrypt.encriptar(JSON.stringify(this.lista)),
-      aEliminar: this.encrypt.encriptar(JSON.stringify(this._listaEliminar)),
-      usuario: this.encrypt.encriptar(JSON.stringify(this.perfil))
+      formasPago: this.mySesion.encriptar(JSON.stringify(this.lista)),
+      aEliminar: this.mySesion.encriptar(JSON.stringify(this.listaEliminar)),
+      usuario: this.mySesion.encriptar(JSON.stringify(this.perfil))
     }
-    this.blockUI.start();
+    this.mySesion.loadingStart();
     await this.mainService.create(dat)
       .then((element: { status: number, objeto: MetodoPago[] }) => {
-        this._perfil.formas_pago = element.objeto
-        this._perfilEmit.emit(this._perfil);
-        this._listaEliminar = [];
-        this._isCollapsed = true
-        this.blockUI.stop();
+        this.perfil.formas_pago = element.objeto
+        this.perfilEmit.emit(this.perfil);
+        this.listaEliminar = [];
+        this.isCollapsed = true
+        this.mySesion.loadingStop();
       })
       .catch(error => {
-        this.blockUI.stop();
+        this.mySesion.loadingStop();
         if (error.indexOf('401') >= 0) {
           alert("Su sesion ha vencido");
-          this.encrypt.navegar({ url: '../../../../../logout' })
+          this.mySesion.navegar({ url: '../../../../../logout' })
         }
         console.log(error);
       })
   }
-  marcarDefault(data: MetodoPago, evento?: MouseEvent) {
-    if (evento) {
-      evento.stopPropagation();
-    }
-    // this._perfil.formas_pago.forEach((element: MetodoPago) => {
-    //   if (element.id == data.id) {
-    //     element.default = element.default == 1 ? 0 : 1
-    //   } else {
-    //     element.default = 0
-    //   }
-    // })
-    this._perfilEmit.emit(this._perfil);
+  marcarDefault(alert: MetodoPago, event: MouseEvent): void {
+    event.stopPropagation(); // Evita abrir el formulario al hacer clic en el botón
+    this.lista.forEach((metodo) => metodo.default = 0); // Resetea los predeterminados
+    alert.default = 1; // Marca el método actual como predeterminado
   }
-  seleccionar(data: MetodoPago, evento?: MouseEvent) {
-    if (evento) {
-      evento.stopPropagation();
-    }
-    // data.exp_dateTC = this.encrypt.desencriptar(data.exp_dateTC)
-    // data.exp_yearTC = data.exp_yearTC ? this.encrypt.desencriptar(data.exp_yearTC) : '2021';
-    // data.exp_montTC = data.exp_montTC ? this.encrypt.desencriptar(data.exp_montTC) : '10';
-    // data.numeroTC = this.encrypt.desencriptar(data.numeroTC)
-    // data.cvvTC = this.encrypt.desencriptar(data.cvvTC)
-    // this._data = data
-    this._isCollapsed = false
+  seleccionar(alert: MetodoPago, event: MouseEvent): void {
+    event.stopPropagation(); // Evita colapsar la lista al hacer clic
+    this.isCollapsed = false; // Abre el formulario
+    this.metodoPagoForm.patchValue({
+      numeroTC: alert.numeroTC,
+      exp_montTC: this.desencripta(alert.exp_montTC),
+      exp_yearTC: this.desencripta(alert.exp_yearTC),
+      nombreTC: alert.nombreTC,
+      cvvTC: this.desencripta(alert.cvvTC),
+      id: alert.id // Si tiene un ID, lo asigna
+    });
   }
-  agregar(form: any) {
-    form.value.nombre = "XXXX XXXX XXXX " + (form.value.numeroTC.substr(15))
-    form.value.exp_dateTC = this.encrypt.encriptar(form.value.exp_montTC + '/' + form.value.exp_yearTC)
-    form.value.exp_yearTC = this.encrypt.encriptar(form.value.exp_yearTC)
-    form.value.exp_montTC = this.encrypt.encriptar(form.value.exp_montTC)
-    form.value.numeroTC = this.encrypt.encriptar(form.value.numeroTC)
-    form.value.cvvTC = this.encrypt.encriptar(form.value.cvvTC)
-    if (form.value.id) {
-      let index = this._lista.findIndex((element: MetodoPago) => {
-        return element.id == form.value.id
-      })
-      if (index >= 0) {
-        // this._perfil.formas_pago[index] = form.value
-      }
-    } else {
-      if (this._perfil.formas_pago) {
-        this._perfil.formas_pago.push(form.value)
+
+  agregar(): void {
+    if (this.metodoPagoForm.valid) {
+      const formData = this.metodoPagoForm.value;
+
+      formData.nombre = "XXXX XXXX XXXX " + formData.numeroTC.slice(-4);
+      formData.exp_dateTC = this.mySesion.encriptar(
+        `${formData.exp_montTC}/${formData.exp_yearTC}`
+      );
+      formData.exp_yearTC = this.mySesion.encriptar(formData.exp_yearTC);
+      formData.exp_montTC = this.mySesion.encriptar(formData.exp_montTC);
+      formData.numeroTC = this.mySesion.encriptar(formData.numeroTC);
+      formData.cvvTC = this.mySesion.encriptar(formData.cvvTC);
+
+      if (formData.id) {
+        const index = this.lista.findIndex(card => card.id === formData.id);
+        if (index >= 0) this.lista[index] = formData;
       } else {
-        this._perfil.formas_pago = []
-        this._perfil.formas_pago.push(form.value)
+        this.lista.push(formData);
       }
+
+      this.isCollapsed = true;
+      this.guardar();
+    } else {
+      this.metodoPagoForm.markAllAsTouched();
     }
-    // this._lista = this._perfil.formas_pago
-    this._perfilEmit.emit(this._perfil);
-    this._listaEmit.emit(this._lista);
-    this._isCollapsed = true
-    this.guardar()
   }
   desencripta(value: any): string {
-    let dat = this.encrypt.desencriptar(value)
+    let dat = this.mySesion.desencriptar(value)
     return dat ? dat : ''
   }
-  eliminarMetodo(form: MetodoPago) {
+  eliminarMetodo(alert: MetodoPago, index: number): void {
     Swal.fire({
-      title: 'Cuidado',
-      text: 'Se eliminara la Direccion seleccionada',
+      title: '¿Estás seguro?',
+      text: 'Esto eliminará el método de pago seleccionado.',
       icon: 'warning',
-      confirmButtonText: 'Esta bien, Eliminar'
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
-      if (result.value) {
-        let index = this._lista.findIndex((element: MetodoPago) => {
-          return element.id == form.id
-        })
-        // this._perfil.formas_pago.splice(index, 1)
-        this._perfilEmit.emit(this.perfil);
-        this._listaEliminar.push(form)
+      if (result.isConfirmed) {
+        this.lista.splice(index, 1); // Elimina el método de la lista
+        this.listaEliminar.push(alert); // Agrega a la lista de métodos para eliminar
       }
-    })
+    });
+  }
+
+  formatCardNumber(): void {
+    const control = this.metodoPagoForm.get('numeroTC');
+    if (control) {
+      const rawValue = control.value.replace(/\s+/g, ''); // Elimina espacios
+      const formattedValue = rawValue.replace(/(\d{4})(?=\d)/g, '$1 '); // Agrega espacio cada 4 dígitos
+      control.setValue(formattedValue, { emitEvent: false }); // Actualiza sin disparar eventos
+    }
   }
   @Output()
   get form(): EventEmitter<MetodoPago[]> {
-    this._listaEmit.emit(this.lista);
-    return this._listaEmit;
+    this.listaEmit.emit(this.lista);
+    return this.listaEmit;
   }
   @Output()
   get obtenerPerfil(): EventEmitter<Perfil> {
-    this._perfilEmit.emit(this.perfil);
-    return this._perfilEmit;
-  }
-  get lista(): MetodoPago[] {
-    return this._lista;
-  }
-  @Input()
-  set perfil(value: Perfil) {
-    this._perfil = value;
-    if (this._perfil.formas_pago && this._perfil.formas_pago.length > 0) {
-      this._lista = this._perfil.formas_pago
-    }
-  }
-  get perfil(): Perfil {
-    return this._perfil;
-  }
-  get data(): MetodoPago {
-    return this._data;
-  }
-  set data(value: MetodoPago) {
-    if(!value){
-      value = new MetodoPago();
-    }
-    this._data = value;
-  }
-
-  set isCollapsed(value: boolean) {
-    this._isCollapsed = value
-  }
-  get isCollapsed(): boolean {
-    return this._isCollapsed
-  }
-  set frente(value: boolean) {
-    this._frente = value
-  }
-  get frente(): boolean {
-    return this._frente
+    this.perfilEmit.emit(this.perfil);
+    return this.perfilEmit;
   }
 }

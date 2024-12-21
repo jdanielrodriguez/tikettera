@@ -241,7 +241,7 @@ export class MetodoPago {
   paypalToken?: string;
   nombreTC?: string;
   exp_dateTC?: string;
-  numeroTC?: string;
+  numeroTC: string;
   cuenta?: string;
   nombreCuenta?: string;
   exp_yearTC?: string;

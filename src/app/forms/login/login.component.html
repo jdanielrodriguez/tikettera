@@ -7,21 +7,20 @@
       <!-- Campo Email -->
       <div class="input-group my-3">
         <input type="email" class="form-control" formControlName="email" placeholder="Correo">
-        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
-          <small *ngIf="loginForm.get('email')?.errors?.['required']">El correo es requerido.</small>
-          <small *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo inválido.</small>
-        </div>
-      </div>
 
+      </div>
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="alert alert-danger">
+        <strong *ngIf="loginForm.get('email')?.errors?.['required']">El correo es requerido.</strong>
+        <strong *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo inválido.</strong>
+      </div>
       <!-- Campo Password -->
       <div class="input-group my-3">
         <input type="password" class="form-control" formControlName="password" placeholder="Contraseña">
-        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
-          <small *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es requerida.</small>
-          <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Mínimo 3 caracteres.</small>
-        </div>
       </div>
-
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="alert alert-danger">
+        <strong *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es requerida.</strong>
+        <strong *ngIf="loginForm.get('password')?.errors?.['minlength']">Mínimo 3 caracteres.</strong>
+      </div>
       <!-- Enlaces a registro y recuperación -->
       <div class="mb-3 row">
         <div class="ml-3 col-xs-12 col-sm-12 col-md-4 col-lg-6 text-left ml-auto">

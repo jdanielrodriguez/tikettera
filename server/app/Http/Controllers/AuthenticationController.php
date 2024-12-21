@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\AuthMetodUser;
 use App\Models\User;
@@ -21,9 +20,10 @@ class AuthenticationController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'  => 'required',
-            'password'  => 'required'
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
+
         if ($validator->fails()) {
             $returnData = [
                 'status' => 400,
@@ -32,54 +32,37 @@ class AuthenticationController extends Controller
             ];
             return Response::json($returnData, $returnData['status']);
         }
+
         try {
             $encript = new Encripter();
-            $userData = [
-                'username'  => $request->get('username'),
-                'password'  => $encript->desencript($request->get('password'))
-            ];
+            $password = $encript->desencript($request->input('password'));
+
             if (!$encript->getValidSalt()) {
                 $returnData = [
                     'status' => 404,
-                    'objeto' => null,
-                    'msg' => "Error de seguridad"
+                    'msg' => 'Error de seguridad',
+                    'objeto' => null
                 ];
                 return Response::json($returnData, $returnData['status']);
             }
-            $email = $request->get('email');
-            $email_exists  = User::whereRaw("email = ?", $email)->first();
-            if ($email_exists) {
-                $userData['username'] = $email_exists->username;
-                $token = JWTAuth::attempt($userData);
-                if ($token) {
-                    $last_conection = Carbon::now('America/Guatemala');
-                    $user = User::find(Auth::user()->id);
-                    $user->last_conection = $last_conection;
-                    $user->token = $token;
-                    $user->google_token = $request->get('google_token');
-                    $user->google_id_token = $request->get('google_id_token');
-                    $user->google_id = $request->get('google_id');
-                    $authObj = AuthMetodUser::whereRaw("user_id = ? AND auth_method_id = ?", [$user->id, User::AUTH_METHOD_SIMPLE])->first();
-                    if (!$authObj) {
-                        $returnData = [
-                            'status' => 200,
-                            'msg' => "Error Auth Method",
-                            'objeto' => null
-                        ];
-                        return Response::json($returnData, $returnData['status']);
-                    }
-                    $authObj->token = $token;
-                    $authObj->last_conection = $last_conection;
-                    $authObj->save();
 
-                    $user->save();
-                    $returnData = [
-                        'status' => 200,
-                        'msg' => 'OK',
-                        'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
-                    ];
-                    return Response::json($returnData, $returnData['status']);
-                }
+            $email = $request->input('email');
+            $user = User::where('email', $email)->first();
+            if (!$user) {
+                $returnData = [
+                    'status' => 401,
+                    'msg' => 'No valid Email',
+                    'obj' => null
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+
+            $credentials = [
+                'email' => $email,
+                'password' => $password
+            ];
+
+            if (!$token = JWTAuth::attempt($credentials)) {
                 $returnData = [
                     'status' => 401,
                     'msg' => 'No valid Password',
@@ -87,10 +70,30 @@ class AuthenticationController extends Controller
                 ];
                 return Response::json($returnData, $returnData['status']);
             }
+
+            $user->last_conection = Carbon::now('America/Guatemala');
+            $user->token = $token;
+            $user->save();
+
+            $authObj = AuthMetodUser::where('user_id', $user->id)
+                ->where('auth_method_id', User::AUTH_METHOD_SIMPLE)
+                ->first();
+            if (!$authObj) {
+                $returnData = [
+                    'status' => 200,
+                    'msg' => 'Error Auth Method',
+                    'objeto' => null
+                ];
+                return Response::json($returnData, $returnData['status']);
+            }
+
+            $authObj->token = $token;
+            $authObj->last_conection = Carbon::now('America/Guatemala');
+            $authObj->save();
             $returnData = [
-                'status' => 401,
-                'msg' => 'No valid Email',
-                'obj' => null
+                'status' => 200,
+                'msg' => 'OK',
+                'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
             ];
             return Response::json($returnData, $returnData['status']);
         } catch (Exception $e) {
@@ -169,7 +172,7 @@ class AuthenticationController extends Controller
     public function signUp(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user'      => 'required',
+            'user' => 'required',
         ]);
         if ($validator->fails()) {
             $returnData = [
@@ -179,102 +182,69 @@ class AuthenticationController extends Controller
             ];
             return Response::json($returnData, $returnData['status']);
         }
+
         $encript = new Encripter();
         $objectRequest = (object)[
-            "user" => $request->get('user') ? json_decode(mb_convert_encoding($encript->desencript($request->get('user')), 'UTF-8', 'UTF-8')) : null,
+            'user' => $request->get('user') ? json_decode(mb_convert_encoding($encript->desencript($request->get('user')), 'UTF-8', 'UTF-8')) : null,
         ];
+
         if (!$encript->getValidSalt()) {
             $returnData = [
                 'status' => 404,
-                'objeto' => null,
-                'msg' => "Error de seguridad"
+                'msg' => 'Error de seguridad',
+                'objeto' => null
             ];
             return Response::json($returnData, $returnData['status']);
         }
-        $email = $objectRequest->user->email;
-        $email_exists  = User::whereRaw("email = ?", $email)->count();
-        $user = $objectRequest->user->username;
-        $user_exists  = User::whereRaw("username = ?", $user)->count();
-        // Registro de usuario Nuevo
-        if ($email_exists == 0) {
-            DB::beginTransaction();
-            $userController = new UsersController();
-            if ($user_exists > 0) {
-                $objectRequest->user->username = $user . ($user_exists + 1);
-            }
-            $newObject = $userController->createClientFromObject($objectRequest->user);
-            $userdata = [
-                'username'  => $user,
-                'password'  => $objectRequest->user->password
-            ];
-            $newObject->save();
-            $objectSee = User::whereRaw('id=?', $newObject->id)->first();
-            if ($objectSee) {
-                $token = JWTAuth::attempt($userdata);
-                if ($token) {
-                    try {
-                        EmailsController::enviarConfirm($objectRequest, $objectSee);
-                    } catch (Exception $e) {
-                        DB::rollback();
-                    } finally {
-                        $last_conection = Carbon::now('America/Guatemala');
-                        $objectSee->last_conection = $last_conection;
-                        $objectSee->token = $token;
-                        $objectSee->save();
-                        $authObj = new AuthMetodUser();
-                        $authObj->token = $token;
-                        $authObj->auth_method_id = User::AUTH_METHOD_SIMPLE;
-                        $authObj->user_id = $objectSee->id;
-                        $authObj->time_out = null;
-                        $authObj->readonly = 1;
-                        $authObj->last_conection = $last_conection;
-                        $authObj->save();
-                        DB::commit();
-                        $returnData = [
-                            'status' => 200,
-                            'msg' => 'OK',
-                            'objeto' => $encript->encript(mb_convert_encoding(json_encode($objectSee), 'UTF-8', 'UTF-8'))
-                        ];
-                    }
-                    return Response::json($returnData, $returnData['status']);
-                } else {
-                    DB::rollback();
-                    $returnData = [
-                        'status' => 405,
-                        'msg' => 'Token error'
-                    ];
-                    return Response::json($returnData, $returnData['status']);
-                }
-            } else {
-                DB::rollback();
-                $returnData = [
-                    'status' => 404,
-                    'msg' => 'Error creando el usuario'
-                ];
-                return Response::json($returnData, $returnData['status']);
-            }
-        }
 
-        // Usuario Nuevo ya existe
-        if ($email_exists > 0) {
-            DB::beginTransaction();
-            $objectSee = User::whereRaw("email = ?", $email)->first();
-            $authCount = AuthMetodUser::whereRaw("user_id = ? AND auth_method_id = ?", [$objectSee->id, User::AUTH_METHOD_SIMPLE])->count();
-            if ($authCount == 0) {
-                $returnData = [
-                    'status' => 200,
-                    'msg' => "Error Auth Method",
-                    'objeto' => null
-                ];
-                return Response::json($returnData, $returnData['status']);
-            }
-            $objectSee->rol_id = Rol::ROL_CLIENT;
-            $objectSee->save();
-            DB::commit();
+        $email = $objectRequest->user->email;
+        $email_exists = User::where('email', $email)->exists();
+
+        if ($email_exists) {
             $returnData = [
                 'status' => 200,
-                'msg' => "Already Registered",
-                'objeto' => $encript->encript(mb_convert_encoding(json_encode($objectSee), 'UTF-8', 'UTF-8'))
+                'msg' => 'Already Registered',
+                'objeto' => $encript->encript(mb_convert_encoding(json_encode(User::where('email', $email)->first()), 'UTF-8', 'UTF-8'))
+            ];
+            return Response::json($returnData, $returnData['status']);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $user = new User();
+            $user->username = $objectRequest->user->username ?? substr($email, 0, strpos($email, '@'));
+            $user->password = Hash::make($objectRequest->user->password);
+            $user->email = $email;
+            $user->rol_id = Rol::ROL_CLIENT;
+            $user->save();
+
+            $token = JWTAuth::fromUser($user);
+
+            $user->last_conection = Carbon::now('America/Guatemala');
+            $user->token = $token;
+            $user->save();
+
+            $authObj = new AuthMetodUser();
+            $authObj->token = $token;
+            $authObj->auth_method_id = User::AUTH_METHOD_SIMPLE;
+            $authObj->user_id = $user->id;
+            $authObj->last_conection = Carbon::now('America/Guatemala');
+            $authObj->save();
+
+            DB::commit();
+
+            $returnData = [
+                'status' => 200,
+                'msg' => 'OK',
+                'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
+            ];
+            return Response::json($returnData, $returnData['status']);
+        } catch (Exception $e) {
+            DB::rollback();
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage()
             ];
             return Response::json($returnData, $returnData['status']);
         }

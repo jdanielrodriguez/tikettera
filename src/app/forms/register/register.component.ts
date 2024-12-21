@@ -1,27 +1,30 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Menus, Perfil, Response, ResponseCAPTCHA } from "./../../interfaces";
 import { Sesion } from './../../common/sesion';
 import { AuthServices } from "./../../services/auth.service";
 import { UsuariosService } from "./../../services/usuarios.service";
 import { Modal } from "./../modal.component";
-declare var $: any
+declare var $: any;
 @Component({
   selector: 'app-register-form',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  today: any
-  nacimientoToday: any
-  @ViewChild(Modal) registerModal!: Modal
+  today: any;
+  nacimientoToday: any;
+  @ViewChild(Modal) registerModal!: Modal;
   component: EventEmitter<string> = new EventEmitter<string>();
-  componentStr!: string
+  componentStr!: string;
   @Input() esModal!: boolean;
   @Input() titulo: string = "";
   @Input() dinamicLink: string = "";
+  registerForm!: FormGroup;
+
   constructor(
+    private fb: FormBuilder,
     public userServices: UsuariosService,
     private modalService: NgbModal,
     private authServices: AuthServices,
@@ -30,20 +33,29 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {
     config.backdrop = 'static';
     config.keyboard = true;
-    config.size = 'lg'
+    config.size = 'lg';
   }
+
   ngOnInit() {
+    this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(3)]],
+      password_rep: ['', [Validators.required]]
+    }, { validator: this.passwordMatchValidator });
+
     this.mySesion.scrollTop();
+
     if (this.esModal) {
-      let temp = Modal
+      let temp = Modal;
       if (this.titulo) {
         if (this.registerModal) {
           this.registerModal.titulo = this.titulo;
         }
       }
-      temp.prototype.titulo = this.titulo
+      temp.prototype.titulo = this.titulo;
       this.modalService.open(temp);
     }
+
     this.mySesion.showCaptcha();
   }
   socialSignIn(socialProvider: string) {
@@ -91,14 +103,28 @@ export class RegisterComponent implements OnInit, OnDestroy {
     //   console.log(error);
     // });
   }
-  async simpleSignUp(form: NgForm) {
-    let perfil: Perfil = new Perfil(form.value);
+
+  passwordMatchValidator(formGroup: FormGroup) {
+    const password = formGroup.get('password');
+    const passwordRep = formGroup.get('password_rep');
+    return password && passwordRep && password.value === passwordRep.value ? null : { mismatch: true };
+  }
+
+  onSubmit() {
+    if (this.registerForm.invalid) {
+      return;
+    }
+
+    const { email, password } = this.registerForm.value;
+    const perfil: Perfil = new Perfil({ email, password });
+    this.simpleSignUp(perfil);
+  }
+
+  async simpleSignUp(perfil: Perfil) {
     let validateCaptcha = await this.mySesion.validateCaptcha('signup');
     if (!validateCaptcha) {
       this.mySesion.createError("Error validando Captcha.");
       this.mySesion.loadingStop();
-      validateCaptcha = await this.mySesion.validateCaptcha('signup');
-      this.simpleSignUp(form);
       return;
     }
     const captchaData = {
@@ -107,6 +133,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (!this.mySesion.validarEmail(perfil.email)) {
       this.mySesion.createError("Su correo es incorrecto.");
       this.mySesion.loadingStop();
+      return;
     }
     const authServ = this.authServices.validarCaptcha(captchaData)
       .subscribe({
@@ -128,13 +155,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
     const data = {
       user: this.mySesion.encriptar(JSON.stringify(perfil))
-    }
+    };
     const request = this.userServices.create(data)
       .subscribe({
         next: (response: Response) => {
           this.mySesion.loadingStop();
           if (response.status >= 400) {
-            this.mySesion.createError(response.msg ? response.msg : '')
+            this.mySesion.createError(response.msg ? response.msg : '');
           }
           const perfil = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
           this.mySesion.actualizaPerfil(perfil);
@@ -144,7 +171,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           }
           this.mySesion.hideCaptcha();
           if (this.modalService.hasOpenModals()) {
-            this.closeModal()
+            this.closeModal();
           }
           if (!this.mySesion.lastLink) {
             this.mySesion.navegar({ url: `./` });
@@ -152,21 +179,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
           }
           let linkURL = "./";
           if (this.mySesion.lastLink.length > 3) {
-            let urls = this.mySesion.lastLink
-            linkURL = urls
+            let urls = this.mySesion.lastLink;
+            linkURL = urls;
           }
           if (!linkURL) {
-            this.mySesion.navegar({ url: `./` })
+            this.mySesion.navegar({ url: `./` });
           }
-          this.mySesion.lastLink = null
-          this.mySesion.navegar({ url: `${linkURL}` })
+          this.mySesion.lastLink = null;
+          this.mySesion.navegar({ url: `${linkURL}` });
         },
         error: (error) => {
           this.mySesion.loadingStop();
           if (error.msg) {
-            this.mySesion.createError(error.msg)
+            this.mySesion.createError(error.msg);
           } else {
-            this.mySesion.createError("Error desconocido, por favor trate otra vez")
+            this.mySesion.createError("Error desconocido, por favor trate otra vez");
           }
         },
         complete: () => { request.unsubscribe(); }
@@ -180,10 +207,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
       evento.stopPropagation();
     }
     if (this.modalService.hasOpenModals()) {
-      this.componentStr = data.url
+      this.componentStr = data.url;
       this.component.emit(this.componentStr);
     } else {
-      this.mySesion.navegar({ url: `${data.url}` })
+      this.mySesion.navegar({ url: `${data.url}` });
     }
   }
   public ngOnDestroy() {

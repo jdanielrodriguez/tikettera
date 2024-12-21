@@ -51,14 +51,14 @@ export class DashboardComponent implements OnInit {
     const tabMap: { [key: string]: number } = {
         'information': 1,
         'produced-events': 2,
-        'events': 3,
+        'entries': 3,
         'credit-cards': 4,
         'bills': 5,
         'settings': 6,
         'autorizar-promotores': 7
     };
 
-    return tabMap[this._type] ?? tabMap['settings'];
+    return tabMap[this._type] ?? tabMap['information'];
   }
 
   get rolAdmin(): number {

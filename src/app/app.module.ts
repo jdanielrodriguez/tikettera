@@ -43,7 +43,7 @@ import { ProveedoresService } from './services/proveedores.service';
 import { AuthComponent } from './auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuenta.component';
-import { MyEventsComponent } from './dashboard/my-events/my-events.component';
+import { MyEntriesComponent } from './dashboard/my-entries/my-entries.component';
 import { MyProducedEventsComponent } from './dashboard/my-produced-events/my-produced-events.component';
 import { MyInformationComponent } from './dashboard/my-information/my-information.component';
 import { MyCardsComponent } from './dashboard/my-cards/my-cards.component';
@@ -68,7 +68,7 @@ import { AuthorizePromotersComponent } from './dashboard/authorize-promoters/aut
     RecoveryComponent,
     ValidarCuentaComponent,
     AuthComponent,
-    MyEventsComponent,
+    MyEntriesComponent,
     MyProducedEventsComponent,
     MyInformationComponent,
     MyCardsComponent,

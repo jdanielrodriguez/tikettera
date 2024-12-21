@@ -16,10 +16,10 @@
             </app-my-produced-events>
           </ng-template>
         </li>
-        <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/events'})">
+        <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/entries'})">
           <a ngbNavLink>Mis Entradas</a>
           <ng-template ngbNavContent>
-            <app-my-events [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-events>
+            <app-my-entries [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-entries>
           </ng-template>
         </li>
         <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/credit-cards'})">

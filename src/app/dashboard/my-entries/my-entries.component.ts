@@ -2,11 +2,11 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Perfil, Menus } from 'src/app/interfaces';
 import { Sesion } from 'src/app/common/sesion';
 @Component({
-  selector: 'app-my-events',
-  templateUrl: './my-events.component.html',
-  styleUrls: ['./my-events.component.scss']
+  selector: 'app-my-entries',
+  templateUrl: './my-entries.component.html',
+  styleUrls: ['./my-entries.component.scss']
 })
-export class MyEventsComponent implements OnInit {
+export class MyEntriesComponent implements OnInit {
   private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
   private _perfil: Perfil = new Perfil();
   constructor(

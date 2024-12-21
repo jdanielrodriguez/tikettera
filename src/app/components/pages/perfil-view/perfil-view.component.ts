@@ -13,7 +13,7 @@ export class PerfilViewComponent implements OnInit {
   perfilForm!: FormGroup;
   _token!: string;
   private _validacion!: boolean;
-  @Input() editMode: boolean = false; // Indica si está en modo edición
+  @Input() editMode: boolean = false;
 
   constructor(private fb: FormBuilder) {}
 

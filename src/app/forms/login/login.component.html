@@ -6,11 +6,7 @@
 
       <!-- Campo Email -->
       <div class="input-group my-3">
-        <input
-          type="email"
-          class="form-control"
-          formControlName="email"
-          placeholder="Correo">
+        <input type="email" class="form-control" formControlName="email" placeholder="Correo">
         <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
           <small *ngIf="loginForm.get('email')?.errors?.['required']">El correo es requerido.</small>
           <small *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo inválido.</small>
@@ -19,11 +15,7 @@
 
       <!-- Campo Password -->
       <div class="input-group my-3">
-        <input
-          type="password"
-          class="form-control"
-          formControlName="password"
-          placeholder="Contraseña">
+        <input type="password" class="form-control" formControlName="password" placeholder="Contraseña">
         <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
           <small *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es requerida.</small>
           <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Mínimo 3 caracteres.</small>
@@ -43,10 +35,7 @@
       </div>
 
       <!-- Botón Enviar -->
-      <button
-        class="btn btn-lg mx-auto btn-primary btn-block"
-        [disabled]="loginForm.invalid"
-        type="submit">
+      <button class="btn btn-lg mx-auto btn-primary btn-block" [disabled]="loginForm.invalid" type="submit">
         <i class="fa fa-sign-in"></i> Ingresar
       </button>
 

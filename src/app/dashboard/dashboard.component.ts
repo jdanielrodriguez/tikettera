@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit {
         'autorizar-promotores': 7
     };
 
-    return tabMap[this._type] ?? tabMap['information'];
+    return this._type ? (tabMap[this._type] ?? tabMap['information']) : tabMap['settings'];
   }
 
   get rolAdmin(): number {

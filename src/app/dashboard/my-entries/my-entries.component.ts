@@ -1,6 +1,16 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Perfil, Menus } from 'src/app/interfaces';
-import { Sesion } from 'src/app/common/sesion';
+import { Perfil } from 'src/app/interfaces';
+
+interface Entry {
+  eventName: string;
+  eventDate: string;
+  eventTime: string;
+  location: string;
+  seat: string;
+  status: string;
+  image?: string;
+}
+
 @Component({
   selector: 'app-my-entries',
   templateUrl: './my-entries.component.html',
@@ -9,13 +19,53 @@ import { Sesion } from 'src/app/common/sesion';
 export class MyEntriesComponent implements OnInit {
   private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
   private _perfil: Perfil = new Perfil();
-  constructor(
-    private mySesion: Sesion
-  ) { }
+
+  entries: Entry[] = []; // Lista completa de entradas
+  paginatedEntries: Entry[] = []; // Entradas para la página actual
+  page: number = 1; // Página actual
+  pageSize: number = 5; // Tamaño de página
+
+  constructor() { }
+
   ngOnInit(): void {
+    this.loadEntries();
+    this.updatePaginatedEntries();
   }
-  navegar(data: Menus) {
-    this.mySesion.navegar(data);
+
+  loadEntries(): void {
+    // Simula la carga de entradas; reemplaza esto con datos reales del servicio
+    this.entries = [
+      {
+        eventName: 'Concierto de Rock',
+        eventDate: '2024-12-25',
+        eventTime: '19:00',
+        location: 'Estadio Nacional',
+        seat: 'A12',
+        status: 'Próximo',
+        image: 'https://via.placeholder.com/150'
+      },
+      {
+        eventName: 'Obra de Teatro',
+        eventDate: '2024-11-20',
+        eventTime: '20:00',
+        location: 'Teatro Municipal',
+        seat: 'B5',
+        status: 'Asistido',
+        image: 'https://via.placeholder.com/150'
+      },
+      // Agrega más entradas según sea necesario
+    ];
+  }
+
+  updatePaginatedEntries(): void {
+    const startIndex = (this.page - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedEntries = this.entries.slice(startIndex, endIndex);
+  }
+
+  onPageChange(page: number): void {
+    this.page = page;
+    this.updatePaginatedEntries();
   }
   obtenerPerfilConf(value: Perfil) {
     this._perfil = value;

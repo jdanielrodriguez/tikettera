@@ -1,0 +1,13 @@
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}

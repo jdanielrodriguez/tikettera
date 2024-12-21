@@ -1,1 +1,48 @@
-<p>my-produced-events works!</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Mis Eventos Producidos</h2>
+
+  <!-- Botón para crear nuevo evento (mostrar solo si la tabla está visible) -->
+  <div class="text-right mb-3" *ngIf="!showForm">
+    <button class="btn btn-success" (click)="showEventForm()">Crear Nuevo Evento</button>
+  </div>
+
+  <!-- Lista de eventos (colapsable) -->
+  <div class="collapse" [ngClass]="{'show': !showForm}">
+    <ul class="list-group mb-4">
+      <li class="list-group-item" *ngFor="let event of paginatedEvents">
+        <div class="row align-items-center">
+          <!-- Imagen del evento -->
+          <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
+            <img [src]="event.image || 'https://via.placeholder.com/150'" class="img-fluid rounded" alt="Evento"
+              style="max-height: 100px;" />
+          </div>
+
+          <!-- Detalles del evento -->
+          <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+            <h5 class="mb-1">{{ event.name }}</h5>
+            <p class="mb-0">
+              <strong>Fecha:</strong> {{ event.date | date: 'mediumDate' }} <br />
+              <strong>Localidad:</strong> {{ event.location }} <br />
+              <strong>Entradas Vendidas:</strong> {{ event.ticketsSold }}/{{ event.totalTickets }}
+            </p>
+          </div>
+
+          <!-- Opciones -->
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+            <button class="btn btn-primary btn-sm" (click)="editEvent(event)">Editar</button>
+            <button class="btn btn-danger btn-sm ml-2" (click)="deleteEvent(event)">Eliminar</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Paginación -->
+    <ngb-pagination class="d-flex justify-content-center" [(page)]="page" [pageSize]="pageSize"
+      [collectionSize]="events.length" (pageChange)="onPageChange($event)"></ngb-pagination>
+  </div>
+
+  <!-- Formulario para crear/editar eventos -->
+  <div class="collapse" [ngClass]="{'show': showForm}">
+    <app-event-form [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-event-form>
+  </div>
+</div>

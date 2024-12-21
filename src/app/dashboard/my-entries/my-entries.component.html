@@ -1,1 +1,40 @@
-<p>my-events works!</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Mis Entradas</h2>
+
+  <!-- Lista de entradas -->
+  <ul class="list-group mb-4">
+    <li class="list-group-item" *ngFor="let entry of paginatedEntries">
+      <div class="row align-items-center">
+        <!-- Imagen del evento -->
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
+          <img [src]="entry.image || 'https://via.placeholder.com/150'" class="img-fluid rounded" alt="Evento"
+            style="max-height: 100px;" />
+        </div>
+
+        <!-- Detalles del evento -->
+        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+          <h5 class="mb-1">{{ entry.eventName }}</h5>
+          <p class="mb-0">
+            <strong>Fecha:</strong> {{ entry.eventDate | date: 'mediumDate' }} <br />
+            <strong>Hora:</strong> {{ entry.eventTime }} <br />
+            <strong>Localidad:</strong> {{ entry.location }} <br />
+            <strong>Asiento:</strong> {{ entry.seat }}
+          </p>
+        </div>
+
+        <!-- Estado del evento -->
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+          <span class="badge" [ngClass]="{
+              'bg-success': entry.status === 'Asistido',
+              'bg-warning': entry.status === 'Próximo',
+              'bg-secondary': entry.status === 'Finalizado'
+            }">{{ entry.status }}</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Paginación -->
+  <ngb-pagination class="d-flex justify-content-center" [(page)]="page" [pageSize]="pageSize"
+    [collectionSize]="entries.length" (pageChange)="onPageChange($event)"></ngb-pagination>
+</div>

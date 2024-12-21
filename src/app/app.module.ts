@@ -47,12 +47,10 @@ import { MyEventsComponent } from './dashboard/my-events/my-events.component';
 import { MyProducedEventsComponent } from './dashboard/my-produced-events/my-produced-events.component';
 import { MyInformationComponent } from './dashboard/my-information/my-information.component';
 import { MyCardsComponent } from './dashboard/my-cards/my-cards.component';
-import { MyOrdersComponent } from './dashboard/my-orders/my-orders.component';
 import { MyRecordsComponent } from './dashboard/my-records/my-records.component';
 import { MyCategoriesComponent } from './dashboard/my-categories/my-categories.component';
-import { MyInventoryComponent } from './dashboard/my-inventory/my-inventory.component';
 import { SettingsComponent } from './dashboard/settings/settings.component';
-import { AuthorizeProducersComponent } from './dashboard/authorize-producers/authorize-producers.component';
+import { AuthorizePromotersComponent } from './dashboard/authorize-promoters/authorize-promoters.component';
 
 @NgModule({
   declarations: [
@@ -74,12 +72,10 @@ import { AuthorizeProducersComponent } from './dashboard/authorize-producers/aut
     MyProducedEventsComponent,
     MyInformationComponent,
     MyCardsComponent,
-    MyOrdersComponent,
     MyRecordsComponent,
     MyCategoriesComponent,
-    MyInventoryComponent,
     SettingsComponent,
-    AuthorizeProducersComponent,
+    AuthorizePromotersComponent,
   ],
   imports: [
     AppRoutingModule,

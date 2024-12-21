@@ -16,19 +16,13 @@
           <app-sliders-form></app-sliders-form>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/settings/direcciones'})">
-        <a ngbNavLink>Direcciones</a>
-        <ng-template ngbNavContent>
-          <app-direcciones [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-direcciones>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/settings/metodos-pago'})">
+      <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/settings/metodos-pago'})">
         <a ngbNavLink>Metodos de Pago</a>
         <ng-template ngbNavContent>
           <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
         </ng-template>
       </li>
-      <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/settings/encabezado'})">
+      <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/settings/encabezado'})">
         <a ngbNavLink>Encabezado</a>
         <ng-template ngbNavContent>
           <div class="alert alert-info">
@@ -46,13 +40,13 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/settings/correos'})">
+      <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/settings/correos'})">
         <a ngbNavLink>Correos</a>
         <ng-template ngbNavContent>
           <app-correos></app-correos>
         </ng-template>
       </li>
-      <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/settings/password'})">
+      <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/settings/password'})">
         <a ngbNavLink>Contraseña</a>
         <ng-template ngbNavContent>
           <app-change-pass [muestraTexto]="true" [esModal]="false" titulo="Cambiar Contraseña"></app-change-pass>

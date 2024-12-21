@@ -2,10 +2,11 @@
   <div class="row">
     <div class="fixed-menu col-xs-2 col-sm-2 col-md-2 col-lg-2 ml-auto">
       <ul ngbNav #nav="ngbNav" [activeId]="active" class="nav-pills flex-column" orientation="vertical">
-        <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/events'})">
-          <a ngbNavLink>Mis Eventos</a>
+
+        <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/information'})">
+          <a ngbNavLink>Mi Informacion</a>
           <ng-template ngbNavContent>
-            <app-my-events [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-events>
+            <app-my-information [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-information>
           </ng-template>
         </li>
         <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/produced-events'})" [class.d-none]="(rol>rolProducer)">
@@ -15,10 +16,10 @@
             </app-my-produced-events>
           </ng-template>
         </li>
-        <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/information'})">
-          <a ngbNavLink>Mi Informacion</a>
+        <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/events'})">
+          <a ngbNavLink>Mis Entradas</a>
           <ng-template ngbNavContent>
-            <app-my-information [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-information>
+            <app-my-events [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-events>
           </ng-template>
         </li>
         <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/credit-cards'})">
@@ -27,41 +28,23 @@
             <app-my-cards [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-cards>
           </ng-template>
         </li>
-        <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/orders'})">
-          <a ngbNavLink>Mis Ordenes</a>
-          <ng-template ngbNavContent>
-            <app-my-orders [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-orders>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/bills'})">
+        <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/bills'})">
           <a ngbNavLink>Mis Registros</a>
           <ng-template ngbNavContent>
             <app-my-records [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-records>
           </ng-template>
         </li>
-        <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/categorias'})" [class.d-none]="(rol>rolProducer)">
-          <a ngbNavLink>Mis Categorias</a>
-          <ng-template ngbNavContent>
-            <app-my-categories [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-categories>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="8" (click)="navegar({url:'./dashboard/inventario'})" [class.d-none]="(rol>rolProducer)">
-          <a ngbNavLink>Mi Inventario</a>
-          <ng-template ngbNavContent>
-            <app-my-inventory [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-inventory>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="9" (click)="navegar({url:'./dashboard/settings'})">
+        <li [ngbNavItem]="6" (click)="navegar({url:'./dashboard/settings'})">
           <a ngbNavLink>Configuraciones</a>
           <ng-template ngbNavContent>
             <app-settings [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-settings>
           </ng-template>
         </li>
-        <li [ngbNavItem]="10" (click)="navegar({url:'./dashboard/autorizar-productores'})" [class.d-none]="(rol>rolAdmin)">
-          <a ngbNavLink>Autorizar Productores</a>
+        <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/autorizar-promotores'})" [class.d-none]="(rol>rolAdmin)">
+          <a ngbNavLink>Autorizar Promotores</a>
           <ng-template ngbNavContent>
-            <app-authorize-producers [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)">
-            </app-authorize-producers>
+            <app-authorize-promoters [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)">
+            </app-authorize-promoters>
           </ng-template>
         </li>
       </ul>

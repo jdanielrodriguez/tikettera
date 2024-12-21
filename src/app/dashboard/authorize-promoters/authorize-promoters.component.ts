@@ -3,11 +3,11 @@ import { Perfil, Menus } from 'src/app/interfaces';
 import { Sesion } from 'src/app/common/sesion';
 
 @Component({
-  selector: 'app-my-orders',
-  templateUrl: './my-orders.component.html',
-  styleUrls: ['./my-orders.component.scss']
+  selector: 'app-authorize-promoters',
+  templateUrl: './authorize-promoters.component.html',
+  styleUrls: ['./authorize-promoters.component.scss']
 })
-export class MyOrdersComponent implements OnInit {
+export class AuthorizePromotersComponent implements OnInit {
   private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
   private _perfil: Perfil = new Perfil();
   constructor(

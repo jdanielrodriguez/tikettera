@@ -244,10 +244,10 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
-            url: '../dashboard/autorizar-productores',
+            url: '../dashboard/autorizar-promotores',
             evento: null,
             rol: 1,
-            nombre: 'Autorizar productores'
+            nombre: 'Autorizar Promotores'
           },
           {
             sesion: true,

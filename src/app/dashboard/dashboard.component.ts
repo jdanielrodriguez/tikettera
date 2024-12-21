@@ -49,16 +49,13 @@ export class DashboardComponent implements OnInit {
 
   get active(): number {
     const tabMap: { [key: string]: number } = {
-        'events': 1,
+        'information': 1,
         'produced-events': 2,
-        'information': 3,
+        'events': 3,
         'credit-cards': 4,
-        'orders': 5,
-        'bills': 6,
-        'categorias': 7,
-        'inventario': 8,
-        'settings': 9,
-        'autorizar-productores': 10
+        'bills': 5,
+        'settings': 6,
+        'autorizar-promotores': 7
     };
 
     return tabMap[this._type] ?? tabMap['settings'];

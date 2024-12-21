@@ -15,23 +15,18 @@ return new class extends Migration
     {
         Schema::create('places', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->string('slug')->nullable()->default(null);
-            $table->string('no')->nullable()->default(null);
-            $table->double('number')->nullable()->default(null);
-            $table->double('price',5,2)->nullable()->default(null);
-            $table->double('x',5,5)->nullable()->default(null);
-            $table->double('y',5,5)->nullable()->default(null);
-            $table->string('chaild')->nullable()->default(null);
-            $table->integer('sold')->nullable()->default(0);
-            $table->integer('avaliable')->nullable()->default(1);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('locality_id')->nullable()->default(null)->unsigned();
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->string('slug')->unique();
+            $table->string('seat_number')->nullable();
+            $table->double('price', 5, 2)->nullable();
+            $table->double('x', 5, 5)->nullable();
+            $table->double('y', 5, 5)->nullable();
+            $table->integer('sold')->default(0);
+            $table->integer('avaliable')->default(1);
+            $table->integer('state')->default(1);
+            $table->unsignedInteger('locality_id');
             $table->foreign('locality_id')->references('id')->on('localities')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

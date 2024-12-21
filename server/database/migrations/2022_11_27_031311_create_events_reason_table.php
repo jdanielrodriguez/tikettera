@@ -15,23 +15,17 @@ return new class extends Migration
     {
         Schema::create('events_reason', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->string('slug')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('user_id')->nullable()->default(null)->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->integer('category_id')->nullable()->default(null)->unsigned();
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->string('slug')->unique();
+            $table->integer('state')->default(1);
+            $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-
-            $table->integer('type_id')->nullable()->default(null)->unsigned();
+            $table->unsignedInteger('type_id')->nullable();
             $table->foreign('type_id')->references('id')->on('events_type')->onDelete('cascade');
-
             $table->timestamps();
         });
+
     }
 
     /**

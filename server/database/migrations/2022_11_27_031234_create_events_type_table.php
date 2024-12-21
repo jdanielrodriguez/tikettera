@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
+            $table->string('slug')->unique();
             $table->integer('state')->nullable()->default(1);
 
             $table->timestamps();

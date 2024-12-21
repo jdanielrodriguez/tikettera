@@ -15,20 +15,16 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->double('porcent')->nullable()->default(null);
-            $table->double('qty')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->string('slug')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('user_id')->nullable()->default(null)->unsigned();
+            $table->string('name')->nullable();
+            $table->double('percent')->nullable();
+            $table->double('amount');
+            $table->string('description')->nullable();
+            $table->string('slug')->unique();
+            $table->integer('state')->default(1);
+            $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->integer('event_id')->nullable()->default(null)->unsigned();
+            $table->unsignedInteger('event_id')->nullable();
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

@@ -1,1 +1,22 @@
-<app-perfil-view [perfil]="perfil"> </app-perfil-view>
+<!-- Vista de Perfil -->
+<app-perfil-view [perfil]="perfil">
+</app-perfil-view>
+
+<!-- Métricas -->
+<div class="row mt-4">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4" *ngIf="categorias !== undefined">
+    <h3 class="mb-0">{{ categorias }}</h3>
+    <small>Categorías</small>
+    <button class="btn btn-block btn-outline-success"><span class="fa fa-plus-circle"></span> Ver Categorías</button>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4" *ngIf="productos !== undefined">
+    <h3 class="mb-0">{{ productos }}</h3>
+    <small>Productos</small>
+    <button class="btn btn-outline-info btn-block"><span class="fa fa-user"></span> Ver Productos</button>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4" *ngIf="ordenes !== undefined">
+    <h3 class="mb-0">{{ ordenes }}</h3>
+    <small>Órdenes</small>
+    <button type="button" class="btn btn-outline-primary btn-block"><span class="fa fa-inbox"></span> Órdenes</button>
+  </div>
+</div>

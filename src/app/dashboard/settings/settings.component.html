@@ -7,7 +7,7 @@
       <li [ngbNavItem]="1" (click)="navegar({url:'./dashboard/settings/profile'})">
         <a ngbNavLink>Perfil</a>
         <ng-template ngbNavContent>
-          <app-perfil-view [perfil]="perfil"> </app-perfil-view>
+          <app-perfil-view [perfil]="perfil" [editMode]="true"> </app-perfil-view>
         </ng-template>
       </li>
       <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/settings/sliders'})">

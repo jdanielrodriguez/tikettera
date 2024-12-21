@@ -1,30 +1,45 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Perfil } from 'src/app/interfaces';
-declare var $: any;
+
 @Component({
   selector: 'app-perfil-view',
   templateUrl: './perfil-view.component.html',
   styleUrls: ['./perfil-view.component.scss']
 })
 export class PerfilViewComponent implements OnInit {
-  @BlockUI() blockUI!: NgBlockUI;
-  private _perfil: Perfil = new Perfil();
-  private _titulo!: string;
-  private _muestraTexto!: boolean;
-  private _token!: string;
+  @Input() perfil: Perfil = new Perfil();
+
+  perfilForm!: FormGroup;
+  _token!: string;
   private _validacion!: boolean;
-  constructor(
-  ) { }
+  @Input() editMode: boolean = false; // Indica si está en modo edición
+
+  constructor(private fb: FormBuilder) {}
+
   ngOnInit(): void {
-    $('html, body').animate({ scrollTop: 0 }, '300');
+    this.initForm();
   }
-  @Input()
-  set perfil(value: Perfil) {
-    this._perfil = value;
+
+  // Inicializa el formulario con los datos del perfil
+  initForm(): void {
+    this.perfilForm = this.fb.group({
+      usuario: [this.perfil.username || '', [Validators.required]],
+      nombre: [this.perfil.names || '', [Validators.required]],
+      email: [this.perfil.email || '', [Validators.required, Validators.email]],
+      telefono: [this.perfil.phone || ''],
+    });
   }
-  get perfil(): Perfil {
-    return this._perfil;
+
+  // Lógica para guardar los cambios
+  onSubmit(): void {
+    if (this.perfilForm.valid) {
+      // Aquí puedes agregar lógica para enviar los cambios al backend
+      console.log('Formulario enviado:', this.perfilForm.value);
+
+      // Actualizamos el perfil y desactivamos el modo edición
+      this.perfil = { ...this.perfil, ...this.perfilForm.value };
+    }
   }
   @Input()
   set token(value: string) {
@@ -39,20 +54,5 @@ export class PerfilViewComponent implements OnInit {
   @Input()
   set validacion(value: boolean) {
     this._validacion = value;
-  }
-  set titulo(value: string) {
-    this._titulo = value;
-  }
-  get titulo(): string {
-    return this._titulo;
-  }
-  set muestraTexto(value: boolean) {
-    this._muestraTexto = value;
-  }
-  get muestraTexto(): boolean {
-    return this._muestraTexto;
-  }
-  get proveedor(): any {
-    return /* this.perfil.proveedores.length > 0 ? this.perfil.proveedores[0] :  new Proveedor();*/ null;
   }
 }

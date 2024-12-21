@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Perfil, Menus } from 'src/app/interfaces';
+import { Perfil } from 'src/app/interfaces';
 import { Sesion } from '../../common/sesion';
 
 @Component({
@@ -8,36 +8,23 @@ import { Sesion } from '../../common/sesion';
   styleUrls: ['./my-information.component.scss']
 })
 export class MyInformationComponent implements OnInit {
-
-  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
-  private _perfil: Perfil = new Perfil();
-  constructor(
-    private mySesion: Sesion
-  ) { }
+  @Input() perfil: Perfil = new Perfil();
+  categorias: number = 20;
+  productos: number = 245;
+  ordenes: number = 43;
+  perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  constructor(private mySesion: Sesion) { }
 
   ngOnInit(): void {
     this.mySesion.actualizaPerfil();
   }
-  navegar(data: Menus) {
-    this.mySesion.navegar(data);
-  }
   obtenerPerfilConf(value: Perfil) {
-    this._perfil = value;
-    this._perfilEmit.emit(this._perfil);
+    this.perfil = value;
+    this.perfilEmit.emit(this.perfil);
   }
   @Output()
   get obtenerPerfil(): EventEmitter<Perfil> {
-    this._perfilEmit.emit(this._perfil);
-    return this._perfilEmit;
-  }
-  @Input()
-  set perfil(value: Perfil) {
-    this._perfil = value;
-  }
-  get perfil(): Perfil {
-    return this._perfil;
-  }
-  get proveedor(): null {
-    return null;
+    this.perfilEmit.emit(this.perfil);
+    return this.perfilEmit;
   }
 }

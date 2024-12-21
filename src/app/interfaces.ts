@@ -44,7 +44,7 @@ export class Perfil {
     this.code = '';
     this.names = '';
     this.description = '';
-    this.lastnames = '';
+    this.phone = '';
     this.pic1 = '';
     this.pic2 = '';
     this.state = 1;
@@ -64,7 +64,7 @@ export class Perfil {
   email?: string;
   code?: string;
   names?: string;
-  lastnames?: string;
+  phone?: string;
   description?: string;
   image?: string;
   birth?: string;

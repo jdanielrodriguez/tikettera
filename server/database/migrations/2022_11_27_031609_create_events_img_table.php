@@ -15,16 +15,12 @@ return new class extends Migration
     {
         Schema::create('events_img', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->string('slug')->nullable()->default(null);
-            $table->string('url')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('event_id')->nullable()->default(null)->unsigned();
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
+            $table->string('url');
+            $table->integer('state')->default(1);
+            $table->unsignedInteger('event_id');
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

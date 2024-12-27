@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bienvenido a Tikettera</title>
+    <title>Notificación de Cambio de Contraseña</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #f4f4f4;
         }
 
         .email-container {
@@ -24,21 +24,36 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .email-header img {
-            max-width: 150px;
+        .email-header {
+            text-align: center;
             margin-bottom: 20px;
+        }
+
+        .email-header img {
+            max-width: 120px;
         }
 
         .email-content h1 {
             color: #333333;
             font-size: 22px;
             margin-bottom: 10px;
+            text-align: center;
         }
 
         .email-content p {
             color: #555555;
             font-size: 16px;
             line-height: 1.5;
+            text-align: center;
+        }
+
+        .email-content .alert {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
         }
 
         .email-footer {
@@ -68,15 +83,17 @@
 
 <body>
     <div class="email-container">
-        <div class="email-header text-center">
-            <img src="https://via.placeholder.com/500x250.png?text=LOGO" alt="Tikettera">
+        <div class="email-header">
+            <img src="http://ordenes.online/assets/images/logo.png" alt="Tikettera">
         </div>
         <div class="email-content">
-            <h1>¡Hola, {!! $name !!}!</h1>
-            <p>Te damos la bienvenida a Tikettera. Tus datos de acceso son los siguientes:</p>
-            <p><strong>Usuario:</strong> {!! $username !!}</p>
-            <a href="{!! $url !!}" target="_blank" class="button">Ingresa Ahora</a>
-            <p>Gracias por registrarte con nosotros. ¡Esperamos verte pronto!</p>
+            <h1>Hola, {!! $name !!}!</h1>
+            <p>Tu contraseña ha sido cambiada exitosamente.</p>
+            <div class="alert">
+                <strong>Usuario:</strong> {!! $username !!}
+            </div>
+            <p>Si no reconoces esta acción, por favor, cambia tu contraseña de inmediato o contacta a nuestro soporte.</p>
+            <a href="{!! $url !!}" class="button" target="_blank">Ir al Sitio</a>
         </div>
         <div class="email-footer">
             <p>&copy; 2024 Tikettera. Todos los derechos reservados.</p>

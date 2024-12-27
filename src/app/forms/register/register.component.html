@@ -6,20 +6,20 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="input-group mb-3 mt-1">
             <input type="email" class="form-control" formControlName="email" id="email" placeholder="Correo">
-            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
-              <small *ngIf="registerForm.get('email')?.errors?.['required']">El correo es requerido.</small>
-              <small *ngIf="registerForm.get('email')?.errors?.['email']">Formato de correo inválido.</small>
-            </div>
+          </div>
+          <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="alert alert-danger">
+            <strong *ngIf="registerForm.get('email')?.errors?.['required']">El correo es requerido.</strong>
+            <strong *ngIf="registerForm.get('email')?.errors?.['email']">Formato de correo inválido.</strong>
           </div>
           <div class="input-group my-3">
             <input type="password" class="form-control" formControlName="password" id="password"
               placeholder="Contraseña">
-            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-              class="text-danger">
-              <small *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es requerida.</small>
-              <small *ngIf="registerForm.get('password')?.errors?.['minlength']">Debe tener al menos 3
-                caracteres.</small>
-            </div>
+          </div>
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            class="alert alert-danger">
+            <strong *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es requerida.</strong>
+            <strong *ngIf="registerForm.get('password')?.errors?.['minlength']">Debe tener al menos 3
+              caracteres.</strong>
           </div>
           <div class="input-group my-3">
             <input type="password" class="form-control" formControlName="password_rep" id="password_rep"

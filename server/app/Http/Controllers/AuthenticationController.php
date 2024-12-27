@@ -11,9 +11,9 @@ use App\Models\Rol;
 use App\Models\PasswordRecovery;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
-use Response;
-use DB;
-use Validator;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticationController extends Controller
 {
@@ -21,16 +21,16 @@ class AuthenticationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
             $returnData = [
                 'status' => 400,
                 'msg' => 'Invalid Parameters',
-                'validator' => $validator
+                'validator' => $validator->messages(),
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
 
         try {
@@ -40,68 +40,68 @@ class AuthenticationController extends Controller
             if (!$encript->getValidSalt()) {
                 $returnData = [
                     'status' => 404,
-                    'msg' => 'Error de seguridad',
-                    'objeto' => null
+                    'msg' => 'Security Error',
+                    'objeto' => null,
                 ];
-                return Response::json($returnData, $returnData['status']);
+                return new Response($returnData, $returnData['status']);
             }
 
             $email = $request->input('email');
             $user = User::where('email', $email)->first();
+
             if (!$user) {
                 $returnData = [
                     'status' => 401,
-                    'msg' => 'No valid Email',
-                    'obj' => null
+                    'msg' => 'Invalid Email',
+                    'obj' => null,
                 ];
-                return Response::json($returnData, $returnData['status']);
+                return new Response($returnData, $returnData['status']);
             }
 
-            $credentials = [
-                'email' => $email,
-                'password' => $password
-            ];
-
+            $credentials = ['email' => $email, 'password' => $password];
             if (!$token = JWTAuth::attempt($credentials)) {
                 $returnData = [
                     'status' => 401,
-                    'msg' => 'No valid Password',
-                    'obj' => null
+                    'msg' => 'Invalid Password',
+                    'obj' => null,
                 ];
-                return Response::json($returnData, $returnData['status']);
+                return new Response($returnData, $returnData['status']);
             }
 
             $user->last_conection = Carbon::now('America/Guatemala');
             $user->token = $token;
             $user->save();
 
-            $authObj = AuthMetodUser::where('user_id', $user->id)
+            $authMethod = AuthMetodUser::where('user_id', $user->id)
                 ->where('auth_method_id', User::AUTH_METHOD_SIMPLE)
                 ->first();
-            if (!$authObj) {
+
+            if (!$authMethod) {
                 $returnData = [
-                    'status' => 200,
-                    'msg' => 'Error Auth Method',
-                    'objeto' => null
+                    'status' => 400,
+                    'msg' => 'Authentication Method Not Found',
+                    'objeto' => null,
                 ];
-                return Response::json($returnData, $returnData['status']);
+                return new Response($returnData, $returnData['status']);
             }
 
-            $authObj->token = $token;
-            $authObj->last_conection = Carbon::now('America/Guatemala');
-            $authObj->save();
+            $authMethod->update([
+                'token' => $token,
+                'last_conection' => Carbon::now('America/Guatemala'),
+            ]);
+
             $returnData = [
                 'status' => 200,
-                'msg' => 'OK',
-                'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
+                'msg' => 'Login Successful',
+                'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8')),
             ];
-            return Response::json($returnData, $returnData['status']);
-        } catch (Exception $e) {
+            return new Response($returnData, $returnData['status']);
+        } catch (\Exception $e) {
             $returnData = [
                 'status' => 500,
-                'msg' => $e->getMessage()
+                'msg' => $e->getMessage(),
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
     }
 
@@ -110,13 +110,14 @@ class AuthenticationController extends Controller
         $validator = Validator::make($request->all(), [
             'user' => 'required',
         ]);
+
         if ($validator->fails()) {
             $returnData = [
                 'status' => 400,
                 'msg' => 'Invalid Parameters',
                 'validator' => $validator->messages()->toJson()
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
 
         $encript = new Encripter();
@@ -127,10 +128,10 @@ class AuthenticationController extends Controller
         if (!$encript->getValidSalt()) {
             $returnData = [
                 'status' => 404,
-                'msg' => 'Error de seguridad',
+                'msg' => 'Security Error',
                 'objeto' => null
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
 
         $email = $objectRequest->user->email;
@@ -142,345 +143,474 @@ class AuthenticationController extends Controller
                 'msg' => 'Already Registered',
                 'objeto' => $encript->encript(mb_convert_encoding(json_encode(User::where('email', $email)->first()), 'UTF-8', 'UTF-8'))
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
 
         DB::beginTransaction();
 
         try {
-            $user = new User();
-            $user->username = $objectRequest->user->username ?? substr($email, 0, strpos($email, '@'));
-            $user->password = Hash::make($objectRequest->user->password);
-            $user->email = $email;
-            $user->rol_id = Rol::ROL_CLIENT;
-            $user->save();
+            $user = User::create([
+                'username' => $objectRequest->user->username ?? substr($email, 0, strpos($email, '@')),
+                'password' => Hash::make($objectRequest->user->password),
+                'email' => $email,
+                'rol_id' => Rol::ROL_CLIENT,
+                'state' => 1
+            ]);
 
             $token = JWTAuth::fromUser($user);
 
-            $user->last_conection = Carbon::now('America/Guatemala');
-            $user->token = $token;
-            $user->save();
+            $user->update([
+                'last_conection' => Carbon::now('America/Guatemala'),
+                'token' => $token
+            ]);
 
-            $authObj = new AuthMetodUser();
-            $authObj->token = $token;
-            $authObj->auth_method_id = User::AUTH_METHOD_SIMPLE;
-            $authObj->user_id = $user->id;
-            $authObj->last_conection = Carbon::now('America/Guatemala');
-            $authObj->save();
+            AuthMetodUser::create([
+                'token' => $token,
+                'auth_method_id' => User::AUTH_METHOD_SIMPLE,
+                'user_id' => $user->id,
+                'last_conection' => Carbon::now('America/Guatemala')
+            ]);
+
+            EmailsController::enviarConfirm((object)['user' => $objectRequest->user], $user);
 
             DB::commit();
 
             $returnData = [
                 'status' => 200,
-                'msg' => 'OK',
+                'msg' => 'User Registered Successfully',
                 'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8'))
             ];
-            return Response::json($returnData, $returnData['status']);
-        } catch (Exception $e) {
+            return new Response($returnData, $returnData['status']);
+        } catch (\Exception $e) {
             DB::rollback();
             $returnData = [
                 'status' => 500,
                 'msg' => $e->getMessage()
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
     }
 
     public function restorePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'  => 'required',
+            'email' => 'required',
         ]);
+
         if ($validator->fails()) {
             $returnData = [
                 'status' => 400,
                 'msg' => 'Invalid Parameters',
-                'validator' => $validator
+                'validator' => $validator->messages()
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
-        $email = base64_decode($request->get('email'));
-        $objectUser = User::whereRaw('email=? or username=?', [$email, $email])->first();
-        if (!$objectUser) {
-            $returnData = [
-                'status' => 404,
-                'msg' => 'No record found'
-            ];
-            return Response::json($returnData, $returnData['status']);
-        }
+
         try {
-            $authObj = AuthMetodUser::whereRaw("user_id = ?", $objectUser->id)->first();
-            if (!$authObj) {
+            $email = base64_decode($request->get('email'));
+
+            $user = User::where('email', $email)->orWhere('username', $email)->first();
+            if (!$user) {
                 $returnData = [
-                    'status' => 400,
-                    'msg' => "Error Auth Method",
+                    'status' => 404,
+                    'msg' => 'No record found',
                     'objeto' => null
                 ];
-                return Response::json($returnData, $returnData['status']);
+                return new Response($returnData, $returnData['status']);
             }
+
+            $authMethod = AuthMetodUser::where('user_id', $user->id)->first();
+            if (!$authMethod) {
+                $returnData = [
+                    'status' => 400,
+                    'msg' => 'Error Auth Method',
+                    'objeto' => null
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
             $encript = new Encripter();
             $faker = Faker::create();
-            $fake = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
-            $uuid = $encript->encript(mb_convert_encoding($fake, 'UTF-8', 'UTF-8'));
-            $passRecovery = new PasswordRecovery();
-            $passRecovery->uuid = $fake;
-            $passRecovery->current_password = $objectUser->password;
-            $passRecovery->password = null;
-            $passRecovery->password_rep = null;
-            $passRecovery->state = 2;
-            $passRecovery->current_auth_method_id = User::AUTH_METHOD_SIMPLE;
-            $passRecovery->auth_method_id = $authObj->auth_method_id;
-            $passRecovery->user_id = $objectUser->id;
-            $passRecovery->save();
-            EmailsController::enviarRestoreLink($objectUser, $uuid);
-            $authObj->auth_method_id = User::AUTH_METHOD_SIMPLE;
-            $authObj->save();
+            $token = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{16}');
+            $encodedToken = $encript->encript(mb_convert_encoding($token, 'UTF-8', 'UTF-8'));
+
+            $passwordRecovery = new PasswordRecovery();
+            $passwordRecovery->recovery_token = $token;
+            $passwordRecovery->current_password = $user->password;
+            $passwordRecovery->password = null;
+            $passwordRecovery->password_rep = null;
+            $passwordRecovery->state = 2; // 2 = Active recovery process
+            $passwordRecovery->current_auth_method_id = User::AUTH_METHOD_SIMPLE;
+            $passwordRecovery->auth_method_id = $authMethod->auth_method_id;
+            $passwordRecovery->user_id = $user->id;
+            $passwordRecovery->save();
+
+            EmailsController::enviarRestoreLink($user, $encodedToken);
+
+            $authMethod->auth_method_id = User::AUTH_METHOD_SIMPLE;
+            $authMethod->save();
+
             $returnData = [
                 'status' => 200,
-                'msg' => "Password was sent",
+                'msg' => 'Password reset link sent successfully',
                 'objeto' => null
             ];
-            return Response::json($returnData, $returnData['status']);
-        } catch (Exception $e) {
+            return new Response($returnData, $returnData['status']);
+        } catch (\Exception $e) {
             $returnData = [
                 'status' => 500,
-                'msg' => $e->getMessage()
+                'msg' => $e->getMessage(),
+                'objeto' => null
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
     }
 
     public function recoveryPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'uuid'  => 'required',
+            'uuid' => 'required',
         ]);
+
         if ($validator->fails()) {
             $returnData = [
                 'status' => 400,
                 'msg' => 'Invalid Parameters',
-                'validator' => $validator
+                'validator' => $validator->messages(),
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
-        $encript = new Encripter();
-        $realUUID = mb_convert_encoding($encript->desencript(base64_decode($request->get('uuid'))), 'UTF-8', 'UTF-8');
-        if (!$encript->getValidSalt()) {
-            $returnData = [
-                'status' => 404,
-                'objeto' => null,
-                'msg' => "Error de seguridad"
-            ];
-            return Response::json($returnData, $returnData['status']);
-        }
-        $passRecoveryObj = PasswordRecovery::whereRaw("uuid = ? AND current_auth_method_id = ? and state = 2", [$realUUID, User::AUTH_METHOD_SIMPLE])->first();
-        if (!$passRecoveryObj) {
-            $returnData = [
-                'status' => 400,
-                'msg' => "Error Auth Method",
-                'objeto' => null,
-            ];
-            return Response::json($returnData, $returnData['status']);
-        }
-        if ($passRecoveryObj->state < 1) {
-            $returnData = [
-                'status' => 400,
-                'msg' => "Token Used",
-                'objeto' => null,
-            ];
-            return Response::json($returnData, $returnData['status']);
-        }
-        $passRecoveryObj->state = 1;
-        $passRecoveryObj->save();
 
-        $objectUser = User::find($passRecoveryObj->user_id);
-        if (!$objectUser) {
+        try {
+            $encript = new Encripter();
+            $decodedUUID = mb_convert_encoding($encript->desencript(base64_decode($request->get('uuid'))), 'UTF-8', 'UTF-8');
+
+            if (!$encript->getValidSalt()) {
+                $returnData = [
+                    'status' => 404,
+                    'msg' => 'Security Error',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            $passwordRecovery = PasswordRecovery::where('recovery_token', $decodedUUID)
+                ->where('current_auth_method_id', User::AUTH_METHOD_SIMPLE)
+                ->where('state', 2) // 2 = Active recovery process
+                ->orWhere('state', 1) // 1 = recovery used but not changed
+                ->first();
+
+            if (!$passwordRecovery) {
+                $returnData = [
+                    'status' => 404,
+                    'msg' => 'Invalid or expired recovery token',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            if ($passwordRecovery->state < 1) {
+                $returnData = [
+                    'status' => 400,
+                    'msg' => 'Token already used or invalid',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            // Update the recovery state to used
+            $passwordRecovery->state = 1; // 1 = Token used
+            $passwordRecovery->save();
+
+            $user = User::find($passwordRecovery->user_id);
+            if (!$user) {
+                $returnData = [
+                    'status' => 404,
+                    'msg' => 'User not found',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            $user->update(['state' => 2]); // 2 = Recovery in process
+
             $returnData = [
-                'status' => 404,
-                'msg' => 'No record found'
+                'status' => 200,
+                'msg' => 'Recovery token validated successfully',
+                'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8')),
             ];
-            return Response::json($returnData, 404);
+            return new Response($returnData, $returnData['status']);
+        } catch (\Exception $e) {
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage(),
+                'objeto' => null,
+            ];
+            return new Response($returnData, $returnData['status']);
         }
-        $objectUser->state = 2;
-        $objectUser->save();
-        $returnData = [
-            'status' => 200,
-            'msg' => "User found",
-            'objeto' => $encript->encript(mb_convert_encoding(json_encode($objectUser), 'UTF-8', 'UTF-8'))
-        ];
-        return Response::json($returnData, $returnData['status']);
     }
 
     public function sendNewPassword(Request $request)
     {
-        $objectUpdate = User::whereRaw('email=? or username=?', [base64_decode($request->get('email')), base64_decode($request->get('email'))])->first();
-        if ($objectUpdate) {
-            try {
-                $faker = Faker::create();
-                $pass = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
-                $objectUpdate->password = Hash::make($pass);
-                $objectUpdate->save();
-                $objectUpdate->url = $request->get('url') ? base64_decode($request->get('url')) : 'https://www.tikettera.com';
-                try {
-                    EmailsController::enviarRecovery($objectUpdate, $pass);
-                    $returnData = [
-                        'status' => 200,
-                        'msg' => "Password was sent",
-                        'objeto' => null
-                    ];
-                    return Response::json($returnData, $returnData['status']);
-                } catch (Exception $e) {
-                    $returnData = [
-                        'status' => 501,
-                        'msg' => "Error sending email.",
-                        'objeto' => null
-                    ];
-                    return Response::json($returnData, $returnData['status']);
-                }
-            } catch (Exception $e) {
-                $returnData = [
-                    'status' => 500,
-                    'msg' => $e->getMessage()
-                ];
-                return Response::json($returnData, $returnData['status']);
-            }
-        } else {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
             $returnData = [
-                'status' => 404,
-                'msg' => 'No record found'
+                'status' => 400,
+                'msg' => 'Invalid Parameters',
+                'validator' => $validator->messages(),
             ];
-            return Response::json($returnData, 404);
+            return new Response($returnData, $returnData['status']);
+        }
+
+        try {
+            $email = base64_decode($request->get('email'));
+            $user = User::where('email', $email)->orWhere('username', $email)->first();
+
+            if (!$user) {
+                $returnData = [
+                    'status' => 404,
+                    'msg' => 'User not found',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            // Generate a new secure password
+            $faker = Faker::create();
+            $newPassword = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
+
+            // Update the user's password
+            $user->update(['password' => Hash::make($newPassword)]);
+
+            // Send recovery email
+            $url = $request->get('url')
+                ? base64_decode($request->get('url'))
+                : 'https://www.tikettera.com';
+
+            $user->url = $url;
+
+            try {
+                EmailsController::enviarRecovery($user, $newPassword);
+
+                $returnData = [
+                    'status' => 200,
+                    'msg' => 'New password sent successfully',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            } catch (\Exception $e) {
+                $returnData = [
+                    'status' => 501,
+                    'msg' => 'Error sending recovery email',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+        } catch (\Exception $e) {
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage(),
+                'objeto' => null,
+            ];
+            return new Response($returnData, $returnData['status']);
         }
     }
 
     public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'        => 'required',
-            'new_pass'  => 'required|min:3',
+            'id' => 'required',
+            'new_pass' => 'required|min:3',
+            'new_pass_rep' => 'required|min:3',
         ]);
+
         if ($validator->fails()) {
             $returnData = [
                 'status' => 400,
                 'msg' => 'Invalid Parameters',
-                'validator' => $validator->messages()->toJson()
+                'validator' => $validator->messages()
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
-        $id = base64_decode($request->get('id'));
-        $old_pass = $request->get('old_pass') ?? base64_decode($request->get('old_pass'));
-        $new_pass_rep = base64_decode($request->get('new_pass_rep'));
-        $new_pass = base64_decode($request->get('new_pass'));
-        if ($new_pass_rep != $new_pass) {
-            $returnData = [
-                'status' => 404,
-                'msg' => 'Passwords do not match'
-            ];
-            return Response::json($returnData, $returnData['status']);
-        }
-        if ($old_pass && $old_pass == $new_pass) {
-            $returnData = [
-                'status' => 404,
-                'msg' => 'New passwords it is same the old password'
-            ];
-            return Response::json($returnData, $returnData['status']);
-        }
-        $objectUpdate = User::find($id);
-        if (!$objectUpdate) {
-            $returnData = [
-                'status' => 404,
-                'msg' => 'No record found'
-            ];
-            return Response::json($returnData, $returnData['status']);
-        }
-        try {
-            if ($old_pass) {
-                $isOldValid = Hash::check($old_pass, $objectUpdate->password);
-                if (!$isOldValid) {
-                    $returnData = [
-                        'status' => 404,
-                        'msg' => 'Invalid Password'
-                    ];
-                    return Response::json($returnData, $returnData['status']);
-                }
-            }
-            $objectUpdate->password = Hash::make($new_pass);
-            $objectUpdate->state = 1;
-            $objectUpdate->save();
 
-            $passRecoveryObj = PasswordRecovery::whereRaw("user_id = ? AND current_auth_method_id = ? and state = 1", [$objectUpdate->id, User::AUTH_METHOD_SIMPLE])->first();
-            if (!$passRecoveryObj) {
+        try {
+            $id = base64_decode($request->get('id'));
+            $old_pass = $request->get('old_pass') ? base64_decode($request->get('old_pass')) : null;
+            $new_pass = base64_decode($request->get('new_pass'));
+            $new_pass_rep = base64_decode($request->get('new_pass_rep'));
+
+            if ($new_pass !== $new_pass_rep) {
                 $returnData = [
-                    'status' => 400,
-                    'msg' => "Error Auth Method Used",
-                    'objeto' => null,
+                    'status' => 404,
+                    'msg' => 'Passwords do not match'
                 ];
-                return Response::json($returnData, $returnData['status']);
+                return new Response($returnData, $returnData['status']);
             }
-            if ($passRecoveryObj->state < 1) {
+
+            if ($old_pass && $old_pass === $new_pass) {
                 $returnData = [
-                    'status' => 400,
-                    'msg' => "Token Used",
-                    'objeto' => null,
+                    'status' => 404,
+                    'msg' => 'New password cannot be the same as the old password',
                 ];
-                return Response::json($returnData, $returnData['status']);
+                return new Response($returnData, $returnData['status']);
             }
-            $passRecoveryObj->state = 0;
-            $passRecoveryObj->save();
+
+            $user = User::find($id);
+            if (!$user) {
+                $returnData = [
+                    'status' => 404,
+                    'msg' => 'User not found'
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            // Validate old password if provided
+            if ($old_pass && !Hash::check($old_pass, $user->password)) {
+                $returnData = [
+                    'status' => 404,
+                    'msg' => 'Invalid Old Password'
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            // Update user's password
+            $user->password = Hash::make($new_pass);
+            $user->state = 1; // Active after password change
+            $user->save();
+
+            // Send notification email
+            EmailsController::enviarRecovery($user, $new_pass);
+
+            // Invalidate old recovery tokens
+            $recovery = PasswordRecovery::where('user_id', $user->id)
+                ->where('current_auth_method_id', User::AUTH_METHOD_SIMPLE)
+                ->where('state', 1) // Active tokens
+                ->first();
+
+            if ($recovery) {
+                $recovery->state = 0; // Mark as used
+                $recovery->save();
+            }
+
             $encript = new Encripter();
             $returnData = [
                 'status' => 200,
-                'msg' => 'Change password correctly',
-                'objeto' => $encript->encript(mb_convert_encoding(json_encode($objectUpdate), 'UTF-8', 'UTF-8'))
+                'msg' => 'Password changed successfully',
+                'objeto' => $encript->encript(mb_convert_encoding(json_encode($user), 'UTF-8', 'UTF-8')),
             ];
-            return Response::json($returnData, $returnData['status']);
-        } catch (Exception $e) {
+            return new Response($returnData, $returnData['status']);
+        } catch (\Exception $e) {
             $returnData = [
                 'status' => 500,
                 'msg' => $e->getMessage()
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
     }
 
     public function logout(Request $request)
     {
-        $this->validate($request, ['token' => 'required']);
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $returnData = [
+                'status' => 400,
+                'msg' => 'Invalid Parameters',
+                'validator' => $validator->messages(),
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
 
         try {
-            JWTAuth::invalidate($request->input('token'));
-            return response([
-                'status' => 'success',
-                'msg' => 'You have successfully logged out.'
-            ]);
-        } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
-            return response([
-                'status' => 'error',
-                'msg' => 'Failed to logout, please try again.'
-            ]);
+            $token = $request->input('token');
+            JWTAuth::invalidate($token);
+
+            $returnData = [
+                'status' => 200,
+                'msg' => 'You have successfully logged out.',
+                'objeto' => null,
+            ];
+            return new Response($returnData, $returnData['status']);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            $returnData = [
+                'status' => 401,
+                'msg' => 'Token is invalid or has already been used.',
+                'objeto' => null,
+            ];
+            return new Response($returnData, $returnData['status']);
+        } catch (\Exception $e) {
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage(),
+                'objeto' => null,
+            ];
+            return new Response($returnData, $returnData['status']);
         }
     }
 
     public function validarCaptcha(Request $request)
     {
-        $data = http_build_query([
-            'secret' => env('CAPTCHA_SECRET', 'TOKEN'),
-            'response' => base64_decode($request->get('token'))
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
         ]);
-        $curl = curl_init();
-        $captcha_verify_url = env('CAPTCHA_URL', "https://www.google.com/recaptcha/api/siteverify");
-        curl_setopt($curl, CURLOPT_URL, $captcha_verify_url);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $captcha_output = curl_exec($curl);
-        curl_close($curl);
-        $decoded_captcha = json_decode($captcha_output);
-        $returnData = [
-            'status' => 200,
-            'objeto' => $decoded_captcha
-        ];
-        return Response::json($returnData, $returnData['status']);
+
+        if ($validator->fails()) {
+            $returnData = [
+                'status' => 400,
+                'msg' => 'Invalid Parameters',
+                'validator' => $validator->messages(),
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
+
+        try {
+            $data = http_build_query([
+                'secret' => env('CAPTCHA_SECRET', 'TOKEN'),
+                'response' => base64_decode($request->input('token')),
+            ]);
+
+            $curl = curl_init();
+            $captcha_verify_url = env('CAPTCHA_URL', "https://www.google.com/recaptcha/api/siteverify");
+            curl_setopt($curl, CURLOPT_URL, $captcha_verify_url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $captcha_output = curl_exec($curl);
+            if ($captcha_output === false) {
+                throw new \Exception('Error communicating with CAPTCHA verification service.');
+            }
+            curl_close($curl);
+
+            $decoded_captcha = json_decode($captcha_output, true);
+
+            if (!$decoded_captcha || !isset($decoded_captcha['success']) || !$decoded_captcha['success']) {
+                $returnData = [
+                    'status' => 400,
+                    'msg' => 'CAPTCHA verification failed',
+                    'objeto' => $decoded_captcha,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            $returnData = [
+                'status' => 200,
+                'msg' => 'CAPTCHA verified successfully',
+                'objeto' => $decoded_captcha,
+            ];
+            return new Response($returnData, $returnData['status']);
+        } catch (\Exception $e) {
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage(),
+                'objeto' => null,
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
     }
 }

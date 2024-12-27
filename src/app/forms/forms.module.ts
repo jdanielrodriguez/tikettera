@@ -16,7 +16,6 @@ import { ComponentesModule } from '../components/componentes.module';
 
 import { ClienteComponent } from './cliente/cliente.component';
 import { CorreosComponent } from './correos/correos.component';
-import { DireccionesComponent } from './direcciones/direcciones.component';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { LoginFormComponent } from './login/login.component';
 import { MetodoPagoFormComponent } from './metodo-pago-form/metodo-pago-form.component';
@@ -34,7 +33,6 @@ const modules = [
   RecoveryComponent,
   ClienteComponent,
   ProveedorComponent,
-  DireccionesComponent,
   PerfilComponent,
   CorreosComponent,
   EncabezadoComponent,

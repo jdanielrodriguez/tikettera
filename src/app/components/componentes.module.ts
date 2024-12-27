@@ -41,11 +41,8 @@ import { ViewRetiroComponent } from './pages/caja/transacciones/retiro/view/view
 import { TransferenciaComponent } from './pages/caja/transacciones/transferencia/transferencia.component';
 import { CardsComponent } from './cards/cards.component';
 import { SendComponent } from './pages/chat/send/send.component';
-import { AddComentarioComponent } from './pages/comentarios/add-comentario/add-comentario.component';
-import { ComentariosComponent } from './pages/comentarios/comentarios.component';
 import { PreciosComponent } from './pages/precios/precios.component';
 import { PlacesComponent } from './pages/places/places.component';
-import { ReaccionesComponent } from './pages/reacciones/reacciones.component';
 import { BusquedaComponent } from './search/busqueda.component';
 
 // Steppers
@@ -71,9 +68,6 @@ const modules = [
   ColorBackgroundComponent,
   TarjetaComponent,
   ChatComponent,
-  ComentariosComponent,
-  AddComentarioComponent,
-  ReaccionesComponent,
   SendComponent,
   HistorialComponent,
   RetiroComponent,

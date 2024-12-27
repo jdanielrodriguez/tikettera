@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { AuthServices } from "src/app/services/auth.service";
-import { ProveedoresService } from "src/app/services/proveedores.service";
+// import { ProveedoresService } from "src/app/services/proveedores.service";
 import { NotificationsService } from 'angular2-notifications';
 import { ImagenesComponent } from "./../../components/imagenes/imagenes.component";
 import { ClientesService } from "src/app/services/clientes.service";
@@ -28,7 +28,7 @@ export class PerfilComponent implements OnInit, AfterViewInit {
     private clienteService: ClientesService,
     private formatear: Formatos,
     private authService: AuthServices,
-    private provsService: ProveedoresService
+    // private provsService: ProveedoresService
   ) { }
   ngOnInit(): void {
     $('html, body').animate({ scrollTop: 0 }, '300');

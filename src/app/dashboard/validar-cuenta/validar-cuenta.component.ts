@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProveedoresService } from './../../services/proveedores.service';
+// import { ProveedoresService } from './../../services/proveedores.service';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Perfil } from './../../interfaces';
@@ -12,7 +12,7 @@ import { Sesion } from '../../common/sesion';
 })
 export class ValidarCuentaComponent implements OnInit {
   constructor(
-    private proveedorService: ProveedoresService,
+    // private proveedorService: ProveedoresService,
     private route: ActivatedRoute,
     private _service: NotificationsService,
     private mySesion: Sesion,
@@ -63,30 +63,30 @@ export class ValidarCuentaComponent implements OnInit {
       filter: 'token'
     };
     this.blockUI.start();
-    this.proveedorService.getAllFilter(data)
-      .then((response: Perfil) => {
-        // if (response.proveedores.length > 0 && response.proveedores[0].estado === 2) {
-        //   this.createSuccess('Correo Verificado');
-        //   this._perfil = response;
-        // }
-        this.blockUI.stop();
-      })
-      .catch(error => {
-        error = error.error;
-        if (error.status && error.status === 402) {
-          this._tokenAccepted = false;
-          if (error.obj) {
-            this.perfil = this.perfil;
-            // if (this._perfil.proveedores.length > 0) {
-            //   this._perfil.proveedores[0] = error.obj;
-            // } else {
-            //   this._perfil.proveedores = [error.obj];
-            // }
-          }
-        }
-        this.blockUI.stop();
-        this.createInfo('Correo ya verificado');
-      });
+    // this.proveedorService.getAllFilter(data)
+    //   .then((response: Perfil) => {
+    //     if (response.proveedores.length > 0 && response.proveedores[0].estado === 2) {
+    //       this.createSuccess('Correo Verificado');
+    //       this._perfil = response;
+    //     }
+    //     this.blockUI.stop();
+    //   })
+    //   .catch(error => {
+    //     error = error.error;
+    //     if (error.status && error.status === 402) {
+    //       this._tokenAccepted = false;
+    //       if (error.obj) {
+    //         this.perfil = this.perfil;
+    //         if (this._perfil.proveedores.length > 0) {
+    //           this._perfil.proveedores[0] = error.obj;
+    //         } else {
+    //           this._perfil.proveedores = [error.obj];
+    //         }
+    //       }
+    //     }
+    //     this.blockUI.stop();
+    //     this.createInfo('Correo ya verificado');
+    //   });
     this.mySesion.actualizaPerfil(this.perfil);
   }
   createSuccess(success: string) {

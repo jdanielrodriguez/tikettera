@@ -15,18 +15,14 @@ return new class extends Migration
     {
         Schema::create('promoters_discounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
+            $table->string('name');
             $table->string('slug')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
+            $table->string('description')->nullable();
             $table->integer('state')->nullable()->default(1);
-
-            $table->integer('locality_discount_id')->nullable()->default(null)->unsigned();
+            $table->unsignedInteger('locality_discount_id')->nullable();
             $table->foreign('locality_discount_id')->references('id')->on('localities_discounts')->onDelete('cascade');
-
-            $table->integer('promoter_id')->nullable()->default(null)->unsigned();
+            $table->unsignedInteger('promoter_id');
             $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

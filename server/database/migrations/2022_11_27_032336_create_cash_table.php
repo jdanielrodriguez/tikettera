@@ -15,27 +15,14 @@ return new class extends Migration
     {
         Schema::create('cash', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->string('date_start')->nullable()->default(null);
-            $table->string('date_end')->nullable()->default(null);
-            $table->double('total',5,2)->nullable()->default(null);
-            $table->integer('closed')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('owner_id')->nullable()->default(null)->unsigned();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->timestamp('date_start')->nullable();
+            $table->timestamp('date_end')->nullable();
+            $table->double('total', 10, 2)->default(0);
+            $table->boolean('closed')->default(false);
+            $table->unsignedInteger('owner_id');
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->integer('creator')->nullable()->default(null)->unsigned();
-            $table->foreign('creator')->references('id')->on('users')->onDelete('cascade');
-
-            $table->integer('event_id')->nullable()->default(null)->unsigned();
-            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-
-            $table->integer('reason_id')->nullable()->default(null)->unsigned();
-            $table->foreign('reason_id')->references('id')->on('events_reason')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

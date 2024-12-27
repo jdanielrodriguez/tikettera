@@ -15,22 +15,16 @@ return new class extends Migration
     {
         Schema::create('policies_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->double('debe',5,2)->nullable()->default(null);
-            $table->double('haber',5,2)->nullable()->default(null);
-            $table->double('platform',5,5)->nullable()->default(null);
-            $table->double('comision',5,5)->nullable()->default(null);
-            $table->double('discount',5,2)->nullable()->default(null);
-            $table->double('discount_percent',5,5)->nullable()->default(null);
-            $table->double('iva',5,5)->nullable()->default(null);
-            $table->double('total',5,2)->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('policy_id')->nullable()->default(null)->unsigned();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->double('debe', 10, 2)->nullable();
+            $table->double('haber', 10, 2)->nullable();
+            $table->double('iva', 10, 2)->nullable();
+            $table->double('total', 10, 2)->nullable();
+            $table->integer('type')->default(1);
+            $table->integer('state')->default(1);
+            $table->unsignedInteger('policy_id');
             $table->foreign('policy_id')->references('id')->on('policies')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

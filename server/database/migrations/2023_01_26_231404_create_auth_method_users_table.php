@@ -15,23 +15,24 @@ return new class extends Migration
     {
         Schema::create('auth_method_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('token')->nullable()->default(null);
-            $table->text('auth_token')->nullable()->default(null);
-            $table->text('google_token')->nullable()->default(null);
-            $table->text('fb_token')->nullable()->default(null);
-            $table->text('tw_token')->nullable()->default(null);
-            $table->text('tk_token')->nullable()->default(null);
-            $table->dateTime('last_conection')->useCurrent();
+            $table->text('token')->nullable();
+            $table->text('auth_token')->nullable();
+            $table->text('google_token')->nullable();
+            $table->text('fb_token')->nullable();
+            $table->text('tw_token')->nullable();
+            $table->text('tk_token')->nullable();
+            $table->dateTime('last_conection')->nullable();
             $table->integer('type')->nullable()->default(1);
+            $table->integer('time_out')->unsigned()->nullable()->default(604800);
             $table->integer('readonly')->nullable()->default(0);
             $table->integer('state')->nullable()->default(1);
 
-            $table->integer('auth_method_id')->nullable()->default(null)->unsigned();
+            $table->integer('auth_method_id')->nullable()->unsigned();
             $table->foreign('auth_method_id')->references('id')->on('auth_method')->onDelete('cascade');
-            $table->integer('time_out')->unsigned()->nullable()->default(604800);
 
-            $table->integer('user_id')->nullable()->default(null)->unsigned();
+            $table->integer('user_id')->nullable()->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

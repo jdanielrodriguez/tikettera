@@ -11,6 +11,7 @@ class User extends Authenticatable implements JWTSubject
     public const AUTH_METHOD_GOOGLE = 2;
     public const AUTH_METHOD_FACEBOOK = 3;
     public const AUTH_METHOD_TIKTOK = 4;
+
     protected $table = 'users';
 
     /**
@@ -22,6 +23,10 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
+        'rol_id',
+        'state',
+        'last_conection',
+        'token',
     ];
 
     /**
@@ -34,13 +39,31 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    /**
+     * Get the identifier that will be stored in the JWT's subject claim.
+     *
+     * @return mixed
+     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
+    /**
+     * Return a key-value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Relationship with roles (if needed).
+     */
+    public function role()
+    {
+        return $this->belongsTo(Rol::class, 'rol_id');
     }
 }

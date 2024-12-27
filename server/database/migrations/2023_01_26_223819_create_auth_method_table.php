@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('auth_method', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->string('logo')->nullable()->default(null);
-            $table->integer('time_out')->unsigned()->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
+            $table->string('logo')->nullable();
+            $table->integer('session_expiration')->unsigned()->nullable();
+            $table->integer('type')->default(1);
+            $table->integer('state')->default(1);
             $table->timestamps();
         });
     }

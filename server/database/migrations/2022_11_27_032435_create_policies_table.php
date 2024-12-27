@@ -15,15 +15,13 @@ return new class extends Migration
     {
         Schema::create('policies', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description')->nullable()->default(null);
-            $table->date('date')->nullable()->default(null);
-            $table->double('total')->nullable()->default(null);
-            $table->date('start')->nullable()->default(null);
-            $table->date('end')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('creator_id')->nullable()->default(null)->unsigned();
+            $table->string('description')->nullable();
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->double('total', 10, 2)->nullable();
+            $table->integer('type')->default(1);
+            $table->integer('state')->default(1);
+            $table->unsignedInteger('creator_id');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

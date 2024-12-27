@@ -15,36 +15,27 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('place')->nullable()->default(null);
-            $table->string('code')->nullable()->default(null);
-            $table->double('price')->nullable()->default(null);
-            $table->double('qty')->nullable()->default(null);
-            $table->double('total')->nullable()->default(null);
-            $table->string('token')->nullable()->default(null);
-            $table->string('ern')->nullable()->default(null);
-            $table->text('crypto_id')->nullable()->default(null);
-            $table->text('hash')->nullable()->default(null);
-            $table->text('salt')->nullable()->default(null);
-            $table->timestamp('aprovDate')->nullable()->default(null);
-            $table->string('aprovDateString')->nullable()->default(null);
-            $table->string('aprov')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->double('lat',15,8)->nullable()->default(null);
-            $table->double('lng',15,8)->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
+            $table->string('hash')->unique();
+            $table->string('previous_hash')->nullable();
+            $table->string('name')->nullable();
+            $table->double('amount', 15, 8);
+            $table->double('fee', 15, 8)->default(0);
+            $table->double('total', 15, 8);
+            $table->string('token')->nullable();
+            $table->string('description')->nullable();
+            $table->integer('type')->default(1);
+            $table->integer('state')->default(1);
+            $table->timestamp('approved_at')->nullable();
+            $table->json('metadata')->nullable();
 
-            $table->integer('promoter_id')->nullable()->default(null)->unsigned();
+
+            $table->unsignedInteger('promoter_id')->nullable();
             $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');
-
-            $table->integer('event_id')->nullable()->default(null)->unsigned();
+            $table->unsignedInteger('event_id')->nullable();
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-
-            $table->integer('seller_id')->nullable()->default(null)->unsigned();
+            $table->unsignedInteger('seller_id')->nullable();
             $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->integer('buyer_id')->nullable()->default(null)->unsigned();
+            $table->unsignedInteger('buyer_id')->nullable();
             $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();

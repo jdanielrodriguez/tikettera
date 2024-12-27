@@ -15,20 +15,13 @@ return new class extends Migration
     {
         Schema::create('promoters_chat', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->string('mensaje')->nullable()->default(null);
-            $table->timestamp('date')->useCurrent();
-            $table->string('subject')->nullable()->default(null);
-            $table->string('description')->nullable()->default(null);
-            $table->integer('type')->nullable()->default(1);
-            $table->integer('state')->nullable()->default(1);
-
-            $table->integer('send')->nullable()->default(null)->unsigned();
-            $table->foreign('send')->references('id')->on('users')->onDelete('cascade');
-
-            $table->integer('receiver')->nullable()->default(null)->unsigned();
-            $table->foreign('receiver')->references('id')->on('users')->onDelete('cascade');
-
+            $table->unsignedInteger('sender_id');
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedInteger('receiver_id');
+            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->text('message');
+            $table->timestamp('sent_at')->useCurrent();
+            $table->integer('state')->default(1);
             $table->timestamps();
         });
     }

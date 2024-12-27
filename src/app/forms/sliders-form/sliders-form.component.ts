@@ -62,6 +62,7 @@ export class SlidersFormComponent implements OnInit {
     //     this.blockUI.stop();
     //     console.log(error);
     //   });
+    this.blockUI.stop();
   }
   guardar() {
     this.blockUI.start();

@@ -8,24 +8,25 @@ import { Sesion } from 'src/app/common/sesion';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  private _perfil: Perfil = new Perfil();
-  private _type!: string;
-  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  perfil: Perfil = new Perfil();
+  perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  @Input() type!: string;
   constructor(
     private route: ActivatedRoute,
     private mySesion: Sesion
   ) { }
   ngOnInit(): void {
     this.mySesion.actualizaPerfil();
+    this.perfil = this.mySesion.perfil;
     this.getParams();
   }
   getParams() {
     this.route.paramMap.subscribe(params => {
       const paramType = params.get('tipo');
-      this._type = paramType ?? this._type;
+      this.type = paramType ?? this.type;
 
-      if (this._type === 'settings') {
-        this.mySesion.navegar({url: '../dashboard/settings/profile'});
+      if (this.type === 'settings') {
+        this.mySesion.navegar({ url: '../dashboard/settings/profile' });
       }
     });
   }
@@ -33,32 +34,22 @@ export class DashboardComponent implements OnInit {
     this.mySesion.navegar(data);
   }
   obtenerPerfilConf(value: Perfil) {
-    this._perfil = value;
-    this._perfilEmit.emit(this._perfil);
-  }
-  get perfil(): Perfil {
-    return this.mySesion.perfil;
-  }
-  @Input()
-  set type(value: string) {
-    this._type = value;
-  }
-  get type(): string {
-    return this._type;
+    this.perfil = value;
+    this.perfilEmit.emit(this.perfil);
   }
 
   get active(): number {
     const tabMap: { [key: string]: number } = {
-        'information': 1,
-        'produced-events': 2,
-        'entries': 3,
-        'credit-cards': 4,
-        'bills': 5,
-        'settings': 6,
-        'autorizar-promotores': 7
+      'information': 1,
+      'produced-events': 2,
+      'entries': 3,
+      'credit-cards': 4,
+      'bills': 5,
+      'settings': 6,
+      'autorizar-promotores': 7
     };
 
-    return this._type ? (tabMap[this._type] ?? tabMap['information']) : tabMap['settings'];
+    return this.type ? (tabMap[this.type] ?? tabMap['information']) : tabMap['settings'];
   }
 
   get rolAdmin(): number {

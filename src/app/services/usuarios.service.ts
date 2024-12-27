@@ -36,16 +36,6 @@ export class UsuariosService {
       return this.handleError(error);
     }
   }
-  addAddress(form: any): Observable<any> {
-    this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/direcciones`;
-    try {
-      const response = this.http.post(url, form, { headers: this.mySesion.headers });
-      return response;
-    } catch (error) {
-      return this.handleError(error);
-    }
-  }
   delete(id: number): Observable<any> {
     const url = `${this.basePath}/api/users/${id}`;
     try {

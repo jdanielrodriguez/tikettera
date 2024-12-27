@@ -9,9 +9,9 @@ import { Sesion } from 'src/app/common/sesion';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
-  private _perfil: Perfil = new Perfil();
-  private _type!: string;
+  @Output() perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  @Input() perfil: Perfil = new Perfil();
+  @Input() type!: string;
   constructor(
     private route: ActivatedRoute,
     private mySesion: Sesion
@@ -21,46 +21,50 @@ export class SettingsComponent implements OnInit {
   }
   getParams() {
     const paramType = this.route.firstChild?.snapshot.paramMap.get('tipo');
-    this._type = paramType ?? 'profile';
+    this.type = paramType ?? 'profile';
   }
   navegar(data: Menus) {
     this.mySesion.navegar(data);
   }
   obtenerPerfilConf(value: Perfil) {
-    this._perfil = value;
-    this._perfilEmit.emit(this._perfil);
+    this.perfil = value;
+    this.perfilEmit.emit(this.perfil);
   }
   @Output()
   get obtenerPerfil(): EventEmitter<Perfil> {
-    this._perfilEmit.emit(this._perfil);
-    return this._perfilEmit;
-  }
-  @Input()
-  set perfil(value: Perfil) {
-    this._perfil = value;
-  }
-  get perfil(): Perfil {
-    return this._perfil;
-  }
-  @Input()
-  set type(value: string) {
-    this._type = value;
-  }
-  get type(): string {
-    return this._type;
+    this.perfilEmit.emit(this.perfil);
+    return this.perfilEmit;
   }
 
   get active(): number {
     const tabMap: { [key: string]: number } = {
-        'profile': 1,
-        'sliders': 2,
-        'metodos-pago': 3,
-        'encabezado': 4,
-        'correos': 5,
-        'password': 6,
-        'cuentas': 7
+      'profile': 1,
+      'sliders': 2,
+      'metodos-pago': 3,
+      'encabezado': 4,
+      'correos': 5,
+      'password': 6,
+      'cuentas': 7
     };
 
-    return tabMap[this._type] ?? 1;
+    return tabMap[this.type] ?? 1;
+  }
+
+  get rolAdmin(): number {
+    return 1;
+  }
+
+  get rolProducer(): number {
+    return 2;
+  }
+
+  get rol(): number {
+    let ret = 0;
+    this.mySesion.actualizaPerfil();
+    const perfil: Perfil = this.mySesion.perfil ? this.mySesion.perfil : (new Perfil());
+    if (perfil.rol_id) {
+      ret = perfil.rol_id ? perfil.rol_id : 0;
+    }
+    return ret;
   }
 }

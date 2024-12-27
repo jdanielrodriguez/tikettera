@@ -22,7 +22,7 @@
             <app-my-entries [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-entries>
           </ng-template>
         </li>
-        <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/credit-cards'})">
+        <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/credit-cards'})" [class.d-none]="(rol>rolProducer)">
           <a ngbNavLink>Mis Tarjetas</a>
           <ng-template ngbNavContent>
             <app-my-cards [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-cards>
@@ -40,7 +40,8 @@
             <app-settings [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-settings>
           </ng-template>
         </li>
-        <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/autorizar-promotores'})" [class.d-none]="(rol>rolAdmin)">
+        <li [ngbNavItem]="7" (click)="navegar({url:'./dashboard/autorizar-promotores'})"
+          [class.d-none]="(rol>rolAdmin)">
           <a ngbNavLink>Autorizar Promotores</a>
           <ng-template ngbNavContent>
             <app-authorize-promoters [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)">

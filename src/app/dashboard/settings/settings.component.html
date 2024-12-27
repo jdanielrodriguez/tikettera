@@ -10,7 +10,7 @@
           <app-perfil-view [perfil]="perfil" [editMode]="true"> </app-perfil-view>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/settings/sliders'})">
+      <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/settings/sliders'})" [class.d-none]="(rol>rolAdmin)">
         <a ngbNavLink>Sliders</a>
         <ng-template ngbNavContent>
           <app-sliders-form></app-sliders-form>
@@ -22,7 +22,8 @@
           <app-metodo-pago-form [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago-form>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/settings/encabezado'})">
+      <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/settings/encabezado'})"
+        [class.d-none]="(rol>rolProducer)">
         <a ngbNavLink>Encabezado</a>
         <ng-template ngbNavContent>
           <div class="alert alert-info">
@@ -34,13 +35,14 @@
             <strong>Lamentamos que no tengas disponible esta opción, activa tu proveedor ahora!</strong>
           </div>
           <div>
-            <button type="button" class="btn btn-info btn-rounded mx-auto" (click)="navegar({url:'./../dashboard/settings'})">
+            <button type="button" class="btn btn-info btn-rounded mx-auto"
+              (click)="navegar({url:'./../dashboard/settings'})">
               <i class="fa fa-hand-o-left"></i>
             </button>
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/settings/correos'})">
+      <li [ngbNavItem]="5" (click)="navegar({url:'./dashboard/settings/correos'})" [class.d-none]="(rol>rolAdmin)">
         <a ngbNavLink>Correos</a>
         <ng-template ngbNavContent>
           <app-correos></app-correos>

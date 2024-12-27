@@ -16,17 +16,16 @@ class EventsController extends Controller
      */
     public function index()
     {
-        $objectList = Event::all();
-        $count = count($objectList);
-        if ($objectList) {
-            $returnData = [
-                'status' => 200,
-                'msg' => 'Events Returned',
-                'count' => $count,
-                'data' => $objectList
-            ];
-            return new Response($returnData, $returnData['status']);
-        }
+        $objectList = Event::where('state', 1)->get();
+        $count = $objectList->count();
+
+        $returnData = [
+            'status' => 200,
+            'msg' => $count > 0 ? 'Events Returned' : 'No Events Found',
+            'count' => $count,
+            'data' => $objectList
+        ];
+        return new Response($returnData, $returnData['status']);
     }
 
     /**
@@ -38,20 +37,15 @@ class EventsController extends Controller
     {
         $nowDate = date('Y-m-d');
         $nowTime = date('H:i:s');
-        $objectSee = Event::whereRaw("date_start > ? or (date_start = ? and time_start > ?) and state = 1", [$nowDate, $nowDate, $nowTime])->get();
-        $count = count(Event::all());
-        if (!$objectSee) {
-            $returnData = [
-                'status' => 404,
-                'message' => 'No record found'
-            ];
-            return new Response($returnData, $returnData['status']);
-        }
+
+        $objectSee = Event::whereRaw("(date_start > ? OR (date_start = ? AND time_start > ?)) AND state = 1", [$nowDate, $nowDate, $nowTime])->get();
+        $count = $objectSee->count();
+
         $returnData = [
-            'status' => 200,
-            'msg' => 'Events Returned',
+            'status' => $count > 0 ? 200 : 404,
+            'msg' => $count > 0 ? 'Active Events Returned' : 'No Active Events Found',
             'count' => $count,
-            'objeto' => $objectSee
+            'objeto' => $count > 0 ? $objectSee : null
         ];
         return new Response($returnData, $returnData['status']);
     }
@@ -65,26 +59,22 @@ class EventsController extends Controller
     {
         $encript = new Encripter();
         $id = $slug ? json_decode(mb_convert_encoding($encript->desencript($slug), 'UTF-8', 'UTF-8')) : null;
+
         if (!$encript->getValidSalt()) {
             $returnData = [
                 'status' => 404,
                 'objeto' => null,
                 'msg' => "Error de seguridad"
             ];
-            return Response::json($returnData, $returnData['status']);
-        }
-        $objectSee = Event::whereRaw("slug = ? and state = 1", $id)->with('localities')->first();
-        if (!$objectSee) {
-            $returnData = [
-                'status' => 404,
-                'message' => 'No record found'
-            ];
             return new Response($returnData, $returnData['status']);
         }
+
+        $objectSee = Event::where('slug', $id)->where('state', 1)->with('localities')->first();
+
         $returnData = [
-            'status' => 200,
-            'msg' => 'Events Returned',
-            'cripto' => $encript->encript(mb_convert_encoding(json_encode($objectSee), 'UTF-8', 'UTF-8')),
+            'status' => $objectSee ? 200 : 404,
+            'msg' => $objectSee ?'Localities Returned' : 'No record found',
+            'cripto' => $objectSee ? $encript->encript(mb_convert_encoding(json_encode($objectSee), 'UTF-8', 'UTF-8')) : '',
             'objeto' => null
         ];
         return new Response($returnData, $returnData['status']);
@@ -100,26 +90,32 @@ class EventsController extends Controller
         $encript = new Encripter();
         $event_slug = $event_slug ? json_decode(mb_convert_encoding($encript->desencript($event_slug), 'UTF-8', 'UTF-8')) : null;
         $slug = $slug ? json_decode(mb_convert_encoding($encript->desencript($slug), 'UTF-8', 'UTF-8')) : null;
+
         if (!$encript->getValidSalt()) {
             $returnData = [
                 'status' => 404,
                 'objeto' => null,
                 'msg' => "Error de seguridad"
             ];
-            return Response::json($returnData, $returnData['status']);
+            return new Response($returnData, $returnData['status']);
         }
-        $event = Event::whereRaw("slug = ? and state = 1", $event_slug)->first();
-        $objectSee = Locality::whereRaw("slug = ? and state = 1 and event_id = ?", [$slug, $event->id])->with('places')->first();
-        if (!$objectSee) {
+
+        $event = Event::where('slug', $event_slug)->where('state', 1)->first();
+
+        if (!$event) {
             $returnData = [
                 'status' => 404,
-                'message' => 'No record found'
+                'msg' => 'Event not found',
+                'objeto' => null
             ];
             return new Response($returnData, $returnData['status']);
         }
+
+        $objectSee = Locality::where('slug', $slug)->where('state', 1)->where('event_id', $event->id)->with('places')->first();
+
         $returnData = [
-            'status' => 200,
-            'msg' => 'Locality Returned',
+            'status' => $objectSee ? 200 : 404,
+            'msg' => $objectSee ? 'Locality Returned' : 'Locality not found',
             'objeto' => $objectSee
         ];
         return new Response($returnData, $returnData['status']);
@@ -155,18 +151,13 @@ class EventsController extends Controller
     public function show($id)
     {
         $objectSee = Event::find($id);
-        if ($objectSee) {
-            $returnData = array(
-                'status' => 404,
-                'message' => 'No record found'
-            );
-            return new Response($returnData, $returnData['status']);
-        }
-        $returnData = array(
-            'status' => 200,
-            'msg' => 'Event Returned',
-            'data' => $objectSee
-        );
+
+
+        $returnData = [
+            'status' => $objectSee ? 200 : 404,
+            'msg' => $objectSee ? 'Event Returned' : 'No record found',
+            'objeto' => $objectSee
+        ];
         return new Response($returnData, $returnData['status']);
     }
 

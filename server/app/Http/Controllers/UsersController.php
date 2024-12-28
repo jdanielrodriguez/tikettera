@@ -5,45 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
-use App\Models\Rol;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
     /**
      * Display the specified resource.
      *
@@ -63,17 +29,6 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -88,33 +43,30 @@ class UsersController extends Controller
             if (!$user) {
                 $returnData = array(
                     'status' => 404,
-                    'msg' => 'User not found',
-                    'error' => null
+                    'msg' => 'No record found',
+                    'objeto' => null,
                 );
                 return new Response($returnData, $returnData['status']);
             }
 
-            // Validaciones
             $validator = Validator::make($request->all(), [
                 'username' => 'sometimes|string|max:255',
                 'password' => 'sometimes|string|min:6',
                 'email' => 'sometimes|email|max:255|unique:users,email,' . $user->id,
                 'names' => 'sometimes|string|max:255',
                 'lastnames' => 'sometimes|max:255',
-                'picture' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'picture' => 'sometimes|string',
             ]);
 
             if ($validator->fails()) {
                 $returnData = array(
                     'status' => 422,
-                    'msg' => $validator->errors(),
-                    'error' => $validator->errors()
+                    'msg' => $validator->errors()->first(),
+                    'objeto' => null,
                 );
                 return new Response($returnData, $returnData['status']);
-
             }
 
-            // Actualizar campos
             $user->username = $request->input('username', $user->username);
             $user->email = $request->input('email', $user->email);
             $user->names = $request->input('names', $user->names);
@@ -124,19 +76,41 @@ class UsersController extends Controller
                 $user->password = Hash::make($request->input('password'));
             }
 
-            // Manejo de la imagen
             if ($request->input('picture')) {
-                $imageData = base64_decode($request->input('picture'));
-                $imageName = 'profile_' . time() . '.png';
-                $path = 'profile_pictures/' . $imageName;
+                $imageController = new S3Controller();
+                $uploadedUrl = $imageController->uploadImage($request->input('picture'), 'profile_pictures');
 
-                Storage::put($path, $imageData);
+                if ($uploadedUrl) {
+                    $user->picture = $uploadedUrl;
+                } else {
+                    $returnData = array(
+                        'status' => 500,
+                        'msg' => 'Error uploading image',
+                        'objeto' => null,
+                    );
+                    return new Response($returnData, $returnData['status']);
+                }
+            } else {
+                if ($user->picture) {
+                    $imageController = new S3Controller();
+                    $deleteSuccess = $imageController->deleteImage($user->picture);
 
-                // Actualiza la ruta de la imagen en el usuario
-                $user->picture = $path;
+                    if ($deleteSuccess) {
+                        $user->picture = null;
+                    } else {
+                        $returnData = array(
+                            'status' => 500,
+                            'msg' => 'Error deleting image',
+                            'objeto' => null,
+                        );
+                        return new Response($returnData, $returnData['status']);
+                    }
+                }
             }
 
+
             $user->save();
+
             $encript = new Encripter();
             $returnData = array(
                 'status' => 200,
@@ -148,20 +122,10 @@ class UsersController extends Controller
             $returnData = array(
                 'status' => 500,
                 'msg' => 'Error al actualizar el perfil.',
-                'error' => $e->getMessage()
+                'objeto' => null,
+                'error' => $e->getMessage(),
             );
             return new Response($returnData, $returnData['status']);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

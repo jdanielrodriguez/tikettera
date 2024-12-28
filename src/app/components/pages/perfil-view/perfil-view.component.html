@@ -3,7 +3,8 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto text-left">
       <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()" *ngIf="editMode; else viewMode">
         <!-- Imagen -->
-        <app-imagenes (imagenPrincipal)="actualizarImagen($event)" [lista]="imagenes" carpeta="Avatar" [esAdmin]="true">
+        <app-imagenes (imagenPrincipal)="actualizarImagen($event)" [soloUnaImagen]="true" [lista]="imagenes"
+          carpeta="Avatar" [esAdmin]="true">
         </app-imagenes>
 
         <!-- Username -->

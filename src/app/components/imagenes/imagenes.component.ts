@@ -102,9 +102,9 @@ export class ImagenesComponent implements OnInit {
   }
 
   resetImagen(): void {
-    this.imagen = new Imagen(); // Resetear la imagen
-    this.displayImagen = false; // Regresar al estado inicial
-    this.activePanel = 'inputSubirImagen'; // Mostrar el panel de carga
+    this.imagen = new Imagen(); // Resetear la imagen seleccionada
+    this.displayImagen = false; // Ocultar la vista previa
+    this.activePanel = this.lista.length > 0 ? 'sliderImagenes' : 'inputSubirImagen'; // Mostrar el panel adecuado
   }
 
   eliminarImagen(imagen: Imagen): void {

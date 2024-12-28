@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ChangePasswordForm, Response, ResponseCAPTCHA } from '../../../interfaces';
-import { Sesion } from '../../../common/sesion';
-import { AuthServices } from '../../../services/auth.service';
+import { ChangePasswordForm, Response, ResponseCAPTCHA } from '../../interfaces';
+import { Sesion } from '../../common/sesion';
+import { AuthServices } from '../../services/auth.service';
 import { ChangePassFormulario } from './change-pass-form.component';
 
 @Component({

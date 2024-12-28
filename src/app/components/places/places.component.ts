@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { Place } from '../../../interfaces';
+import { Place } from '../../interfaces';
 
 @Component({
   selector: 'app-places',

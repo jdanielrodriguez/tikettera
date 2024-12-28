@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Sesion } from '../../../common/sesion';
-import { Perfil } from '../../../interfaces';
+import { Sesion } from '../../common/sesion';
+import { Perfil } from '../../interfaces';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',

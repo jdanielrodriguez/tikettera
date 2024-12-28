@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HistoricoCaja, Caja, Factura } from '../../../../../../interfaces';
+import { HistoricoCaja, Caja, Factura } from '../../../../../interfaces';
 @Component({
   selector: 'app-historial-view',
   templateUrl: './view.component.html',

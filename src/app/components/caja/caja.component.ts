@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { ComisionesService } from '../../../services/comisiones.service';
+import { ComisionesService } from '../../services/comisiones.service';
 import { Perfil, Pasarela, Comision, Caja } from 'src/app/interfaces';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { Constantes } from 'src/app/common/constant';

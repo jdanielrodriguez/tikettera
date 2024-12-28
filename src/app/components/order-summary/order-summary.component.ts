@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ListaBusqueda, Place } from '../../../interfaces';
+import { ListaBusqueda, Place } from '../../interfaces';
 const IVA_RATE = 0.12;
 
 @Component({

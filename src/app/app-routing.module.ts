@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 
-import { ChangePassComponent } from './components/pages/change-pass/change-pass.component';
+import { ChangePassComponent } from './components/change-pass/change-pass.component';
 import { LogoutComponent } from './components/logout/logout.component';
 
 import { SettingsComponent } from './dashboard/settings/settings.component';

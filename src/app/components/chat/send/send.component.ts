@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Sesion } from '../../../../common/sesion';
-import { Perfil, Comentario } from '../../../../interfaces';
+import { Sesion } from '../../../common/sesion';
+import { Perfil, Comentario } from '../../../interfaces';
 
 @Component({
   selector: 'app-send',

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { HistoricoCaja, Perfil } from 'src/app/interfaces';
-import { ComisionesService } from '../../../../../services/comisiones.service';
+import { ComisionesService } from '../../../../services/comisiones.service';
 
 @Component({
   selector: 'app-caja-historial',

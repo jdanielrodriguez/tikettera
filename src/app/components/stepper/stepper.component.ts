@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ListaBusqueda } from '../../../interfaces';
+import { ListaBusqueda } from '../../interfaces';
 
 @Component({
   selector: 'app-stepper',

@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ListaBusqueda, Place } from '../../../../interfaces';
+import { ListaBusqueda, Place } from '../../../interfaces';
 @Component({
-  selector: 'app-stepper-detalle-compra',
-  templateUrl: './detalle-compra.component.html',
-  styleUrls: ['./detalle-compra.component.scss']
+  selector: 'app-stepper-places',
+  templateUrl: './places.component.html',
+  styleUrls: ['./places.component.scss']
 })
-export class StepperDetalleCompraComponent implements OnInit {
+export class StepperPlacesComponent implements OnInit {
   @Input() public data: ListaBusqueda = new ListaBusqueda();
   @Output() changeStep = new EventEmitter<number>();
 
@@ -30,4 +30,3 @@ export class StepperDetalleCompraComponent implements OnInit {
     return this.data.selectedPlaces ?? [];
   }
 }
-

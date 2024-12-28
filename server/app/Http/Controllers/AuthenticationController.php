@@ -350,75 +350,6 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function sendNewPassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-        ]);
-
-        if ($validator->fails()) {
-            $returnData = [
-                'status' => 400,
-                'msg' => 'Invalid Parameters',
-                'validator' => $validator->messages(),
-            ];
-            return new Response($returnData, $returnData['status']);
-        }
-
-        try {
-            $email = base64_decode($request->get('email'));
-            $user = User::where('email', $email)->orWhere('username', $email)->first();
-
-            if (!$user) {
-                $returnData = [
-                    'status' => 404,
-                    'msg' => 'User not found',
-                    'objeto' => null,
-                ];
-                return new Response($returnData, $returnData['status']);
-            }
-
-            // Generate a new secure password
-            $faker = Faker::create();
-            $newPassword = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
-
-            // Update the user's password
-            $user->update(['password' => Hash::make($newPassword)]);
-
-            // Send recovery email
-            $url = $request->get('url')
-                ? base64_decode($request->get('url'))
-                : 'https://www.tikettera.com';
-
-            $user->url = $url;
-
-            try {
-                EmailsController::enviarRecovery($user, $newPassword);
-
-                $returnData = [
-                    'status' => 200,
-                    'msg' => 'New password sent successfully',
-                    'objeto' => null,
-                ];
-                return new Response($returnData, $returnData['status']);
-            } catch (\Exception $e) {
-                $returnData = [
-                    'status' => 501,
-                    'msg' => 'Error sending recovery email',
-                    'objeto' => null,
-                ];
-                return new Response($returnData, $returnData['status']);
-            }
-        } catch (\Exception $e) {
-            $returnData = [
-                'status' => 500,
-                'msg' => $e->getMessage(),
-                'objeto' => null,
-            ];
-            return new Response($returnData, $returnData['status']);
-        }
-    }
-
     public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -506,6 +437,75 @@ class AuthenticationController extends Controller
             $returnData = [
                 'status' => 500,
                 'msg' => $e->getMessage()
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
+    }
+
+    public function sendNewPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            $returnData = [
+                'status' => 400,
+                'msg' => 'Invalid Parameters',
+                'validator' => $validator->messages(),
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
+
+        try {
+            $email = base64_decode($request->get('email'));
+            $user = User::where('email', $email)->orWhere('username', $email)->first();
+
+            if (!$user) {
+                $returnData = [
+                    'status' => 404,
+                    'msg' => 'User not found',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+
+            // Generate a new secure password
+            $faker = Faker::create();
+            $newPassword = $faker->regexify('[a-zA-Z0-9-_=+*%@!]{8,15}');
+
+            // Update the user's password
+            $user->update(['password' => Hash::make($newPassword)]);
+
+            // Send recovery email
+            $url = $request->get('url')
+                ? base64_decode($request->get('url'))
+                : 'https://www.tikettera.com';
+
+            $user->url = $url;
+
+            try {
+                EmailsController::enviarRecovery($user, $newPassword);
+
+                $returnData = [
+                    'status' => 200,
+                    'msg' => 'New password sent successfully',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            } catch (\Exception $e) {
+                $returnData = [
+                    'status' => 501,
+                    'msg' => 'Error sending recovery email',
+                    'objeto' => null,
+                ];
+                return new Response($returnData, $returnData['status']);
+            }
+        } catch (\Exception $e) {
+            $returnData = [
+                'status' => 500,
+                'msg' => $e->getMessage(),
+                'objeto' => null,
             ];
             return new Response($returnData, $returnData['status']);
         }

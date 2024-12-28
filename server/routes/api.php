@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('change-password', [App\Http\Controllers\AuthenticationController::class, 'changePassword']);
     Route::get('users/{id}', [App\Http\Controllers\UsersController::class, 'show']);
+    Route::put('users/{id}', [App\Http\Controllers\UsersController::class, 'update']);
     Route::post('logout', [App\Http\Controllers\AuthenticationController::class, 'logout']);
 });
 Route::post('signup', [App\Http\Controllers\AuthenticationController::class, 'signUp']);

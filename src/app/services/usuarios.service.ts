@@ -45,7 +45,7 @@ export class UsuariosService {
       return this.handleError(error);
     }
   }
-  update(form: any): Observable<any> {
+  updateProfile(form: Perfil): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/users/${form.id}`;
     try {
@@ -55,7 +55,7 @@ export class UsuariosService {
       return this.handleError(error);
     }
   }
-  getSingle(id: number): Observable<Perfil> {
+  getSingle(id: number): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/users/${id}`;
     try {

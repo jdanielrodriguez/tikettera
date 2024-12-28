@@ -359,27 +359,18 @@ export class Imagen {
   constructor() {
     this.id = null;
     this.url = 'https://via.placeholder.com/50X50';
+    this.base64 = null;
     this.titulo = '';
     this.descripcion = '';
-    this.estado = 1;
   }
-  id?: number | null | undefined;
+
+  id?: number | null;
   url: string;
-  default?: string;
-  orden?: string;
+  base64?: string | null;
   titulo?: string;
   descripcion?: string;
-  path?: string;
-  estado?: number;
-  cliente?: number;
-  proveedor?: number;
-  usuario?: number;
-  producto?: number;
-  configuracion?: number;
-  inventario?: number;
-  item?: number;
-  tipo_item?: number;
 }
+
 export class Direccion {
   constructor() {
     this.id = null;

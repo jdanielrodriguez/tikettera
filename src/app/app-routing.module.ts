@@ -9,8 +9,8 @@ import { SettingsComponent } from './dashboard/settings/settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuenta.component';
 
-import { AuthComponent } from './auth/auth.component';
-import { LoginComponent } from './login/login.component';
+import { AuthComponent } from './pages/auth/auth.component';
+import { LoginComponent } from './pages/login/login.component';
 import { BoletosComponent } from './pages/boletos/boletos.component';
 import { ExplorarComponent } from './pages/explorar/explorar.component';
 import { FacturaComponent } from './pages/factura/factura.component';
@@ -18,8 +18,8 @@ import { InicioComponent } from './pages/inicio/inicio.component';
 import { LocalidadesComponent } from './pages/localidades/localidades.component';
 import { NosotrosComponent } from './pages/nosotros/nosotros.component';
 import { PagoComponent } from './pages/pago/pago.component';
-import { RecoveryComponent } from './recovery/recovery.component';
-import { RegisterComponent } from './register/register.component';
+import { RecoveryComponent } from './pages/recovery/recovery.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   { path: '', component: InicioComponent },

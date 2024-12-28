@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-event-form',
-  templateUrl: './event-form.component.html',
-  styleUrls: ['./event-form.component.scss']
+  selector: 'app-events',
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.scss']
 })
-export class EventFormComponent implements OnInit {
+export class EventsComponent implements OnInit {
   @Input() event: any;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();

@@ -22,12 +22,16 @@ import { ColorBackgroundComponent } from './color-background/color-background.co
 import { FooterComponent } from './footer/footer.component';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { ImagenesComponent } from './imagenes/imagenes.component';
-import { LogoutComponent } from './logout/logout.component';
 import { OrderSummaryComponent } from './pages/order-summary/order-summary.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { SlidersComponent } from './sliders/sliders.component';
 import { TarjetaComponent } from './tarjeta/tarjeta.component';
 import { MetodoPagoComponent } from './metodo-pago/metodo-pago.component';
+
+import { LoginFormComponent } from './login/login.component';
+import { RecoveryComponent } from './recovery/recovery.component';
+import { RegisterComponent } from './register/register.component';
+import { LogoutComponent } from './logout/logout.component';
 
 import { CvvTCPipe } from '../pipes/cvv-tc.pipe';
 import { JustTextPipe } from '../pipes/just-text.pipe';
@@ -47,13 +51,22 @@ import { PlacesComponent } from './pages/places/places.component';
 import { BusquedaComponent } from './search/busqueda.component';
 import { AdvertisementsFormComponent } from './advertisements/advertisements.component';
 
+import { CorreosComponent } from './correos/correos.component';
+import { EncabezadoComponent } from './encabezado/encabezado.component';
+import { EventsComponent } from './events/events.component';
+
 // Steppers
 import { StepperComponent } from './pages/stepper/stepper.component';
 import { StepperPlacesComponent } from './pages/stepper/places/places.component';
 import { StepperBoletosComponent } from './pages/stepper/boletos/boletos.component';
 import { StepperDetalleCompraComponent } from './pages/stepper/detalle-compra/detalle-compra.component';
 
+import { Modal } from './modal.component';
+
 const modules = [
+  CorreosComponent,
+  EncabezadoComponent,
+  EventsComponent,
   AdvertisementsFormComponent,
   BusquedaComponent,
   NavComponent,
@@ -61,6 +74,9 @@ const modules = [
   SlidersComponent,
   FooterComponent,
   LogoutComponent,
+  LoginFormComponent,
+  RecoveryComponent,
+  RegisterComponent,
   NumTCPipe,
   ImagenesComponent,
   JustTextPipe,
@@ -88,7 +104,8 @@ const modules = [
   StepperComponent,
   StepperPlacesComponent,
   StepperBoletosComponent,
-  StepperDetalleCompraComponent
+  StepperDetalleCompraComponent,
+  Modal
 ]
 @NgModule({
   declarations: modules,

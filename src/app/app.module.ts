@@ -14,16 +14,15 @@ import { BlockUIModule } from 'ng-block-ui';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentesModule } from './components/componentes.module';
-import { FormModule } from './forms/forms.module';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { Encript } from "./common/encript";
 import { Sesion } from "./common/sesion";
 import { Formatos } from "./common/format";
 import { Constantes } from "./common/constant";
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { NosotrosComponent } from './pages/nosotros/nosotros.component';
-import { RecoveryComponent } from './recovery/recovery.component';
-import { RegisterComponent } from './register/register.component';
+import { RecoveryComponent } from './pages/recovery/recovery.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { SocialLoginModule } from 'angularx-social-login';
@@ -40,7 +39,7 @@ import { ComisionesService } from './services/comisiones.service';
 import { LocalitiesService } from './services/localities.service';
 import { AdvertisementsService } from './services/advertisements.service';
 
-import { AuthComponent } from './auth/auth.component';
+import { AuthComponent } from './pages/auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ValidarCuentaComponent } from './dashboard/validar-cuenta/validar-cuenta.component';
 import { MyEntriesComponent } from './dashboard/my-entries/my-entries.component';
@@ -84,7 +83,6 @@ import { AuthorizePromotersComponent } from './dashboard/authorize-promoters/aut
     BrowserModule,
     ComponentesModule,
     FormsModule,
-    FormModule,
     HttpClientModule,
     NgbDropdownModule,
     NgbModule,

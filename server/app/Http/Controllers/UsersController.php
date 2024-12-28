@@ -77,37 +77,34 @@ class UsersController extends Controller
             }
 
             if ($request->input('picture')) {
-                $imageController = new S3Controller();
-                $uploadedUrl = $imageController->uploadImage($request->input('picture'), 'profile_pictures');
+                $picture = $request->input('picture');
+                // Validar si es Base64
+                if (preg_match('/^[A-Za-z0-9+\/=]+$/', $picture)) {
+                    $imageController = new S3Controller();
+                    $uploadedUrl = $imageController->uploadImage($picture, 'profile_pictures');
 
-                if ($uploadedUrl) {
-                    $user->picture = $uploadedUrl;
-                } else {
-                    $returnData = array(
-                        'status' => 500,
-                        'msg' => 'Error uploading image',
-                        'objeto' => null,
-                    );
-                    return new Response($returnData, $returnData['status']);
+                    if ($uploadedUrl) {
+                        $user->picture = $uploadedUrl;
+                    } else {
+                        $returnData = array(
+                            'status' => 500,
+                            'msg' => 'Error uploading image',
+                            'objeto' => null,
+                        );
+                        return new Response($returnData, $returnData['status']);
+                    }
                 }
             } else {
+                // Si no se proporciona 'picture' y ya hay una imagen registrada
                 if ($user->picture) {
                     $imageController = new S3Controller();
                     $deleteSuccess = $imageController->deleteImage($user->picture);
 
                     if ($deleteSuccess) {
                         $user->picture = null;
-                    } else {
-                        $returnData = array(
-                            'status' => 500,
-                            'msg' => 'Error deleting image',
-                            'objeto' => null,
-                        );
-                        return new Response($returnData, $returnData['status']);
                     }
                 }
             }
-
 
             $user->save();
 

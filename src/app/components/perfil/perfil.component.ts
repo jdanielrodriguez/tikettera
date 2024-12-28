@@ -36,6 +36,7 @@ export class PerfilComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       id: [''],
       names: [''],
+      picture: [''],
       lastnames: ['']
     });
   }
@@ -69,13 +70,18 @@ export class PerfilComponent implements OnInit {
       const payload: any = { ...this.perfilForm.value };
 
       // Agregar imagen si existe
-      if (this.imagenes.length > 0 && this.imagenes[0]?.base64) {
-        payload.picture = this.imagenes[0].base64; // Agregar imagen en formato base64
+      if (this.imagenes.length > 0) {
+        payload.picture = this.imagenes[0].base64 ? this.imagenes[0].base64 : this.imagenes[0].url; // Agregar imagen en formato base64
+      } else {
+        delete(payload.picture);
       }
-
       // Llamar al servicio para actualizar el perfil
       this.usuariosService.updateProfile(payload).subscribe({
         next: (response: Response) => {
+          const decryptedProfile = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
+          if (decryptedProfile) {
+            this.mySesion.actualizaPerfil(decryptedProfile);
+          }
           this.mySesion.loadingStop();
           this.mySesion.createSuccess(response.msg || 'Perfil actualizado');
         },

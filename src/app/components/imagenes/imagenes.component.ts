@@ -13,6 +13,7 @@ export class ImagenesComponent implements OnInit {
   @Input() esAdmin: boolean = false;
   @Input() carpeta: string = '';
   @Input() soloUnaImagen: boolean = false;
+  @Input() mostrarSlider: boolean = true;
 
   @Input()
   set lista(value: Imagen[]) {
@@ -88,16 +89,13 @@ export class ImagenesComponent implements OnInit {
   enviarImagen(): void {
     if (this.imagen.base64) {
       if (this.soloUnaImagen) {
-        // Reemplazar la lista con la nueva imagen
         this.lista = [this.imagen];
       } else {
-        // Agregar la nueva imagen a la lista
         this.lista.push(this.imagen);
       }
       this.imagenPrincipal.emit(this.lista); // Emitir lista actualizada
       this.imagen = new Imagen(); // Resetear imagen
       this.displayImagen = false; // Ocultar vista previa
-      this.activePanel = 'sliderImagenes'; // Cambiar al panel del slider
     } else {
       this.mySesion.createError('No se ha seleccionado una imagen válida.');
     }
@@ -106,23 +104,20 @@ export class ImagenesComponent implements OnInit {
   resetImagen(): void {
     this.imagen = new Imagen(); // Resetear la imagen
     this.displayImagen = false; // Regresar al estado inicial
-    this.activePanel = this.lista.length > 0 ? 'sliderImagenes' : 'inputSubirImagen'; // Mostrar el slider si hay imágenes
+    this.activePanel = 'inputSubirImagen'; // Mostrar el panel de carga
   }
 
   eliminarImagen(imagen: Imagen): void {
     this.lista = this.lista.filter((img) => img !== imagen); // Remover imagen
     this.imagenEliminar.emit(imagen); // Emitir imagen eliminada
     this.imagenPrincipal.emit(this.lista); // Emitir lista actualizada
-    if (this.lista.length === 0) {
-      this.activePanel = 'inputSubirImagen'; // Mostrar el panel de carga si no hay imágenes
-    }
   }
 
   private actualizarEstado(): void {
     if (this.displayImagen) {
-      this.activePanel = 'inputSubirImagen'; // Mostrar vista previa
-    } else if (this.lista.length > 0) {
-      this.activePanel = 'sliderImagenes'; // Mostrar slider
+      this.activePanel = 'previewImagen'; // Mostrar vista previa
+    } else if (this.lista.length > 0 && this.mostrarSlider) {
+      this.activePanel = 'sliderImagenes'; // Mostrar slider si está habilitado
     } else {
       this.activePanel = 'inputSubirImagen'; // Mostrar input si no hay imágenes
     }

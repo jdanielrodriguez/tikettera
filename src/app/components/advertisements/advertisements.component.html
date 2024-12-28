@@ -1,17 +1,37 @@
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto text-left ">
-  <form class="form-signin" autocomplete="off" id="PerfilForm" #PerfilForm="ngForm" (ngSubmit)="guardar()">
-    <h1 class="h3 mb-3 mt-3 font-weight-normal text-dark" *ngIf="titulo && muestraTexto">{{titulo}}</h1>
-    <!-- <app-imagenes (imagenEliminar)="eliminarFoto($event)" [esAdmin]="true" carpeta="sliders" [lista]="sliders" (imagenPrincipal)="cargarImagen($event)"></app-imagenes>-->
-    <div class="row mt-3">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-        <button class=" btn btn-lg btn-danger btn-block mr-auto" type="button"><i class="fa fa-times"></i>
-          Cancelar</button>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto text-left">
+  <!-- Componente de subida de imágenes -->
+  <app-imagenes [esAdmin]="true" carpeta="advertisements" (imagenPrincipal)="cargarImagen($event)"></app-imagenes>
+
+  <!-- Formulario para crear Advertisement -->
+  <div *ngIf="formAdvertisement.picture" class="mt-4">
+    <h3>Crear Anuncio</h3>
+    <form (ngSubmit)="guardarAdvertisement()" #adForm="ngForm">
+      <div class="form-group">
+        <label for="name">Nombre:</label>
+        <input id="name" class="form-control" type="text" [(ngModel)]="formAdvertisement.name" name="name" required />
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-        <button class=" btn btn-lg btn-primary btn-block ml-auto" type="submit">
-          <i class="fa fa-save"></i> Guardar
-        </button>
+      <div class="form-group">
+        <label for="slug">Slug:</label>
+        <input id="slug" class="form-control" type="text" [(ngModel)]="formAdvertisement.slug" name="slug" required />
       </div>
-    </div>
-  </form>
+      <div class="form-group">
+        <label for="description">Descripción:</label>
+        <textarea id="description" class="form-control" [(ngModel)]="formAdvertisement.description"
+          name="description"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Imagen seleccionada:</label>
+        <img [src]="formAdvertisement.picture.url" class="img-thumbnail"
+          style="max-height: 150px; object-fit: cover;" />
+      </div>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-secondary" type="button" (click)="resetForm()">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Crear Anuncio</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Componente de sliders -->
+  <app-sliders *ngIf="sliders.length > 0" [sliders]="sliders" [esAdmin]="true"
+    (imagenEliminar)="eliminarFoto($event)"></app-sliders>
 </div>

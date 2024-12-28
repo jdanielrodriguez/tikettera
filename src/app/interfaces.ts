@@ -370,6 +370,32 @@ export class Imagen {
   titulo?: string;
   descripcion?: string;
 }
+export class Advertisement {
+  constructor() {
+    this.id = null;
+    this.name = '';
+    this.description = '';
+    this.slug = '';
+    this.url = '';
+    this.picture = new Imagen();
+    this.type = 1;
+    this.state = 1;
+    this.event_id = null;
+    this.user_id = null;
+  }
+
+  id?: number | null;
+  name?: string;
+  description?: string;
+  slug?: string;
+  url?: string;
+  picture?: Imagen | null;
+  pictureBase64?: string | null;
+  type?: number;
+  state?: number;
+  event_id?: number | null;
+  user_id?: number | null;
+}
 
 export class Direccion {
   constructor() {
@@ -607,7 +633,6 @@ export class Response extends RSP {
 export class ResponseUser extends RSP {
   constructor() {
     super();
-    this.status = 500;
     this.objeto = null;
   }
   objeto: Perfil | null;
@@ -615,7 +640,6 @@ export class ResponseUser extends RSP {
 export class ResponseEvent extends RSP {
   constructor() {
     super();
-    this.status = 500;
     this.objeto = null;
     this.count = null;
     this.cripto = null;
@@ -627,7 +651,6 @@ export class ResponseEvent extends RSP {
 export class ResponseLocality extends RSP {
   constructor() {
     super();
-    this.status = 500;
     this.objeto = null;
     this.count = null;
   }
@@ -638,8 +661,26 @@ export class ResponseLocality extends RSP {
 export class ResponseCAPTCHA extends RSP {
   constructor() {
     super();
-    this.status = 500;
     this.objeto = new CaptchaObj();
   }
   objeto: CaptchaObj;
+}
+
+
+export class ResponseAdvertisement extends RSP {
+  constructor() {
+    super();
+    this.objeto = null;
+  }
+  objeto: Advertisement | null;
+}
+
+export class ResponseAdvertisementList extends RSP {
+  constructor() {
+    super();
+    this.objeto = [];
+    this.count = 0;
+  }
+  objeto: Advertisement[];
+  count: number;
 }

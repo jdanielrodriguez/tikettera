@@ -19,6 +19,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('users/{id}', [App\Http\Controllers\UsersController::class, 'show']);
     Route::put('users/{id}', [App\Http\Controllers\UsersController::class, 'update']);
     Route::post('logout', [App\Http\Controllers\AuthenticationController::class, 'logout']);
+    Route::resource('advertisements', App\Http\Controllers\AdvertisementController::class);
 });
 Route::post('signup', [App\Http\Controllers\AuthenticationController::class, 'signUp']);
 Route::post('login', [App\Http\Controllers\AuthenticationController::class, 'login']);
@@ -31,8 +32,7 @@ Route::get('events/active', [App\Http\Controllers\EventsController::class, 'getA
 Route::get('events/localities/{slug}', [App\Http\Controllers\EventsController::class, 'getLocalities']);
 Route::get('events/{event_slug}/localities/{slug}', [App\Http\Controllers\EventsController::class, 'getLocality']);
 Route::resource('events', App\Http\Controllers\EventsController::class);
-Route::get('advertisement/active', [App\Http\Controllers\AdvertisementController::class, 'getActives']);
-Route::resource('advertisement', App\Http\Controllers\AdvertisementController::class);
+Route::get('advertisements/active', [App\Http\Controllers\AdvertisementController::class, 'getActives']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

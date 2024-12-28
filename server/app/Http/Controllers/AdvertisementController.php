@@ -5,118 +5,164 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Advertisement;
+use App\Models\AdvertisementsDiscount;
 
 class AdvertisementController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of advertisements.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $objectList = Advertisement::all();
-        $count = count($objectList);
-        if ($objectList) {
-            $returnData = array(
-                'status' => 200,
-                'msg' => 'Advertisement Returned',
-                'count' => $count,
-                'data' => $objectList
-            );
-            return new Response($returnData, $returnData['status']);
-        }
+        $advertisements = Advertisement::all();
+        $count = $advertisements->count();
+
+        $returnData = [
+            'status' => 200,
+            'msg' => 'Advertisements Retrieved',
+            'count' => $count,
+            'objeto' => $advertisements
+        ];
+
+        return new Response($returnData, $returnData['status']);
     }
 
     /**
-     * Display a listing of the resource.
+     * Display active advertisements.
      *
      * @return \Illuminate\Http\Response
      */
     public function getActives()
     {
-        $objectSee = Advertisement::whereRaw("tate = 1")->get();
-        $count = count(Advertisement::all());
-        if ($objectSee) {
-            $returnData = array(
+        $activeAdvertisements = Advertisement::where('state', 1)->get();
+        $count = $activeAdvertisements->count();
+
+        if ($count > 0) {
+            $returnData = [
                 'status' => 200,
-                'msg' => 'Advertisement Returned',
+                'msg' => 'Active Advertisements Retrieved',
                 'count' => $count,
-                'data' => $objectSee
-            );
-            return new Response($returnData, $returnData['status']);
+                'objeto' => $activeAdvertisements
+            ];
         } else {
-            $returnData = array(
+            $returnData = [
                 'status' => 404,
-                'message' => 'No record found'
-            );
-            return new Response($returnData, $returnData['status']);
+                'msg' => 'No Active Advertisements Found'
+            ];
         }
+
+        return new Response($returnData, $returnData['status']);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created advertisement in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        try {
+            // Validación de los datos recibidos
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string|max:1000',
+                'slug' => 'nullable|string|max:255|unique:advertisements,slug',
+                'url' => 'nullable|string',
+                'pictureBase64' => 'required|string', // Base64 string
+                'type' => 'nullable|integer|in:1,2,3', // Ejemplo de tipos válidos
+                'event_id' => 'nullable|exists:events,id',
+                'user_id' => 'nullable|exists:users,id'
+            ]);
+
+            // Subida de la imagen a S3
+            $s3Controller = new S3Controller();
+            $path = $s3Controller->uploadImage($validated['pictureBase64'], 'advertisements');
+
+            if (!$path) {
+                return response()->json([
+                    'status' => 500,
+                    'msg' => 'Error uploading image',
+                ], 500);
+            }
+
+            // Creación del anuncio
+            $advertisement = Advertisement::create(array_merge(
+                $validated,
+                ['url' => $path, 'picture' => $path]
+            ));
+
+            // Respuesta exitosa
+            $returnData = [
+                'status' => 201,
+                'msg' => 'Advertisement Created',
+                'objeto' => $advertisement
+            ];
+
+            return response()->json($returnData, 201);
+        } catch (\Exception $e) {
+            // Manejo de errores generales
+            return response()->json([
+                'status' => 500,
+                'msg' => 'An error occurred while creating the advertisement',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Remove the specified advertisement from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $advertisement = Advertisement::find($id);
+
+        if (!$advertisement) {
+            return new Response(['status' => 404, 'msg' => 'Advertisement Not Found'], 404);
+        }
+
+        $s3Controller = new S3Controller();
+        $s3Controller->deleteImage($advertisement->picture);
+        $advertisement->delete();
+
+        return new Response(['status' => 200, 'msg' => 'Advertisement Deleted'], 200);
+    }
+
+    /**
+     * Update a discount associated with an advertisement.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateDiscount(Request $request, $id)
+    {
+        $discount = AdvertisementsDiscount::find($id);
+
+        if (!$discount) {
+            return new Response(['status' => 404, 'msg' => 'Discount Not Found'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+            'type' => 'nullable|integer',
+            'state' => 'nullable|integer'
+        ]);
+
+        $discount->update($validated);
+
+        $returnData = [
+            'status' => 200,
+            'msg' => 'Discount Updated',
+            'objeto' => $discount
+        ];
+
+        return new Response($returnData, $returnData['status']);
     }
 }

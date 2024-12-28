@@ -23,7 +23,6 @@ import { Modal } from './modal.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { RecoveryComponent } from './recovery/recovery.component';
 import { RegisterComponent } from './register/register.component';
-import { SlidersFormComponent } from './sliders-form/sliders-form.component';
 import { EventFormComponent } from './event-form/event-form.component';
 const modules = [
   LoginFormComponent,
@@ -35,7 +34,6 @@ const modules = [
   CorreosComponent,
   EncabezadoComponent,
   MetodoPagoFormComponent,
-  SlidersFormComponent,
   EventFormComponent,
 ]
 @NgModule({

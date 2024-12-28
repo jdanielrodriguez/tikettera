@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { BlockUI, NgBlockUI } from "ng-block-ui";
 import { AuthServices } from "src/app/services/auth.service";
 // import { ProveedoresService } from "src/app/services/proveedores.service";
-import { ImagenesComponent } from "./../../components/imagenes/imagenes.component";
+import { ImagenesComponent } from "../imagenes/imagenes.component";
 import {
   Perfil,
   Imagen,
@@ -12,13 +12,13 @@ import { Sesion } from 'src/app/common/sesion';
 import { Formatos } from 'src/app/common/format';
 declare var $: any;
 @Component({
-  selector: "app-sliders-form",
-  templateUrl: "./sliders-form.component.html",
-  styleUrls: ["./sliders-form.component.css"],
+  selector: "app-advertisements",
+  templateUrl: "./advertisements.component.html",
+  styleUrls: ["./advertisements.component.css"],
 })
-export class SlidersFormComponent implements OnInit {
+export class AdvertisementsFormComponent implements OnInit {
   @ViewChild(ImagenesComponent) imagenPrincipal!: ImagenesComponent;
-  sliders: Imagen[] = [];
+  advertisements: Imagen[] = [];
   titulo!: string;
   muestraTexto!: boolean;
   constructor(
@@ -34,10 +34,10 @@ export class SlidersFormComponent implements OnInit {
   cargarImagen(resp: Imagen) {
     // if (resp.id > 0) {
     //   resp.proveedor = this.perfil.id;
-    //   if (this.sliders) {
-    //     this.sliders.push(resp);
+    //   if (this.advertisements) {
+    //     this.advertisements.push(resp);
     //   } else {
-    //     this.sliders = [resp];
+    //     this.advertisements = [resp];
     //   }
     // }
   }
@@ -48,11 +48,11 @@ export class SlidersFormComponent implements OnInit {
       filter: "imagenes",
       estado: "",
     };
-    this.sliders = [];
+    this.advertisements = [];
     // this.provsService
     //   .getAllFilter(data)
     //   .then((response: Imagen[]) => {
-    //     this.sliders = response;
+    //     this.advertisements = response;
     //     this.blockUI.stop();
     //   })
     //   .catch((error) => {
@@ -63,16 +63,16 @@ export class SlidersFormComponent implements OnInit {
   }
   guardar() {
     this.mySesion.loadingStart();
-    if (this.sliders.length > 0) {
+    if (this.advertisements.length > 0) {
       let respuesta: Imagen[] = [];
-      // this.sliders.forEach(async (element: Imagen) => {
+      // this.advertisements.forEach(async (element: Imagen) => {
       //   // element.proveedor = this._perfil.id;
       //   const authServ = this.authService
       //     .updateImage(element)
       //     .subscribe({
       //       next: (element: Imagen) => {
       //         respuesta.push(element);
-      //         this.createSuccess("Se actualizo la informacion de tus sliders");
+      //         this.createSuccess("Se actualizo la informacion de tus advertisements");
       //       },
       //       error: (error) => {
       //         this.createError("Error actualizando Imagen");
@@ -80,13 +80,13 @@ export class SlidersFormComponent implements OnInit {
       //       complete: () => { authServ.unsubscribe(); }
       //     });
       // });
-      this.sliders = respuesta;
+      this.advertisements = respuesta;
     }
     this.mySesion.loadingStop();
   }
   eliminarFoto(value: Imagen) {
     this.mySesion.loadingStart();
-    let index = this.sliders.findIndex((element: Imagen) => {
+    let index = this.advertisements.findIndex((element: Imagen) => {
       return element.id == value.id;
     });
     if (index >= 0) {

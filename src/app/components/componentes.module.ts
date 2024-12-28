@@ -44,6 +44,7 @@ import { SendComponent } from './pages/chat/send/send.component';
 import { PreciosComponent } from './pages/precios/precios.component';
 import { PlacesComponent } from './pages/places/places.component';
 import { BusquedaComponent } from './search/busqueda.component';
+import { AdvertisementsFormComponent } from './advertisements/advertisements.component';
 
 // Steppers
 import { StepperComponent } from './pages/stepper/stepper.component';
@@ -52,6 +53,7 @@ import { StepperBoletosComponent } from './pages/stepper/boletos/boletos.compone
 import { StepperDetalleCompraComponent } from './pages/stepper/detalle-compra/detalle-compra.component';
 
 const modules = [
+  AdvertisementsFormComponent,
   BusquedaComponent,
   NavComponent,
   GaleriaComponent,

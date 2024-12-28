@@ -31,8 +31,8 @@ Route::get('events/active', [App\Http\Controllers\EventsController::class, 'getA
 Route::get('events/localities/{slug}', [App\Http\Controllers\EventsController::class, 'getLocalities']);
 Route::get('events/{event_slug}/localities/{slug}', [App\Http\Controllers\EventsController::class, 'getLocality']);
 Route::resource('events', App\Http\Controllers\EventsController::class);
-Route::get('advertisers/active', [App\Http\Controllers\AdvertisersController::class, 'getActives']);
-Route::resource('advertisers', App\Http\Controllers\AdvertisersController::class);
+Route::get('advertisement/active', [App\Http\Controllers\AdvertisementController::class, 'getActives']);
+Route::resource('advertisement', App\Http\Controllers\AdvertisementController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

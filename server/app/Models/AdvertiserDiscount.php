@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AdvertiserDiscount extends Model
+class AdvertisementDiscount extends Model
 {
-    protected $table = 'advertisers_discounts';
+    protected $table = 'advertisements_discounts';
 }

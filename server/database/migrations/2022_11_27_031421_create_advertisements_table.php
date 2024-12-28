@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('advertisers', function (Blueprint $table) {
+        Schema::create('advertisements', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('advertisers');
+        Schema::dropIfExists('advertisements');
     }
 };

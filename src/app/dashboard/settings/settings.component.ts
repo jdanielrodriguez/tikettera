@@ -39,7 +39,7 @@ export class SettingsComponent implements OnInit {
   get active(): number {
     const tabMap: { [key: string]: number } = {
       'profile': 1,
-      'sliders': 2,
+      'advertisements': 2,
       'metodos-pago': 3,
       'encabezado': 4,
       'correos': 5,

@@ -10,10 +10,10 @@
           <app-perfil [perfil]="perfil" [editMode]="true"> </app-perfil>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/settings/sliders'})" [class.d-none]="(rol>rolAdmin)">
-        <a ngbNavLink>Sliders</a>
+      <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/settings/advertisements'})" [class.d-none]="(rol>rolAdmin)">
+        <a ngbNavLink>Anuncios</a>
         <ng-template ngbNavContent>
-          <app-sliders-form></app-sliders-form>
+          <app-advertisements></app-advertisements>
         </ng-template>
       </li>
       <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/settings/metodos-pago'})">

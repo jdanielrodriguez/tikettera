@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\Advertiser;
+use App\Models\Advertisement;
 
-class AdvertisersController extends Controller
+class AdvertisementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +15,12 @@ class AdvertisersController extends Controller
      */
     public function index()
     {
-        $objectList = Advertiser::all();
+        $objectList = Advertisement::all();
         $count = count($objectList);
         if ($objectList) {
             $returnData = array(
                 'status' => 200,
-                'msg' => 'Advertisers Returned',
+                'msg' => 'Advertisement Returned',
                 'count' => $count,
                 'data' => $objectList
             );
@@ -35,12 +35,12 @@ class AdvertisersController extends Controller
      */
     public function getActives()
     {
-        $objectSee = Advertiser::whereRaw("tate = 1")->get();
-        $count = count(Advertiser::all());
+        $objectSee = Advertisement::whereRaw("tate = 1")->get();
+        $count = count(Advertisement::all());
         if ($objectSee) {
             $returnData = array(
                 'status' => 200,
-                'msg' => 'Advertisers Returned',
+                'msg' => 'Advertisement Returned',
                 'count' => $count,
                 'data' => $objectSee
             );

@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './change-pass-modal.component.html'
 })
 export class ChangePassFormulario implements OnInit {
-  private _titulo!: string;
+  @Input() titulo!: string;
   constructor(
     private modalService: NgbModal,
   ) { }
@@ -13,12 +13,5 @@ export class ChangePassFormulario implements OnInit {
   }
   closeModal() {
     this.modalService.dismissAll();
-  }
-  @Input()
-  set titulo(value: string) {
-    this._titulo = value;
-  }
-  get titulo(): string {
-    return this._titulo;
   }
 }

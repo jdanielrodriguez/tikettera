@@ -1,31 +1,59 @@
 <form class="my-3 col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto" autocomplete="off" #recoveryForm="ngForm"
   (ngSubmit)="simpleRestore(recoveryForm)" *ngIf="!esModal">
   <div class="modal-header" *ngIf="titulo">
-    <h4 class="modal-title" id="modal-basic-title">{{titulo}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{ titulo }}</h4>
   </div>
   <div class="modal-body">
+    <!-- Contraseña anterior -->
     <div class="form-group" *ngIf="oldRequired">
       <div class="input-group mb-3">
-        <input type="password" class="form-control bishound-input" placeholder="Escribe otra vez la contraseña actual"
-          id="old_pass" name="old_pass" required ngModel #old_pass="ngModel">
+        <input type="password" class="form-control bishound-input" placeholder="Escribe la contraseña actual"
+          id="old_pass" name="old_pass" required ngModel #old_pass="ngModel" />
+      </div>
+      <div *ngIf="old_pass?.invalid && old_pass?.touched" class="alert alert-danger">
+        <strong>La contraseña actual es requerida.</strong>
       </div>
     </div>
+
+    <!-- Nueva contraseña -->
     <div class="form-group">
       <div class="input-group mb-3">
         <input type="password" class="form-control bishound-input" placeholder="Crea una nueva contraseña" id="new_pass"
-          name="new_pass" required ngModel #new_pass="ngModel">
+          name="new_pass" required ngModel #new_pass="ngModel" />
+      </div>
+      <div *ngIf="new_pass?.invalid && new_pass?.touched" class="alert alert-danger">
+        <strong>La nueva contraseña es requerida.</strong>
       </div>
     </div>
+
+    <!-- Confirmación de la nueva contraseña -->
     <div class="form-group">
       <div class="input-group mb-3">
         <input type="password" class="form-control bishound-input" placeholder="Confirma tu nueva contraseña"
-          id="new_pass_rep" name="new_pass_rep" required ngModel #new_pass_rep="ngModel">
+          id="new_pass_rep" name="new_pass_rep" required ngModel #new_pass_rep="ngModel" />
+      </div>
+      <div *ngIf="new_pass_rep?.invalid && new_pass_rep?.touched" class="alert alert-danger">
+        <strong>Debes confirmar tu nueva contraseña.</strong>
+      </div>
+      <div *ngIf="
+          new_pass?.value !== new_pass_rep?.value &&
+          new_pass_rep?.touched &&
+          new_pass?.value !== ''
+        " class="alert alert-danger">
+        <strong>Las contraseñas deben coincidir.</strong>
       </div>
     </div>
   </div>
+
+  <!-- Botón y mensajes de validación -->
   <div class="modal-footer">
     <button type="submit" class="btn btn-lg btn-primary btn-block mx-auto"
-      [disabled]="(new_pass.value!=new_pass_rep.value) || new_pass.value==''">Cambiar Contraseña</button>
-    <button type="button" class="btn btn-outline-primary" (click)="closeModal()" *ngIf="esModal">Close</button>
+      [disabled]="!isFormValid(recoveryForm, new_pass, new_pass_rep)">
+      Cambiar Contraseña
+    </button>
+    <div *ngIf="new_pass?.value === '' || new_pass_rep?.value === ''"
+      class="alert alert-warning text-center mt-2 mx-auto alert-large">
+      <strong>Completa todos los campos para habilitar el botón.</strong>
+    </div>
   </div>
 </form>

@@ -116,8 +116,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         this.mySesion.actualizaPerfil(decryptedProfile);
         this.mySesion.navegar({ url: './' });
       },
-      error: () => {
-        this.mySesion.createError('Error iniciando sesión');
+      error: (e) => {
+        this.mySesion.createError(`Error iniciando sesión: ${e.error.msg}`);
         this.mySesion.loadingStop();
       },
       complete: () => authServ.unsubscribe(),

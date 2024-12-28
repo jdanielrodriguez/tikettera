@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Perfil, Imagen } from 'src/app/interfaces';
+import { Perfil, Imagen, Response } from 'src/app/interfaces';
 import { Sesion } from '../../../common/sesion';
 import { UsuariosService } from '../../../services/usuarios.service';
 
@@ -10,10 +10,10 @@ import { UsuariosService } from '../../../services/usuarios.service';
   styleUrls: ['./perfil-view.component.scss']
 })
 export class PerfilViewComponent implements OnInit {
-  @Input() perfil: Perfil = new Perfil();
 
   perfilForm!: FormGroup;
-  imagenes: Imagen[] = []; // Lista de imágenes para el componente
+  imagenes: Imagen[] = [];
+  @Input() perfil: Perfil = new Perfil();
   @Input() token!: string;
   @Input() validacion!: boolean;
   @Input() editMode: boolean = false;
@@ -34,21 +34,26 @@ export class PerfilViewComponent implements OnInit {
     this.perfilForm = this.fb.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
+      id: [''],
       names: [''],
       lastnames: ['']
     });
   }
 
   cargarDatosPerfil(): void {
-    this.usuariosService.getSingle(1).subscribe({
-      next: (data) => {
-        this.perfilForm.patchValue(data);
+    const id = this.mySesion.perfil.id ?? 0
+    this.usuariosService.getSingle(id).subscribe({
+      next: (response: Response) => {
+        const decryptedProfile = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
+        if (decryptedProfile) {
+          this.perfilForm.patchValue(decryptedProfile);
+        }
 
         // Si el perfil tiene imagen asociada
-        if (data.picture) {
+        if (decryptedProfile.picture) {
           this.imagenes = [{
             id: null,
-            url: data.picture,
+            url: decryptedProfile.picture,
             base64: null
           }];
         }
@@ -57,37 +62,37 @@ export class PerfilViewComponent implements OnInit {
     });
   }
 
+  onSubmit(): void {
+    if (this.perfilForm.valid) {
+      this.mySesion.loadingStart();
+      // Crear el cuerpo del JSON para enviar al backend
+      const payload: any = { ...this.perfilForm.value };
+
+      // Agregar imagen si existe
+      if (this.imagenes.length > 0 && this.imagenes[0]?.base64) {
+        payload.picture = this.imagenes[0].base64; // Agregar imagen en formato base64
+      }
+
+      // Llamar al servicio para actualizar el perfil
+      this.usuariosService.updateProfile(payload).subscribe({
+        next: (response: Response) => {
+          this.mySesion.loadingStop();
+          this.mySesion.createSuccess(response.msg || 'Perfil actualizado');
+        },
+        error: (error) => {
+          this.mySesion.loadingStop();
+          this.mySesion.createError(error.error.msg || 'Error Actualizando Perfil');
+        }
+      });
+    }
+  }
+
   // Método para manejar la imagen cargada desde el componente app-imagenes
   actualizarImagen(imagenes: Imagen[]): void {
     this.imagenes = imagenes;
   }
 
-  onSubmit(): void {
-    if (this.perfilForm.valid) {
-      const formData = new FormData();
-
-      // Agregar datos del formulario
-      Object.entries(this.perfilForm.value).forEach(([key, value]) => {
-        formData.append(key, value as string);
-      });
-
-      // Agregar imagen si existe
-      if (this.imagenes.length > 0 && this.imagenes[0]?.base64) {
-        formData.append('picture', this.imagenes[0].base64 as string);
-      }
-
-      this.usuariosService.updateProfile(formData).subscribe({
-        next: (response) => {
-          console.log('Perfil actualizado:', response);
-          this.editMode = false; // Salir del modo edición
-        },
-        error: (error) => console.error('Error al actualizar:', error)
-      });
-    }
-  }
-
   cancelar(): void {
     this.cargarDatosPerfil();
-    this.editMode = false;
   }
 }

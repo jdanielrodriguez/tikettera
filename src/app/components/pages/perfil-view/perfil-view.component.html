@@ -1,9 +1,7 @@
 <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 mx-auto text-left">
-      <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()">
-        <h1 class="h3 mb-3 mt-3 font-weight-normal text-dark">Editar Perfil</h1>
-
+      <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()" *ngIf="editMode; else viewMode">
         <!-- Imagen -->
         <app-imagenes (imagenPrincipal)="actualizarImagen($event)" [lista]="imagenes" carpeta="Avatar" [esAdmin]="true">
         </app-imagenes>
@@ -66,7 +64,7 @@
         </div>
         <div class="form-group">
           <label>Imagen de Perfil:</label>
-          <img *ngIf="imagenes.length > 0" [src]="imagenes[0]?.url" alt="Imagen de Perfil" class="img-thumbnail"
+          <img *ngIf="imagenes.length > 0" [src]="imagenes[0].url" alt="Imagen de Perfil" class="img-thumbnail"
             style="max-height: 150px;" />
           <p *ngIf="imagenes.length === 0">No disponible</p>
         </div>

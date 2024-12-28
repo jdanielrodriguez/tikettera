@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import Swal from 'sweetalert2'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormasPagoService } from "../../services/formas-pago.service";
+import { MetodoPagoService } from "../../services/metodo-pago.service";
 import { MetodoPago, Perfil } from 'src/app/interfaces';
 import { Sesion } from 'src/app/common/sesion';
 
@@ -22,7 +22,7 @@ export class MetodoPagoComponent implements OnInit {
   metodoPagoForm!: FormGroup; // Declaración de la propiedad
 
   constructor(
-    private mainService: FormasPagoService,
+    private mainService: MetodoPagoService,
     private fb: FormBuilder,
     private mySesion: Sesion
   ) { }
@@ -75,22 +75,22 @@ export class MetodoPagoComponent implements OnInit {
       usuario: this.mySesion.encriptar(JSON.stringify(this.perfil))
     }
     this.mySesion.loadingStart();
-    await this.mainService.create(dat)
-      .then((element: { status: number, objeto: MetodoPago[] }) => {
-        this.perfil.formas_pago = element.objeto
-        this.perfilEmit.emit(this.perfil);
-        this.listaEliminar = [];
-        this.isCollapsed = true
-        this.mySesion.loadingStop();
-      })
-      .catch(error => {
-        this.mySesion.loadingStop();
-        if (error.indexOf('401') >= 0) {
-          alert("Su sesion ha vencido");
-          this.mySesion.navegar({ url: '../../../../../logout' })
-        }
-        console.log(error);
-      })
+    // await this.mainService.create(dat)
+    //   .then((element: { status: number, objeto: MetodoPago[] }) => {
+    //     this.perfil.formas_pago = element.objeto
+    //     this.perfilEmit.emit(this.perfil);
+    //     this.listaEliminar = [];
+    //     this.isCollapsed = true
+    //     this.mySesion.loadingStop();
+    //   })
+    //   .catch((error: any) => {
+    //     this.mySesion.loadingStop();
+    //     if (error.indexOf('401') >= 0) {
+    //       alert("Su sesion ha vencido");
+    //       this.mySesion.navegar({ url: '../../../../../logout' })
+    //     }
+    //     console.log(error);
+    //   })
   }
   marcarDefault(alert: MetodoPago, event: MouseEvent): void {
     event.stopPropagation(); // Evita abrir el formulario al hacer clic en el botón

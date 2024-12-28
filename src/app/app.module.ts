@@ -38,6 +38,7 @@ import { CategoriasService } from './services/categorias.service';
 import { ComisionesService } from './services/comisiones.service';
 import { LocalitiesService } from './services/localities.service';
 import { AdvertisementsService } from './services/advertisements.service';
+import { MetodoPagoService } from './services/metodo-pago.service';
 
 import { AuthComponent } from './pages/auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -103,6 +104,7 @@ import { AuthorizePromotersComponent } from './dashboard/authorize-promoters/aut
     Formatos,
     LocalitiesService,
     AdvertisementsService,
+    MetodoPagoService,
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: '6LfW5vgUAAAAAFMhgbCPIkZHjH9tq95IYX4aIZSn'

@@ -17,29 +17,10 @@ export class UsuariosService {
   private handleError(error: any): Observable<any> {
     return new Observable((observer) => { observer.error(error); });
   }
-  getAll(): Observable<any> {
-    this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/users`;
-    try {
-      const response = this.http.get(url, { headers: this.mySesion.headers });
-      return response;
-    } catch (error) {
-      return this.handleError(error);
-    }
-  }
   create(form: { user: string }): Observable<any> {
     const url = `${this.basePath}/api/signup`;
     try {
       const response = this.http.post(url, form, { headers: this.mySesion.headers });
-      return response;
-    } catch (error) {
-      return this.handleError(error);
-    }
-  }
-  delete(id: number): Observable<any> {
-    const url = `${this.basePath}/api/users/${id}`;
-    try {
-      const response = this.http.delete(url);
       return response;
     } catch (error) {
       return this.handleError(error);

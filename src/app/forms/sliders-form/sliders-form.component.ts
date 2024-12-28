@@ -68,21 +68,21 @@ export class SlidersFormComponent implements OnInit {
     this.blockUI.start();
     if (this.sliders.length > 0) {
       let respuesta: Imagen[] = [];
-      this.sliders.forEach(async (element: Imagen) => {
-        // element.proveedor = this._perfil.id;
-        const authServ = this.authService
-          .updateImage(element)
-          .subscribe({
-            next: (element: Imagen) => {
-              respuesta.push(element);
-              this.createSuccess("Se actualizo la informacion de tus sliders");
-            },
-            error: (error) => {
-              this.createError("Error actualizando Imagen");
-            },
-            complete: () => { authServ.unsubscribe(); }
-          });
-      });
+      // this.sliders.forEach(async (element: Imagen) => {
+      //   // element.proveedor = this._perfil.id;
+      //   const authServ = this.authService
+      //     .updateImage(element)
+      //     .subscribe({
+      //       next: (element: Imagen) => {
+      //         respuesta.push(element);
+      //         this.createSuccess("Se actualizo la informacion de tus sliders");
+      //       },
+      //       error: (error) => {
+      //         this.createError("Error actualizando Imagen");
+      //       },
+      //       complete: () => { authServ.unsubscribe(); }
+      //     });
+      // });
       this.sliders = respuesta;
     }
     this.blockUI.stop();
@@ -93,25 +93,25 @@ export class SlidersFormComponent implements OnInit {
       return element.id == value.id;
     });
     if (index >= 0) {
-      const authServ = this.authService
-        .deleteImage(Number(value.id))
-        .subscribe({
-          next: (element: Imagen) => {
-            if (value) {
-              this.createSuccess("Se elimino la imagen correctamente");
-              this.blockUI.stop();
-              this.obtenerSliders()
-            }
-          },
-          error: (error) => {
-            this.createError("Imagen no se pudo Eliminar");
-            if (error.indexOf('401') >= 0) {
-              this.mySesion.navegar({ url: './logout' })
-            }
-            console.log(error);
-          },
-          complete: () => { authServ.unsubscribe(); }
-        });
+      // const authServ = this.authService
+      //   .deleteImage(Number(value.id))
+      //   .subscribe({
+      //     next: (element: Imagen) => {
+      //       if (value) {
+      //         this.createSuccess("Se elimino la imagen correctamente");
+      //         this.blockUI.stop();
+      //         this.obtenerSliders()
+      //       }
+      //     },
+      //     error: (error) => {
+      //       this.createError("Imagen no se pudo Eliminar");
+      //       if (error.indexOf('401') >= 0) {
+      //         this.mySesion.navegar({ url: './logout' })
+      //       }
+      //       console.log(error);
+      //     },
+      //     complete: () => { authServ.unsubscribe(); }
+      //   });
     } else {
       this.createError("Imagen no encontrada");
     }

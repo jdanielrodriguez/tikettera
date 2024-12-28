@@ -20,7 +20,6 @@ import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { LoginFormComponent } from './login/login.component';
 import { MetodoPagoFormComponent } from './metodo-pago-form/metodo-pago-form.component';
 import { Modal } from './modal.component';
-import { PerfilComponent } from './perfil/perfil.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { RecoveryComponent } from './recovery/recovery.component';
 import { RegisterComponent } from './register/register.component';
@@ -33,7 +32,6 @@ const modules = [
   RecoveryComponent,
   ClienteComponent,
   ProveedorComponent,
-  PerfilComponent,
   CorreosComponent,
   EncabezadoComponent,
   MetodoPagoFormComponent,

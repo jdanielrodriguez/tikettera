@@ -67,26 +67,6 @@ export class AuthServices {
       return this.handleError(error);
     }
   }
-  updateImage(form: any): Observable<any> {
-    const url = `${this.basePath}/api/avatar/${form.id}`;
-    this.mySesion.reloadToken();
-    try {
-      const response = this.http.put(url, form, { headers: this.mySesion.headers });
-      return response;
-    } catch (error) {
-      return this.handleError(error);
-    }
-  }
-  deleteImage(id: number): Observable<any> {
-    const url = `${this.basePath}/api/downgrade/${id}`;
-    this.mySesion.reloadToken();
-    try {
-      const response = this.http.get(url, { headers: this.mySesion.headers });
-      return response;
-    } catch (error) {
-      return this.handleError(error);
-    }
-  }
   validarCaptcha(data: any): Observable<any> {
     const url = `${this.basePath}/api/validate-captcha`;
     this.mySesion.reloadToken();

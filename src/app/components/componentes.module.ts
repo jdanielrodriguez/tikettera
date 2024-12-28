@@ -24,7 +24,7 @@ import { GaleriaComponent } from './galeria/galeria.component';
 import { ImagenesComponent } from './imagenes/imagenes.component';
 import { LogoutComponent } from './logout/logout.component';
 import { OrderSummaryComponent } from './pages/order-summary/order-summary.component';
-import { PerfilViewComponent } from './pages/perfil-view/perfil-view.component';
+import { PerfilComponent } from './perfil/perfil.component';
 import { SlidersComponent } from './sliders/sliders.component';
 import { TarjetaComponent } from './tarjeta/tarjeta.component';
 
@@ -64,7 +64,7 @@ const modules = [
   ChangePassComponent,
   ChangePassFormulario,
   CvvTCPipe,
-  PerfilViewComponent,
+  PerfilComponent,
   ColorBackgroundComponent,
   TarjetaComponent,
   ChatComponent,

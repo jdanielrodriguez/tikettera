@@ -1,15 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Perfil, Imagen, Response } from 'src/app/interfaces';
-import { Sesion } from '../../../common/sesion';
-import { UsuariosService } from '../../../services/usuarios.service';
+import { Sesion } from '../../common/sesion';
+import { UsuariosService } from '../../services/usuarios.service';
 
 @Component({
-  selector: 'app-perfil-view',
-  templateUrl: './perfil-view.component.html',
-  styleUrls: ['./perfil-view.component.scss']
+  selector: 'app-perfil',
+  templateUrl: './perfil.component.html',
+  styleUrls: ['./perfil.component.scss']
 })
-export class PerfilViewComponent implements OnInit {
+export class PerfilComponent implements OnInit {
 
   perfilForm!: FormGroup;
   imagenes: Imagen[] = [];

@@ -27,6 +27,7 @@ import { OrderSummaryComponent } from './pages/order-summary/order-summary.compo
 import { PerfilComponent } from './perfil/perfil.component';
 import { SlidersComponent } from './sliders/sliders.component';
 import { TarjetaComponent } from './tarjeta/tarjeta.component';
+import { MetodoPagoComponent } from './metodo-pago/metodo-pago.component';
 
 import { CvvTCPipe } from '../pipes/cvv-tc.pipe';
 import { JustTextPipe } from '../pipes/just-text.pipe';
@@ -69,6 +70,7 @@ const modules = [
   PerfilComponent,
   ColorBackgroundComponent,
   TarjetaComponent,
+  MetodoPagoComponent,
   ChatComponent,
   SendComponent,
   HistorialComponent,

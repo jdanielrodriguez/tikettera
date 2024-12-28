@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
-import { BlockUI, NgBlockUI } from "ng-block-ui";
-import { AuthServices } from "src/app/services/auth.service";
+import { AdvertisementsService } from "../../services/advertisements.service";
 // import { ProveedoresService } from "src/app/services/proveedores.service";
 import { ImagenesComponent } from "../imagenes/imagenes.component";
 import {
@@ -24,12 +23,12 @@ export class AdvertisementsFormComponent implements OnInit {
   constructor(
     private mySesion: Sesion,
     private formatear: Formatos,
-    private authService: AuthServices,
+    private advertisementsService: AdvertisementsService,
     // private provsService: ProveedoresService
   ) { }
   ngOnInit(): void {
-    $("html, body").animate({ scrollTop: 0 }, "300");
-    this.obtenerSliders();
+    this.mySesion.scrollTop();
+    this.obtenerAdvertisements();
   }
   cargarImagen(resp: Imagen) {
     // if (resp.id > 0) {
@@ -41,7 +40,7 @@ export class AdvertisementsFormComponent implements OnInit {
     //   }
     // }
   }
-  obtenerSliders() {
+  obtenerAdvertisements() {
     this.mySesion.loadingStart();
     let data: FilterGET = {
       id: 0,
@@ -97,7 +96,7 @@ export class AdvertisementsFormComponent implements OnInit {
       //       if (value) {
       //         this.createSuccess("Se elimino la imagen correctamente");
       //         this.blockUI.stop();
-      //         this.obtenerSliders()
+      //         this.obtenerAdvertisements()
       //       }
       //     },
       //     error: (error) => {

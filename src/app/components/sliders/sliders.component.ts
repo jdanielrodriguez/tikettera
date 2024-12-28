@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Imagen } from 'src/app/interfaces';
 @Component({
   selector: 'app-sliders',
@@ -7,7 +6,6 @@ import { Imagen } from 'src/app/interfaces';
   styleUrls: ['./sliders.component.css'],
 })
 export class SlidersComponent implements OnInit {
-  @BlockUI() blockUI!: NgBlockUI;
   private _imagenEliminar: EventEmitter<Imagen> = new EventEmitter<Imagen>();
   imagen!: Imagen;
   @Input() sliders!: Imagen[];

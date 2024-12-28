@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
-import { environment } from './../../environments/environment';
-import { Sesion } from './../common/sesion';
+import { environment } from '../../environments/environment';
+import { Sesion } from '../common/sesion';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SlidersService {
+export class AdvertisementsService {
   private basePath: string = environment.url;
   constructor(
     private http: HttpClient,

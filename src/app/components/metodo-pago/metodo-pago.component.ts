@@ -1,16 +1,16 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import Swal from 'sweetalert2'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormasPagoService } from "./../../services/formas-pago.service";
+import { FormasPagoService } from "../../services/formas-pago.service";
 import { MetodoPago, Perfil } from 'src/app/interfaces';
 import { Sesion } from 'src/app/common/sesion';
 
 @Component({
-  selector: 'app-metodo-pago-form',
-  templateUrl: './metodo-pago-form.component.html',
-  styleUrls: ['./metodo-pago-form.component.css']
+  selector: 'app-metodo-pago',
+  templateUrl: './metodo-pago.component.html',
+  styleUrls: ['./metodo-pago.component.css']
 })
-export class MetodoPagoFormComponent implements OnInit {
+export class MetodoPagoComponent implements OnInit {
   @Input() perfil: Perfil = new Perfil();
   frente: boolean = false;
   isCollapsed: boolean = true;

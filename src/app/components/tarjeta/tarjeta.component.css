@@ -6,17 +6,21 @@
 
 @media only screen and (max-width: 500px) {
   .tarjeta {
-    max-width: auto!important;
+    max-width: auto !important;
   }
+
   .delantera .chip {
-    display: none!important;
+    display: none !important;
   }
+
   .delantera .grupo .label {
-    font-size: 1rem!important;
+    font-size: 1rem !important;
   }
+
   .delantera .grupo .numero, .delantera .grupo .nombre, .delantera .grupo .expiracion {
-    font-size: 1.2rem!important;
+    font-size: 1.2rem !important;
   }
+
   .tarjeta>div {
     padding: 30px;
     border-radius: 15px;
@@ -25,10 +29,12 @@
     justify-content: space-between;
     box-shadow: 0 10px 10px 0 rgba(90, 116, 148, 0.3);
   }
+
   .trasera .leyenda {
     font-size: 8px;
     line-height: 16px;
   }
+
   .trasera .link-banco {
     font-size: 10px;
     color: #fff;
@@ -45,10 +51,12 @@
     justify-content: space-between;
     box-shadow: 0 10px 10px 0 rgba(90, 116, 148, 0.3);
   }
+
   .trasera .leyenda {
     font-size: 1rem;
     line-height: 1.5rem;
   }
+
   .trasera .link-banco {
     font-size: 0.6rem;
     padding: 1rem;

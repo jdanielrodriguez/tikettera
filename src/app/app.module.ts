@@ -38,7 +38,7 @@ import { AuthServices } from './services/auth.service';
 import { CategoriasService } from './services/categorias.service';
 import { ComisionesService } from './services/comisiones.service';
 import { LocalitiesService } from './services/localities.service';
-import { SlidersService } from './services/sliders.service';
+import { AdvertisementsService } from './services/advertisements.service';
 
 import { AuthComponent } from './auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -104,7 +104,7 @@ import { AuthorizePromotersComponent } from './dashboard/authorize-promoters/aut
     Encript,
     Formatos,
     LocalitiesService,
-    SlidersService,
+    AdvertisementsService,
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: '6LfW5vgUAAAAAFMhgbCPIkZHjH9tq95IYX4aIZSn'

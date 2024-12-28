@@ -18,7 +18,6 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { CorreosComponent } from './correos/correos.component';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { LoginFormComponent } from './login/login.component';
-import { MetodoPagoFormComponent } from './metodo-pago-form/metodo-pago-form.component';
 import { Modal } from './modal.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { RecoveryComponent } from './recovery/recovery.component';
@@ -33,7 +32,6 @@ const modules = [
   ProveedorComponent,
   CorreosComponent,
   EncabezadoComponent,
-  MetodoPagoFormComponent,
   EventFormComponent,
 ]
 @NgModule({

@@ -13,7 +13,7 @@ export class TarjetaComponent implements OnInit {
   constructor() { }
   ngOnInit(): void {
   }
-  girarTarjeta(value?: boolean, event?:any) {
+  girarTarjeta(value?: boolean, event?: any) {
     this.frente = (value != null) ? value : !this.frente;
   }
   get tipoTarjeta(): string {

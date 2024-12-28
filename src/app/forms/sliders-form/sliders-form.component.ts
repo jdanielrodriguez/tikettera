@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { BlockUI, NgBlockUI } from "ng-block-ui";
 import { AuthServices } from "src/app/services/auth.service";
 // import { ProveedoresService } from "src/app/services/proveedores.service";
-import { NotificationsService } from "angular2-notifications";
 import { ImagenesComponent } from "./../../components/imagenes/imagenes.component";
 import {
   Perfil,
@@ -18,14 +17,12 @@ declare var $: any;
   styleUrls: ["./sliders-form.component.css"],
 })
 export class SlidersFormComponent implements OnInit {
-  @BlockUI() blockUI!: NgBlockUI;
   @ViewChild(ImagenesComponent) imagenPrincipal!: ImagenesComponent;
   sliders: Imagen[] = [];
-  private _titulo!: string;
-  private _muestraTexto!: boolean;
+  titulo!: string;
+  muestraTexto!: boolean;
   constructor(
     private mySesion: Sesion,
-    private _service: NotificationsService,
     private formatear: Formatos,
     private authService: AuthServices,
     // private provsService: ProveedoresService
@@ -45,7 +42,7 @@ export class SlidersFormComponent implements OnInit {
     // }
   }
   obtenerSliders() {
-    this.blockUI.start();
+    this.mySesion.loadingStart();
     let data: FilterGET = {
       id: 0,
       filter: "imagenes",
@@ -62,10 +59,10 @@ export class SlidersFormComponent implements OnInit {
     //     this.blockUI.stop();
     //     console.log(error);
     //   });
-    this.blockUI.stop();
+    this.mySesion.loadingStop();
   }
   guardar() {
-    this.blockUI.start();
+    this.mySesion.loadingStart();
     if (this.sliders.length > 0) {
       let respuesta: Imagen[] = [];
       // this.sliders.forEach(async (element: Imagen) => {
@@ -85,10 +82,10 @@ export class SlidersFormComponent implements OnInit {
       // });
       this.sliders = respuesta;
     }
-    this.blockUI.stop();
+    this.mySesion.loadingStop();
   }
   eliminarFoto(value: Imagen) {
-    this.blockUI.start();
+    this.mySesion.loadingStart();
     let index = this.sliders.findIndex((element: Imagen) => {
       return element.id == value.id;
     });
@@ -113,37 +110,8 @@ export class SlidersFormComponent implements OnInit {
       //     complete: () => { authServ.unsubscribe(); }
       //   });
     } else {
-      this.createError("Imagen no encontrada");
+      this.mySesion.createError("Imagen no encontrada");
     }
-    this.blockUI.stop();
-  }
-  public options = {
-    timeOut: 2000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200,
-  };
-  createSuccess(success: string) {
-    this._service.success("¡Éxito!", success);
-  }
-  createError(error: string) {
-    this._service.error("¡Error!", error);
-  }
-  createWarning(error: string) {
-    this._service.warn("¡Cuidado!", error);
-  }
-  set titulo(value: string) {
-    this._titulo = value;
-  }
-  get titulo(): string {
-    return this._titulo;
-  }
-  set muestraTexto(value: boolean) {
-    this._muestraTexto = value;
-  }
-  get muestraTexto(): boolean {
-    return this._muestraTexto;
+    this.mySesion.loadingStop();
   }
 }

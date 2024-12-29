@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, HostListener, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalStorageService } from 'ngx-webstorage';
+import { LocalStorageService, LocalStorage } from 'ngx-webstorage';
 import { Menus, Perfil, Configuracion } from './../../interfaces';
 import { Sesion } from './../../common/sesion';
 import { Constantes } from './../../common/constant';
@@ -10,9 +10,9 @@ import { Constantes } from './../../common/constant';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit, AfterViewInit {
-  perfil!: Perfil;
   proveedor!: string;
-  sesion!: boolean;
+  _sesion!: boolean;
+  _perfil!: Perfil;
   @Input() menus!: Menus[];
   @Input() proveedores!: string;
   @Input() color!: string;
@@ -254,6 +254,20 @@ export class NavComponent implements OnInit, AfterViewInit {
 
   toggleMenuState(): void {
     this.isMenuCollapsed = !this.isMenuCollapsed;
+  }
+  set perfil(values: Perfil) {
+    this._perfil = values;
+  }
+  get perfil(): Perfil {
+    this._perfil = this.mySesion.perfil;
+    return this._perfil;
+  }
+  set sesion(value: boolean) {
+    this._sesion = value;
+  }
+  get sesion(): boolean {
+    this._sesion = this.mySesion.validarSesion();
+    return this._sesion;
   }
   getColor(): any {
     this.cargarConfig();

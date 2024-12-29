@@ -4,8 +4,10 @@ import { Injectable } from '@angular/core';
 export class Constantes {
   constructor(
   ) { }
-  get tasaIva() {
-    return this._tasaIva;
-  }
-  private _tasaIva = 0.12;
+  tasaIva = 0.12;
+  paymentTypes = {
+    credit_card: 1,
+    bank_account: 2,
+    internal_balance: 3
+  };
 }

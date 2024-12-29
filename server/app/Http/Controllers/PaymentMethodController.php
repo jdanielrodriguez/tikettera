@@ -19,9 +19,10 @@ class PaymentMethodController extends Controller
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
+            'payment_type_id' => 'required|exists:payment_types,id',
         ]);
 
-        $paymentMethods = PaymentMethod::where('user_id', $validated['user_id'])->get();
+        $paymentMethods = PaymentMethod::where('user_id', $validated['user_id'])->where('payment_type_id', $validated['payment_type_id'])->get();
         $count = $paymentMethods->count();
 
         $returnData = [

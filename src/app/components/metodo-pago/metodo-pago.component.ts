@@ -2,8 +2,9 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MetodoPagoService } from '../../services/metodo-pago.service';
-import { MetodoPago, Perfil } from 'src/app/interfaces';
-import { Sesion } from 'src/app/common/sesion';
+import { MetodoPago, Perfil } from '../../interfaces';
+import { Sesion } from '../../common/sesion';
+import { Constantes } from '../../common/constant';
 
 @Component({
   selector: 'app-metodo-pago',
@@ -28,7 +29,8 @@ export class MetodoPagoComponent implements OnInit {
   constructor(
     private metodoPagoService: MetodoPagoService,
     private fb: FormBuilder,
-    private mySesion: Sesion
+    private mySesion: Sesion,
+    private constantes: Constantes
   ) { }
 
   ngOnInit(): void {
@@ -52,7 +54,7 @@ export class MetodoPagoComponent implements OnInit {
   }
 
   cargarMetodosPago(): void {
-    this.metodoPagoService.getAll(this.perfil.id).subscribe({
+    this.metodoPagoService.getAll(this.perfil.id, this.constantes.paymentTypes.credit_card).subscribe({
       next: (data) => {
         this.lista = data.objeto || [];
       },

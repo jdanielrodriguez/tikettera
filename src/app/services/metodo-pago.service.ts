@@ -20,9 +20,9 @@ export class MetodoPagoService {
     return new Observable((observer) => { observer.error(error); });
   }
 
-  getAll(userId?: number | null): Observable<any> {
+  getAll(userId?: number | null, payment_type_id: number = 1): Observable<any> {
     this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/payment-methods?user_id=${userId}`;
+    const url = `${this.basePath}/api/payment-methods?user_id=${userId}&payment_type_id=${payment_type_id}`;
     return this.http.get(url, { headers: this.mySesion.headers }).pipe(
       catchError(this.handleError)
     );

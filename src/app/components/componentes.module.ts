@@ -53,7 +53,8 @@ import { AdvertisementsFormComponent } from './advertisements/advertisements.com
 
 import { CorreosComponent } from './correos/correos.component';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
-import { EventsComponent } from './events/events.component';
+import { EventsManagementComponent } from './events-management/events-management.component';
+import { EventsComponent } from './events-management/events/events.component';
 
 // Steppers
 import { StepperComponent } from './stepper/stepper.component';
@@ -67,6 +68,7 @@ const modules = [
   CorreosComponent,
   EncabezadoComponent,
   EventsComponent,
+  EventsManagementComponent,
   AdvertisementsFormComponent,
   BusquedaComponent,
   NavComponent,

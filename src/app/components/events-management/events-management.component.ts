@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Perfil, Event as evento } from '../../interfaces';
-
+import { ListaBusqueda } from '../../interfaces';
 interface Event {
   id?: number;
   name: string;
@@ -10,16 +10,17 @@ interface Event {
   totalTickets: number;
   image?: string;
 }
-
 @Component({
-  selector: 'app-my-produced-events',
-  templateUrl: './my-produced-events.component.html',
-  styleUrls: ['./my-produced-events.component.scss']
+  selector: 'app-events-management',
+  templateUrl: './events-management.component.html',
+  styleUrls: ['./events-management.component.scss']
 })
-export class MyProducedEventsComponent implements OnInit {
+export class EventsManagementComponent implements OnInit {
+  @Output() closeEmit: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() saveEmit: EventEmitter<Event> = new EventEmitter<Event>();
   private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
   private _perfil: Perfil = new Perfil();
-  events: Event[] = [];
+  @Input() events: Event[] = [];
   paginatedEvents: Event[] = [];
   page: number = 1;
   pageSize: number = 5;
@@ -27,44 +28,18 @@ export class MyProducedEventsComponent implements OnInit {
   selectedEvent: Event | null = null;
 
   constructor() { }
+  @Input() public step = 1;
+  @Input() public data: ListaBusqueda = new ListaBusqueda();
 
   ngOnInit(): void {
-    this.loadEvents();
-    this.updatePaginatedEvents();
   }
 
-  loadEvents(): void {
-    this.events = [
-      {
-        id: 1,
-        name: 'Concierto de Rock',
-        date: '2024-12-25',
-        location: 'Estadio Nacional',
-        ticketsSold: 150,
-        totalTickets: 200,
-        image: 'https://via.placeholder.com/150'
-      },
-      {
-        id: 2,
-        name: 'Obra de Teatro',
-        date: '2024-11-20',
-        location: 'Teatro Municipal',
-        ticketsSold: 50,
-        totalTickets: 100,
-        image: 'https://via.placeholder.com/150'
-      }
-    ];
-  }
-
-  updatePaginatedEvents(): void {
-    const startIndex = (this.page - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.paginatedEvents = this.events.slice(startIndex, endIndex);
+  onChangeStep(step: number) {
+    this.step = step;
   }
 
   onPageChange(page: number): void {
     this.page = page;
-    this.updatePaginatedEvents();
   }
 
   showEventForm(): void {
@@ -80,7 +55,6 @@ export class MyProducedEventsComponent implements OnInit {
   deleteEvent(event: Event): void {
     if (confirm(`¿Estás seguro de eliminar el evento "${event.name}"?`)) {
       this.events = this.events.filter(e => e.id !== event.id);
-      this.updatePaginatedEvents();
     }
   }
 
@@ -92,12 +66,13 @@ export class MyProducedEventsComponent implements OnInit {
       event.id = this.events.length + 1;
       this.events.push(event);
     }
-    this.updatePaginatedEvents();
+    this.saveEmit.emit(event);
     this.closeEventForm();
   }
 
   closeEventForm(): void {
     this.showForm = false;
+    this.closeEmit.emit(this.showForm);
   }
   obtenerPerfilConf(value: Perfil) {
     this._perfil = value;

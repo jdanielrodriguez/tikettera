@@ -1,0 +1,40 @@
+<div class="bs-stepper">
+  <ul ngbNav #event_stepper="ngbNav" [(activeId)]="step" class="bs-stepper-header">
+    <li [ngbNavItem]="1" class="step">
+      <a ngbNavLink>
+        <button class="step-trigger">
+          <span class="bs-stepper-circle">1</span>
+          <span class="bs-stepper-label">Localidad {{ data.name }}</span>
+        </button>
+      </a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-events [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-events>
+      </ng-template>
+    </li>
+    <div class="line"></div>
+    <li [ngbNavItem]="2" class="step">
+      <a ngbNavLink>
+        <button class="step-trigger">
+          <span class="bs-stepper-circle">2</span>
+          <span class="bs-stepper-label">Reservar Boletos</span>
+        </button>
+      </a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-events [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-events>
+      </ng-template>
+    </li>
+    <div class="line"></div>
+    <li [ngbNavItem]="3" class="step">
+      <a ngbNavLink>
+        <button class="step-trigger">
+          <span class="bs-stepper-circle">3</span>
+          <span class="bs-stepper-label">Detalle de Compra</span>
+        </button>
+      </a>
+      <ng-template ngbNavContent class="w-100 d-flex">
+        <app-events [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-events>
+      </ng-template>
+    </li>
+  </ul>
+</div>
+<div [ngbNavOutlet]="event_stepper" class="w-100 container bs-stepper-content d-flex"></div>

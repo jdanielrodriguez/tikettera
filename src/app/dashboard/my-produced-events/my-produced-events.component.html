@@ -43,6 +43,6 @@
 
   <!-- Formulario para crear/editar eventos -->
   <div class="collapse" [ngClass]="{'show': showForm}">
-    <app-events [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-events>
+    <app-events-management [events]="events" (closeEmit)="closeEventForm()" (saveEmit)="saveEvent($event)"></app-events-management>
   </div>
 </div>

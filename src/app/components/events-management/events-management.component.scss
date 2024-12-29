@@ -1,0 +1,19 @@
+@import './../../../vars.scss';
+
+.bs-stepper{
+  display: flex;
+  .bs-stepper-header{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    .step{
+      .active{
+        .bs-stepper-label{
+          color: $color-light;
+        }
+      }
+    }
+    .line{
+    }
+  }
+}

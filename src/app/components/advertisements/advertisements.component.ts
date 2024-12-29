@@ -20,7 +20,7 @@ export class AdvertisementsFormComponent implements OnInit {
   };
 
   constructor(
-    private sesion: Sesion,
+    private mySesion: Sesion,
     private advertisementsService: AdvertisementsService
   ) { }
 
@@ -37,7 +37,7 @@ export class AdvertisementsFormComponent implements OnInit {
 
   guardarAdvertisement(): void {
     if (!this.formAdvertisement.name || !this.formAdvertisement.slug || !this.formAdvertisement.picture) {
-      this.sesion.createError("Por favor, complete todos los campos del formulario.");
+      this.mySesion.createError("Por favor, complete todos los campos del formulario.");
       return;
     }
 
@@ -48,11 +48,10 @@ export class AdvertisementsFormComponent implements OnInit {
       description: this.formAdvertisement.description,
       url: this.formAdvertisement.picture?.url || "",
       pictureBase64: this.formAdvertisement.picture?.base64 || "",
-      picture: this.formAdvertisement.picture,
       type: 1,
       state: 1,
       event_id: null,
-      user_id: null,
+      user_id: this.mySesion.perfil.id || null,
     };
 
     this.advertisementsService.createAdvertisement(newAdvertisement).subscribe({
@@ -67,11 +66,11 @@ export class AdvertisementsFormComponent implements OnInit {
             descripcion: advertisement.description,
           });
           this.resetForm();
-          this.sesion.createSuccess("Anuncio creado correctamente.");
+          this.mySesion.createSuccess("Anuncio creado correctamente.");
         }
       },
       error: () => {
-        this.sesion.createError("Error al crear el anuncio.");
+        this.mySesion.createError("Error al crear el anuncio.");
       },
     });
   }
@@ -84,10 +83,10 @@ export class AdvertisementsFormComponent implements OnInit {
       next: () => {
         this.advertisements = this.advertisements.filter((ad) => ad.id !== advertisement.id);
         this.sliders = this.sliders.filter((slider) => slider.url !== imagen.url);
-        this.sesion.createSuccess("Anuncio eliminado correctamente.");
+        this.mySesion.createSuccess("Anuncio eliminado correctamente.");
       },
       error: () => {
-        this.sesion.createError("Error al eliminar el anuncio.");
+        this.mySesion.createError("Error al eliminar el anuncio.");
       },
     });
   }
@@ -117,7 +116,7 @@ export class AdvertisementsFormComponent implements OnInit {
         }));
       },
       error: () => {
-        this.sesion.createError("Error al cargar los anuncios.");
+        this.mySesion.createError("Error al cargar los anuncios.");
       },
     });
   }

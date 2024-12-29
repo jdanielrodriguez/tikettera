@@ -18,12 +18,12 @@ services:
         consistency: delegated
       - ~/.ssh:/root/.ssh:ro
       - ~/.composer:/root/.composer
+      - ./docker/php/laravel.ini:/usr/local/etc/php/conf.d/laravel.ini
     depends_on:
       - tikettera_db
     networks:
       tikettera_network:
         ipv4_address: 172.16.0.2
-    user: "${UID}:${GID}"
   tikettera_node:
     container_name: tikettera_node
     build:
@@ -46,7 +46,6 @@ services:
     networks:
       tikettera_network:
         ipv4_address: 172.16.0.7
-    user: "${UID}:${GID}"
   tikettera_nginx:
     container_name: tikettera_nginx
     build:

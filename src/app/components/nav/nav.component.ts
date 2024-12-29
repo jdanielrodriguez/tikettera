@@ -201,6 +201,7 @@ export class NavComponent implements OnInit, AfterViewInit {
             select: false,
             url: '../dashboard/credit-cards',
             evento: null,
+            rol: 2,
             nombre: 'Mis Tarjetas'
           },
           {

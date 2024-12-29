@@ -1,27 +1,29 @@
 import { Component, AfterViewInit, HostListener, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalStorageService, LocalStorage } from 'ngx-webstorage';
+import { LocalStorageService } from 'ngx-webstorage';
 import { Menus, Perfil, Configuracion } from './../../interfaces';
 import { Sesion } from './../../common/sesion';
+import { Constantes } from './../../common/constant';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit, AfterViewInit {
-  private _menus!: Menus[];
-  private _proveedores!: string;
-  private _proveedor!: string;
-  private _color!: string;
-  private _background!: string;
-  private _configuracion!: Configuracion;
-  private _sesion!: boolean;
-  private _esAdmin!: boolean;
-  private _perfil!: Perfil;
-  private _logo = 'assets/images/logo.png';
+  perfil!: Perfil;
+  proveedor!: string;
+  sesion!: boolean;
+  @Input() menus!: Menus[];
+  @Input() proveedores!: string;
+  @Input() color!: string;
+  @Input() background!: string;
+  @Input() configuracion!: Configuracion;
+  @Input() esAdmin!: boolean;
+  @Input() logo = 'assets/images/logo.png';
   constructor(
     private router: Router,
     private mySesion: Sesion,
+    private constantes: Constantes,
     private cdref: ChangeDetectorRef,
     private localSt: LocalStorageService
   ) { }
@@ -45,9 +47,9 @@ export class NavComponent implements OnInit, AfterViewInit {
       //     });
       //     if (index >= 0) {
       //       this._configuracion = this.myProveedor.provs.configuraciones[index];
-      //       this._color = this._configuracion.css;
+      //       this.color = this._configuracion.css;
       //       this._proveedores = this._configuracion.footer;
-      //       this._background = this._configuracion.color_nav;
+      //       this.background = this._configuracion.color_nav;
       //       if (this._configuracion.imagenes.length > 0) {
       //         this._logo = this._configuracion.imagenes[0].url;
       //       } else {
@@ -55,8 +57,8 @@ export class NavComponent implements OnInit, AfterViewInit {
       //       }
       //     }
       //   } else {
-      //     this._color = null;
-      //     this._background = null;
+      //     this.color = null;
+      //     this.background = null;
       //     this._proveedores = null;
       //     this._logo = 'assets/images/logo.png';
       //   }
@@ -94,8 +96,8 @@ export class NavComponent implements OnInit, AfterViewInit {
 
   ngAfterContentChecked() {
     this.cargarConfig();
-    if (this._logo && this._logo.length <= 0) {
-      this._logo = 'assets/images/logo.png';
+    if (this.logo && this.logo.length <= 0) {
+      this.logo = 'assets/images/logo.png';
     }
     this.cdref.detectChanges();
   }
@@ -105,7 +107,7 @@ export class NavComponent implements OnInit, AfterViewInit {
   }
 
   iniciarMenus(): void {
-    this._menus = [
+    this.menus = [
       {
         sesion: false,
         select: false,
@@ -165,7 +167,7 @@ export class NavComponent implements OnInit, AfterViewInit {
         url: '../event-create',
         evento: null,
         clienteOnly: true,
-        rol: 2,
+        rol: this.constantes.roles.promoter,
         nombre: 'Crea tu evento'
       },
       {
@@ -186,7 +188,7 @@ export class NavComponent implements OnInit, AfterViewInit {
             select: false,
             url: '../dashboard/produced-events',
             evento: null,
-            rol: 2,
+            rol: this.constantes.roles.promoter,
             nombre: 'Mis Eventos Producidos'
           },
           {
@@ -201,7 +203,7 @@ export class NavComponent implements OnInit, AfterViewInit {
             select: false,
             url: '../dashboard/credit-cards',
             evento: null,
-            rol: 2,
+            rol: this.constantes.roles.promoter,
             nombre: 'Mis Tarjetas'
           },
           {
@@ -223,7 +225,7 @@ export class NavComponent implements OnInit, AfterViewInit {
             select: false,
             url: '../dashboard/autorizar-promotores',
             evento: null,
-            rol: 1,
+            rol: this.constantes.roles.admin,
             nombre: 'Autorizar Promotores'
           },
           {
@@ -253,79 +255,16 @@ export class NavComponent implements OnInit, AfterViewInit {
   toggleMenuState(): void {
     this.isMenuCollapsed = !this.isMenuCollapsed;
   }
-  @Input()
-  set menus(values: Menus[]) {
-    this._menus = values;
-  }
-  get menus(): Menus[] {
-    return this._menus;
-  }
-  @Input()
-  set logo(values: string) {
-    this._logo = values;
-  }
-  get logo(): string {
-    return this._logo;
-  }
-  set perfil(values: Perfil) {
-    this._perfil = values;
-  }
-  get perfil(): Perfil {
-    this._perfil = this.mySesion.perfil;
-    return this._perfil;
-  }
-  set sesion(value: boolean) {
-    this._sesion = value;
-  }
-  get sesion(): boolean {
-    this._sesion = this.mySesion.validarSesion();
-    return this._sesion;
-  }
-  @Input()
-  set esAdmin(value: boolean) {
-    this._esAdmin = value;
-  }
-  get esAdmin(): boolean {
-    return this._esAdmin;
-  }
-  @Input()
-  set proveedores(value: string) {
-    this._proveedores = value;
-  }
-  get proveedores(): string {
-    return this._proveedores;
-  }
-  set proveedor(value: string) {
-    this._proveedor = value;
-  }
-  get proveedor(): string {
-    // this._proveedor = this.myProveedor.provs?.nombre;
-    return this._proveedor + (this._proveedor.length > 0 ? '/' : '');
-  }
-  @Input()
-  set color(value: string) {
-    this._color = value;
-  }
-  get color(): string {
-    return this._color;
-  }
-  @Input()
-  set background(value: string) {
-    this._background = value;
-  }
-  get background(): string {
-    return this._background;
-  }
   getColor(): any {
     this.cargarConfig();
-    if (this._color) {
-      return { color: this._color };
+    if (this.color) {
+      return { color: this.color };
     }
   }
   getBackground(): any {
     this.cargarConfig();
-    if (this._background) {
-      return { 'background-color': this._background };
+    if (this.background) {
+      return { 'background-color': this.background };
     }
   }
   get currentPerfil(): string {

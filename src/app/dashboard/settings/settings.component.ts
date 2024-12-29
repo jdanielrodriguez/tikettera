@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Perfil, Menus } from '../../interfaces';
 import { Sesion } from '../../common/sesion';
+import { Constantes } from '../../common/constant';
 
 @Component({
   selector: 'app-settings',
@@ -14,7 +15,8 @@ export class SettingsComponent implements OnInit {
   @Input() type!: string;
   constructor(
     private route: ActivatedRoute,
-    private mySesion: Sesion
+    private mySesion: Sesion,
+    private constantes: Constantes
   ) { }
   ngOnInit(): void {
     this.getParams();
@@ -51,11 +53,11 @@ export class SettingsComponent implements OnInit {
   }
 
   get rolAdmin(): number {
-    return 1;
+    return this.constantes.roles.admin;
   }
 
   get rolProducer(): number {
-    return 2;
+    return this.constantes.roles.promoter;
   }
 
   get rol(): number {

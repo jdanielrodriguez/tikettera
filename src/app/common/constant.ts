@@ -10,4 +10,9 @@ export class Constantes {
     bank_account: 2,
     internal_balance: 3
   };
+  roles = {
+    admin: 1,
+    promoter: 2,
+    client: 3
+  };
 }

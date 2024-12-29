@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Inventario, Menus, TipoItem } from 'src/app/interfaces';
+import { Menus } from '../../interfaces';
 import { Formatos } from '../../common/format';
 import { Sesion } from '../../common/sesion';
 @Component({
@@ -18,10 +18,10 @@ export class CategoriasComponent implements OnInit {
     private _service: NotificationsService,
   ) { }
   @Input()
-  set producto(value: Inventario) {
+  set producto(value: any) {
     this._producto = value;
   }
-  get producto(): Inventario {
+  get producto(): any {
     return this._producto;
   }
   @Input()
@@ -36,12 +36,12 @@ export class CategoriasComponent implements OnInit {
   }
 
   @Output()
-  get guardar(): EventEmitter<TipoItem> {
+  get guardar(): EventEmitter<any> {
     this._tipoItemEm.emit(this._producto);
     return this._tipoItemEm;
   }
-  private _tipoItemEm: EventEmitter<TipoItem> = new EventEmitter<TipoItem>();
-  private _producto: TipoItem = new TipoItem();
+  private _tipoItemEm: EventEmitter<any> = new EventEmitter<any>();
+  private _producto: any = null;
   private _titulo = '';
   @BlockUI() blockUI!: NgBlockUI;
   positions: any;

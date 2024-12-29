@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Perfil, Imagen, Response } from 'src/app/interfaces';
+import { Perfil, Imagen, Response } from '../../interfaces';
 import { Sesion } from '../../common/sesion';
 import { UsuariosService } from '../../services/usuarios.service';
 

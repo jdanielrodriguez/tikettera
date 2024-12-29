@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Perfil, Menus } from 'src/app/interfaces';
+import { Perfil, Menus } from '../../interfaces';
 
 interface Event {
   id?: number;

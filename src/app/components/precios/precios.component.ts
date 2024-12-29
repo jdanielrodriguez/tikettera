@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angu
 import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Menus, Producto } from 'src/app/interfaces';
+import { Menus, Producto } from '../../interfaces';
 import { Sesion } from '../../common/sesion';
 @Component({
   selector: 'app-precios',

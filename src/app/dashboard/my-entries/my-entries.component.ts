@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Perfil } from 'src/app/interfaces';
+import { Perfil } from '../../interfaces';
 
 interface Entry {
   eventName: string;

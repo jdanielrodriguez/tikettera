@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Perfil, Menus } from 'src/app/interfaces';
-import { Sesion } from 'src/app/common/sesion';
+import { Perfil, Menus } from '../../interfaces';
+import { Sesion } from '../../common/sesion';
 
 @Component({
   selector: 'app-my-records',

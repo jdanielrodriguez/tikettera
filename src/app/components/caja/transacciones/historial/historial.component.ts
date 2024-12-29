@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { HistoricoCaja, Perfil } from 'src/app/interfaces';
+import { HistoricoCaja, Perfil } from '../../../../interfaces';
 import { ComisionesService } from '../../../../services/comisiones.service';
 
 @Component({

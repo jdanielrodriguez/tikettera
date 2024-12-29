@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { AuthServices } from 'src/app/services/auth.service';
-import { ConfiguracionesService } from 'src/app/services/configuraciones.service';
+import { AuthServices } from '../../services/auth.service';
+import { ConfiguracionesService } from '../../services/configuraciones.service';
 import { NotificationsService } from 'angular2-notifications';
 import { ImagenesComponent } from '../imagenes/imagenes.component';
-import { Imagen, FilterGET, Configuracion } from 'src/app/interfaces';
-import { Sesion } from 'src/app/common/sesion';
+import { Imagen, FilterGET, Configuracion } from '../../interfaces';
+import { Sesion } from '../../common/sesion';
 declare var $: any;
 @Component({
   selector: 'app-encabezado',

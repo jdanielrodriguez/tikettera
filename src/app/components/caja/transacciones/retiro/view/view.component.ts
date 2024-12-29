@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Caja, Comision, Pasarela } from 'src/app/interfaces';
-import { Constantes } from 'src/app/common/constant';
+import { Caja, Comision, Pasarela } from '../../../../../interfaces';
+import { Constantes } from '../../../../../common/constant';
 
 @Component({
   selector: 'app-retiro-view',

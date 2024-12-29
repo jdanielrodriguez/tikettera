@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MetodoPago } from 'src/app/interfaces';
+import { MetodoPago } from '../../interfaces';
 
 @Component({
   selector: 'app-tarjeta',

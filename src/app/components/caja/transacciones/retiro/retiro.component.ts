@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Caja, Pasarela, Comision } from 'src/app/interfaces';
+import { Caja, Pasarela, Comision } from '../../../../interfaces';
 
 @Component({
   selector: 'app-caja-retiro',

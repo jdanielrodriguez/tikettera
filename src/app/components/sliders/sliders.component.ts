@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Imagen } from 'src/app/interfaces';
+import { Imagen } from '../../interfaces';
 @Component({
   selector: 'app-sliders',
   templateUrl: './sliders.component.html',

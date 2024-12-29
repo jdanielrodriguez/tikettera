@@ -23,9 +23,9 @@
       <div class="row w-100 mp-0">
         <!-- Número de tarjeta -->
         <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-1">
-          <input type="text" class="form-control" formControlName="numeroTC" placeholder="xxxx xxxx xxxx xxxx"
+          <input type="text" class="form-control" formControlName="card_number" placeholder="xxxx xxxx xxxx xxxx"
             maxlength="19" (input)="formatCardNumber()" />
-          <div *ngIf="metodoPagoForm.get('numeroTC')?.invalid && metodoPagoForm.get('numeroTC')?.touched"
+          <div *ngIf="metodoPagoForm.get('card_number')?.invalid && metodoPagoForm.get('card_number')?.touched"
             class="invalid-feedback">
             Número de tarjeta inválido.
           </div>
@@ -47,9 +47,9 @@
 
         <!-- Nombre en la tarjeta -->
         <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-9 mx-auto mb-1">
-          <input type="text" class="form-control" formControlName="nombreTC" placeholder="Jhon Doe"
+          <input type="text" class="form-control" formControlName="card_name" placeholder="Jhon Doe"
             (keyup)="girarTarjeta(false)">
-          <div *ngIf="metodoPagoForm.get('nombreTC')?.invalid && metodoPagoForm.get('nombreTC')?.touched"
+          <div *ngIf="metodoPagoForm.get('card_name')?.invalid && metodoPagoForm.get('card_name')?.touched"
             class="invalid-feedback">
             Nombre inválido.
           </div>
@@ -57,9 +57,9 @@
 
         <!-- CVV -->
         <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-3 mx-auto mb-1">
-          <input type="text" class="form-control" formControlName="cvvTC" placeholder="123" (keyup)="girarTarjeta(true)"
+          <input type="text" class="form-control" formControlName="cvv" placeholder="123" (keyup)="girarTarjeta(true)"
             maxlength="3">
-          <div *ngIf="metodoPagoForm.get('cvvTC')?.invalid && metodoPagoForm.get('cvvTC')?.touched"
+          <div *ngIf="metodoPagoForm.get('cvv')?.invalid && metodoPagoForm.get('cvv')?.touched"
             class="invalid-feedback">
             CVV inválido.
           </div>
@@ -80,23 +80,23 @@
   <div class="list-group w-100" [class.contenedorAlertasActivo]="!isCollapsed"
     [class.contenedorAlertasDeac]="isCollapsed">
     <a class="list-group-item list-group-item-action flex-column align-items-start mt-1"
-      [class.active]="alert.default == 1" [class.text-light]="alert.default == 1"
-      *ngFor="let alert of lista; let i = index" (click)="seleccionar(alert, $event)">
+      [class.active]="metodo.is_default" [class.text-light]="metodo.is_default"
+      *ngFor="let metodo of lista; let i = index" >
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ alert.nombre }}</h5>
+        <h5 class="mb-1">{{ (metodo.card_name || '') | uppercase }}</h5>
         <small>
           <button type="button" class="btn btn-warning badge-pill text-center ml-2" title="Marcar como Principal"
-            (click)="marcarDefault(alert, $event)">
+            (click)="marcarDefault(metodo)">
             <i class="fa fa-hand-pointer-o pointer"></i>
           </button>
-          <button type="button" class="btn btn-danger badge-pill text-center ml-2" (click)="eliminarMetodo(alert, i)"
+          <button type="button" class="btn btn-danger badge-pill text-center ml-2" (click)="eliminarMetodo(metodo, i)"
             title="Eliminar">
             <i class="fa fa-times pointer"></i>
           </button>
         </small>
       </div>
-      <p class="mb-1">{{ alert.numeroTC | numTC }}</p>
-      <small>{{ desencripta(alert.exp_dateTC) }}</small>
+      <p class="mb-1">{{ mostrarEtiqueta(metodo.card_number || '') }}</p>
+      <small>{{ desencripta(metodo.expiration_date) }}</small>
     </a>
   </div>
 </div>

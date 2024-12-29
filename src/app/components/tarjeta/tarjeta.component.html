@@ -8,12 +8,12 @@
     <div class="datos" *ngIf="data">
       <div class="grupo" id="numero">
         <p class="label">Número Tarjeta</p>
-        <p class="numero">{{((data.numeroTC && data.numeroTC!='')?data.numeroTC:'#### #### #### ####') | numTC}}</p>
+        <p class="numero">{{((data.card_number && data.card_number!='')?data.card_number:'#### #### #### ####') | numTC}}</p>
       </div>
       <div class="flexbox">
         <div class="grupo" id="nombre">
           <p class="label">Nombre Tarjeta</p>
-          <p class="nombre">{{((data.nombreTC && data.nombreTC!='')?data.nombreTC:'Jhon Doe') | justText}}</p>
+          <p class="nombre">{{((data.card_name && data.card_name!='')?data.card_name:'Jhon Doe') | justText}}</p>
         </div>
 
         <div class="grupo" id="expiracion">
@@ -33,13 +33,13 @@
         <p class="label">Firma</p>
         <div class="firma">
           <p>
-            {{(data.nombreTC && data.nombreTC!='')?data.nombreTC:'Jhon Doe'}}
+            {{(data.card_name && data.card_name!='')?data.card_name:'Jhon Doe'}}
           </p>
         </div>
       </div>
       <div class="grupo" id="ccv">
         <p class="label">CCV</p>
-        <p class="ccv">{{((data.cvvTC && data.cvvTC!='')?data.cvvTC:'') | cvvTC}}</p>
+        <p class="ccv">{{((data.cvv && data.cvv!='')?data.cvv:'') | cvv}}</p>
       </div>
     </div>
     <p class="leyenda">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus exercitationem,

@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'cvvTC'
+  name: 'cvv'
 })
 export class CvvTCPipe implements PipeTransform {
 

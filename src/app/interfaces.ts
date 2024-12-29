@@ -205,52 +205,34 @@ export class Factura {
 }
 export class MetodoPago {
   constructor() {
-    this.noTC = '';
-    this.mtVencimiento = '';
-    this.yrVencimiento = '';
-    this.cvvTC = '';
-    this.envio = '';
-    this.token = '';
-    this.nombre = '';
-    this.id = null;
-    this.tipo_forma_pago = 1;
-    this.default = 0;
-    this.exp_montTC = '';
+    this.user_id = null;
+    this.payment_type_id = 1;
+    this.card_number = '';
+    this.expiration_date = '';
+    this.cvv = '';
     this.exp_yearTC = '';
-    this.numeroTC = '';
-    this.exp_dateTC = '';
-    this.nombreTC = '';
-    this.paypalToken = '';
-    this.tipo = '';
+    this.exp_montTC = '';
+    this.card_name = '';
+    this.is_default = false;
+    this.id = null;
   }
-  noTC?: string;
-  id?: string | null;
-  mtVencimiento?: string;
-  nameTC?: string;
-  yrVencimiento?: string;
-  cvvTC?: string;
-  envio?: string;
-  token?: string;
-  tipo?: string;
-  cod?: string;
-  default?: number;
-  cambio?: number;
-  total?: number;
-  nombre?: string;
-  componente?: any;
+
+  user_id?: number | null;
+  payment_type_id?: number;
+  card_number?: string;
+  expiration_date?: string;
+  cvv?: string;
+  is_default?: boolean;
   paypalToken?: string;
-  nombreTC?: string;
-  exp_dateTC?: string;
-  numeroTC: string;
-  cuenta?: string;
-  nombreCuenta?: string;
   exp_yearTC?: string;
   exp_montTC?: string;
-  tipo_forma_pago?: number;
-  pasarela?: number;
-  clave?: string;
-  estado?: number;
-  usuario?: number;
+  card_name?: string;
+  bank_name?: string;
+  account_number?: string;
+  account_holder?: string;
+  swift?: string;
+  balance?: number | null;
+  id?: number | null;
 }
 export class FacturaDetalle {
   cantidad?: number;

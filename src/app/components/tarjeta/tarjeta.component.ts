@@ -17,11 +17,11 @@ export class TarjetaComponent implements OnInit {
     this.frente = (value != null) ? value : !this.frente;
   }
   get tipoTarjeta(): string {
-    if (this.data && this.data.numeroTC?.length > 1) {
-      if (this.data.numeroTC.replace(/ /g, '').match(/^4\d{3}-?\d{4}-?\d{4}-?\d{4}$/)) {
+    if (this.data.card_number && this.data.card_number.length > 1) {
+      if (this.data.card_number.replace(/ /g, '').match(/^4\d{3}-?\d{4}-?\d{4}-?\d{4}$/)) {
         return './../../../assets/images/tarjeta/logos/visa.png';
       } else
-        if (this.data.numeroTC.replace(/ /g, '').match(/^5[1-5]\d{2}-?\d{4}-?\d{4}-?\d{4}$/)) {
+        if (this.data.card_number.replace(/ /g, '').match(/^5[1-5]\d{2}-?\d{4}-?\d{4}-?\d{4}$/)) {
           return './../../../assets/images/tarjeta/logos/mastercard.png';
         } else {
           return './../../../assets/images/tarjeta/logos/visa.png';

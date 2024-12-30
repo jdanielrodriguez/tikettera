@@ -1,15 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Perfil, Event as evento } from '../../interfaces';
-
-interface Event {
-  id?: number;
-  name: string;
-  date: string;
-  location: string;
-  ticketsSold: number;
-  totalTickets: number;
-  image?: string;
-}
+import { ActivatedRoute } from '@angular/router';
+import { Perfil, Event, Menus } from '../../interfaces';
+import { Sesion } from '../../common/sesion';
 
 @Component({
   selector: 'app-my-produced-events',
@@ -17,8 +9,9 @@ interface Event {
   styleUrls: ['./my-produced-events.component.scss']
 })
 export class MyProducedEventsComponent implements OnInit {
-  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
-  private _perfil: Perfil = new Perfil();
+  @Input() perfil: Perfil = new Perfil();
+  @Output() perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+
   events: Event[] = [];
   paginatedEvents: Event[] = [];
   page: number = 1;
@@ -26,11 +19,28 @@ export class MyProducedEventsComponent implements OnInit {
   showForm: boolean = false;
   selectedEvent: Event | null = null;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private mySesion: Sesion) { }
 
   ngOnInit(): void {
     this.loadEvents();
     this.updatePaginatedEvents();
+    this.detectRoute();
+  }
+
+  detectRoute(): void {
+    this.route.url.subscribe(urlSegments => {
+      const path = urlSegments.map(segment => segment.path).join('/');
+      if (path === 'dashboard/produced-events-new') {
+        this.showEventForm(); // Abrir el formulario para creación
+      } else if (path.startsWith('dashboard/produced-events-edit')) {
+        const slug = path.replace('dashboard/produced-events-edit-', '');
+        if (slug) {
+          this.editEventBySlug(slug); // Cargar el evento a editar
+        }
+      } else {
+        this.showForm = false; // Cerrar el formulario
+      }
+    });
   }
 
   loadEvents(): void {
@@ -38,20 +48,28 @@ export class MyProducedEventsComponent implements OnInit {
       {
         id: 1,
         name: 'Concierto de Rock',
-        date: '2024-12-25',
-        location: 'Estadio Nacional',
-        ticketsSold: 150,
-        totalTickets: 200,
-        image: 'https://via.placeholder.com/150'
+        description: 'Un concierto increíble de rock.',
+        address: 'Estadio Nacional',
+        lat: 14.6349,
+        lng: -90.5069,
+        date_start: '2024-12-25',
+        date_end: '2024-12-25',
+        picture: 'https://via.placeholder.com/150',
+        slug: 'concierto-de-rock',
+        localities: []
       },
       {
         id: 2,
         name: 'Obra de Teatro',
-        date: '2024-11-20',
-        location: 'Teatro Municipal',
-        ticketsSold: 50,
-        totalTickets: 100,
-        image: 'https://via.placeholder.com/150'
+        description: 'Una obra teatral fascinante.',
+        address: 'Teatro Municipal',
+        lat: 14.6359,
+        lng: -90.5079,
+        date_start: '2024-11-20',
+        date_end: '2024-11-20',
+        picture: 'https://via.placeholder.com/150',
+        slug: 'obra-de-teatro',
+        localities: []
       }
     ];
   }
@@ -72,9 +90,22 @@ export class MyProducedEventsComponent implements OnInit {
     this.selectedEvent = null;
   }
 
+  editEventBySlug(slug: string): void {
+    const event = this.events.find(e => e.slug === slug);
+    if (event) {
+      this.showForm = false;
+      this.selectedEvent = { ...event };
+      this.showForm = true;
+    } else {
+      this.mySesion.createError('Evento no encontrado');
+      this.mySesion.navegar({ url: '../../dashboard/produced-events' });
+      this.detectRoute();
+    }
+  }
+
   editEvent(event: Event): void {
-    this.selectedEvent = { ...event };
-    this.showForm = true;
+    this.mySesion.navegar({ url: `../../dashboard/produced-events-edit-${event.slug}` });
+    this.detectRoute();
   }
 
   deleteEvent(event: Event): void {
@@ -92,27 +123,18 @@ export class MyProducedEventsComponent implements OnInit {
       event.id = this.events.length + 1;
       this.events.push(event);
     }
+    this.mySesion.navegar({ url: '../../dashboard/produced-events' });
+    this.detectRoute();
     this.updatePaginatedEvents();
     this.closeEventForm();
+  }
+  navigate(data: Menus) {
+    this.mySesion.navegar(data);
+    this.detectRoute();
   }
 
   closeEventForm(): void {
     this.showForm = false;
-  }
-  obtenerPerfilConf(value: Perfil) {
-    this._perfil = value;
-    this._perfilEmit.emit(this._perfil);
-  }
-  @Output()
-  get obtenerPerfil(): EventEmitter<Perfil> {
-    this._perfilEmit.emit(this._perfil);
-    return this._perfilEmit;
-  }
-  @Input()
-  set perfil(value: Perfil) {
-    this._perfil = value;
-  }
-  get perfil(): Perfil {
-    return this._perfil;
+    this.mySesion.navegar({ url: '../../dashboard/produced-events' });
   }
 }

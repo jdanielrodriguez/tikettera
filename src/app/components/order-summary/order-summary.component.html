@@ -5,7 +5,7 @@
         <h3 class="card-title">Detalles de los Asientos Seleccionados</h3>
         <div class="card-text w-100">
           <ul>
-            <li *ngFor="let place of selectedPlaces">{{ place.name }} {{ place.no }} - Precio:
+            <li *ngFor="let place of selectedPlaces">{{ place.name }} {{ place.seat_number }} - Precio:
               {{(data.price ? data.price.toFixed(2) : '0.00') | currency: 'GTQ' : 'symbol-narrow' }}</li>
           </ul>
           <p>Total: {{ calculateTotalStr() | currency: 'GTQ' : 'symbol-narrow'  }}</p>

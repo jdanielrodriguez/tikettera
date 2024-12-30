@@ -4,11 +4,11 @@
       <a ngbNavLink>
         <button class="step-trigger">
           <span class="bs-stepper-circle">1</span>
-          <span class="bs-stepper-label">Localidad {{ data.name }}</span>
+          <span class="bs-stepper-label">Evento</span>
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <app-events [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-events>
+        <app-events [event]="selectedEvent" (save)="handleSave($event)" (close)="handleClose()"></app-events>
       </ng-template>
     </li>
     <div class="line"></div>
@@ -16,11 +16,17 @@
       <a ngbNavLink>
         <button class="step-trigger">
           <span class="bs-stepper-circle">2</span>
-          <span class="bs-stepper-label">Reservar Boletos</span>
+          <span class="bs-stepper-label">Localidades</span>
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <app-events [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-events>
+        <div class="card mt-4">
+          <div class="card-header">
+            <h5>Administrador de localidades</h5>
+          </div>
+          <div class="card-body">
+          </div>
+        </div>
       </ng-template>
     </li>
     <div class="line"></div>
@@ -28,11 +34,17 @@
       <a ngbNavLink>
         <button class="step-trigger">
           <span class="bs-stepper-circle">3</span>
-          <span class="bs-stepper-label">Detalle de Compra</span>
+          <span class="bs-stepper-label">Distribucion de Boletos</span>
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <app-events [event]="selectedEvent" (close)="closeEventForm()" (save)="saveEvent($event)"></app-events>
+        <div class="card mt-4">
+          <div class="card-header">
+            <h5>Editor de localidades | Editor SVG</h5>
+          </div>
+          <div class="card-body">
+          </div>
+        </div>
       </ng-template>
     </li>
   </ul>

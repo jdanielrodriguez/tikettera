@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
   perfil: Perfil = new Perfil();
   perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
   @Input() type!: string;
+  active: number = 1;
   constructor(
     private route: ActivatedRoute,
     private mySesion: Sesion,
@@ -26,10 +27,10 @@ export class DashboardComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const paramType = params.get('tipo');
       this.type = paramType ?? this.type;
-
       if (this.type === 'settings') {
         this.mySesion.navegar({ url: '../dashboard/settings/profile' });
       }
+      this.active = this.setActive();
     });
   }
   navegar(data: Menus) {
@@ -40,7 +41,7 @@ export class DashboardComponent implements OnInit {
     this.perfilEmit.emit(this.perfil);
   }
 
-  get active(): number {
+  setActive(): number {
     const tabMap: { [key: string]: number } = {
       'information': 1,
       'produced-events': 2,
@@ -50,7 +51,15 @@ export class DashboardComponent implements OnInit {
       'settings': 6,
       'autorizar-promotores': 7
     };
-
+    if (this.type?.startsWith('produced-events')) {
+      return tabMap['produced-events'];
+    }
+    if (this.type?.startsWith('credit-cards')) {
+      return tabMap['credit-cards'];
+    }
+    if (this.type?.startsWith('bills')) {
+      return tabMap['bills'];
+    }
     return this.type ? (tabMap[this.type] ?? tabMap['information']) : tabMap['settings'];
   }
 

@@ -53,7 +53,7 @@ export class InicioComponent implements OnInit {
                 imagen: ('https://via.placeholder.com/250x200'),
                 nombre: element.name ? element.name : 'No Name',
                 id: element.id,
-                slug: element.slug,
+                slug: element.slug || '',
                 validacion: 5,
               };
               this.mainLista.push(datas);

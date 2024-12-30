@@ -495,89 +495,77 @@ export class HistoricoCaja {
 // Tikettera
 export class Event {
   constructor() {
-    this.localities = []
+    this.localities = [];
   }
+
+  id?: number | null;
+  name?: string | null;
+  picture?: string | null;
+  slug?: string | null;
+  description?: string | null;
+  address?: string | null;
+  time_start?: string | null;
+  time_end?: string | null;
+  date_start?: string | null;
+  date_end?: string | null;
+  start?: string | null; // Timestamp combining date and time (start)
+  end?: string | null; // Timestamp combining date and time (end)
+  lat?: number | null;
+  lng?: number | null;
+  reason_id?: number | null;
+  type_id?: number | null;
+  state?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+
   localities: Locality[];
-  address?: null | string;
-  created_at?: null | string;
-  date_end?: null | string;
-  date_start?: null | string;
-  description?: null | string;
-  end?: null | string;
-  id?: null | string;
-  lat?: null | string;
-  lng?: null | string;
-  name?: null | string;
-  picture?: null | string;
-  reason_id?: null | string;
-  slug?: null | string;
-  start?: null | string;
-  state?: null | string;
-  time_end?: null | string;
-  time_start?: null | string;
-  type?: null | string;
-  updated_at?: null | string;
 }
+
 export class Locality {
   constructor() {
-    this.id = null;
-    this.name = '';
-    this.picture = '';
-    this.description = '';
-    this.address = '';
     this.places = [];
-    this.config = {};
   }
-  id?: number | null | undefined;
-  name?: string;
-  picture?: string;
-  description?: string;
-  address?: string;
-  slug?: string;
-  time_start?: Date;
-  time_end?: Date;
-  date_start?: Date;
-  date_end?: Date;
-  start?: Date;
-  end?: Date;
-  price?: number;
-  total?: number;
-  tasa_cambio?: number;
-  tasa_iva?: number;
 
-  lat?: number;
-  lng?: number;
-  type?: number;
-  state?: number;
-
-  event_id?: number;
-  config?: Configuracion;
-  created_at!: Date;
-  updated_at!: Date;
+  id?: number | null;
+  name?: string | null;
+  description?: string | null;
+  slug?: string | null;
+  tasa_cambio?: number | null; // Exchange rate
+  iva?: number | null; // VAT amount
+  tasa_iva?: number | null; // VAT rate
+  comision?: number | null; // Commission amount
+  price?: number | null;
+  sold?: number | null; // Tickets sold
+  withdrawall?: number | null; // Withdrawn tickets
+  state?: number | null;
+  event_id?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
 
   places: Place[];
+  event?: Event;
 }
+
 export class Place {
   constructor() {
-    this.number = 0;
-    this.state = 1;
-    this.price = 1;
-    this.no = '0';
+    this.state = 1; // Default state is available
+    this.price = 0;
   }
-  id?: number | null | undefined;
-  state?: string | number;
-  name?: string;
-  description?: string;
-  slug?: string;
-  no?: string;
-  number?: number;
-  price?: number;
-  x?: number;
-  y?: number;
-  chaild?: string;
-  sold?: number;
-  avaliable?: number;
-  type?: number;
+
+  id?: number | null;
+  name?: string | null;
+  description?: string | null;
+  slug?: string | null;
+  seat_number?: string | null; // Seat identifier
+  price?: number | null;
+  x?: number | null; // X-coordinate for SVG mapping
+  y?: number | null; // Y-coordinate for SVG mapping
+  sold?: number | null; // Number of seats sold
+  avaliable?: number | null; // Availability flag (1 = available, 0 = not available)
+  state?: number | null; // Current state of the place
+  locality_id?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
 }
 
 // HTTP

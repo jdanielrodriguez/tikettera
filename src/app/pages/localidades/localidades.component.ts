@@ -72,7 +72,7 @@ export class LocalidadesComponent implements OnInit {
                 imagen: ('https://via.placeholder.com/250x200'),
                 nombre: element.name || 'No Name',
                 id: element.id,
-                slug: element.slug,
+                slug: element.slug || '',
                 event_slug: obj.slug || '',
                 validacion: 5,
                 date_start: obj.date_start ? new Date(obj.date_start) : new Date(),
@@ -81,7 +81,7 @@ export class LocalidadesComponent implements OnInit {
                 description: element.description || '',
                 address: obj.address || '',
                 price: element.price || 0,
-                total: element.total || 0,
+                total: element.price || 0,
                 tasa_iva: element.tasa_iva || 0,
                 tasa_cambio: element.tasa_cambio || 0,
               };

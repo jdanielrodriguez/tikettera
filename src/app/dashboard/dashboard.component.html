@@ -12,7 +12,7 @@
         <li [ngbNavItem]="2" (click)="navegar({url:'./dashboard/produced-events'})" [class.d-none]="(rol>rolProducer)">
           <a ngbNavLink>Mis Eventos Producidos</a>
           <ng-template ngbNavContent>
-            <app-my-produced-events [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)">
+            <app-my-produced-events [perfil]="perfil">
             </app-my-produced-events>
           </ng-template>
         </li>

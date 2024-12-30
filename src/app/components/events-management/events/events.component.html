@@ -3,42 +3,37 @@
     <h5>{{ event?.id ? 'Editar Evento' : 'Crear Nuevo Evento' }}</h5>
   </div>
   <div class="card-body">
-    <form (ngSubmit)="onSubmit()">
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Nombre del Evento</label>
-        <input
-          type="text"
-          id="name"
-          class="form-control"
-          [(ngModel)]="eventData.name"
-          name="name"
-          required
-        />
+        <input type="text" id="name" class="form-control" formControlName="name" required />
+        <div *ngIf="eventForm.get('name')?.invalid && eventForm.get('name')?.touched" class="text-danger">
+          El nombre del evento es obligatorio.
+        </div>
       </div>
+
       <div class="form-group">
-        <label for="date">Fecha</label>
-        <input
-          type="date"
-          id="date"
-          class="form-control"
-          [(ngModel)]="eventData.date"
-          name="date"
-          required
-        />
+        <label for="description">Descripción</label>
+        <textarea id="description" class="form-control" formControlName="description" rows="3"></textarea>
       </div>
+
       <div class="form-group">
-        <label for="location">Localidad</label>
-        <input
-          type="text"
-          id="location"
-          class="form-control"
-          [(ngModel)]="eventData.location"
-          name="location"
-          required
-        />
+        <label for="date">Fecha de Inicio</label>
+        <input type="date" id="date" class="form-control" formControlName="date_start" required />
       </div>
+
+      <div class="form-group">
+        <label for="lat">Coordenadas (Latitud)</label>
+        <input type="number" id="lat" class="form-control" formControlName="lat" step="0.000001" />
+      </div>
+
+      <div class="form-group">
+        <label for="lng">Coordenadas (Longitud)</label>
+        <input type="number" id="lng" class="form-control" formControlName="lng" step="0.000001" />
+      </div>
+
       <div class="form-group text-right">
-        <button class="btn btn-primary" type="submit">Guardar</button>
+        <button class="btn btn-primary" type="submit" [disabled]="eventForm.invalid">Guardar</button>
         <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">Cancelar</button>
       </div>
     </form>

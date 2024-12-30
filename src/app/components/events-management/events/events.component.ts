@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-events',
@@ -10,16 +11,24 @@ export class EventsComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
 
-  eventData: any = {};
+  eventForm!: FormGroup;
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    if (this.event) {
-      this.eventData = { ...this.event };
-    }
+    this.eventForm = this.fb.group({
+      name: [this.event?.name || '', [Validators.required]],
+      description: [this.event?.description || ''],
+      date_start: [this.event?.date_start || '', [Validators.required]],
+      lat: [this.event?.lat || null],
+      lng: [this.event?.lng || null],
+    });
   }
 
   onSubmit(): void {
-    this.save.emit(this.eventData);
+    if (this.eventForm.valid) {
+      this.save.emit(this.eventForm.value);
+    }
   }
 
   onCancel(): void {

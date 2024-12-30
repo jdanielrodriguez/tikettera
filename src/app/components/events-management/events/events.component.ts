@@ -44,6 +44,7 @@ export class EventsComponent implements OnInit, OnChanges {
     this.eventForm = this.fb.group({
       name: [this.event?.name || '', [Validators.required]],
       id: [this.event?.id || null],
+      localities: [this.event?.localities || []],
       description: [this.event?.description || ''],
       slug: [initialSlug, [Validators.required]],
       date_start: [initialDate || '', [Validators.required]],

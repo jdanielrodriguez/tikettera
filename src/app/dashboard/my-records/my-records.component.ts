@@ -8,8 +8,8 @@ import { Sesion } from '../../common/sesion';
   styleUrls: ['./my-records.component.scss']
 })
 export class MyRecordsComponent implements OnInit {
-  private _perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
-  private _perfil: Perfil = new Perfil();
+  @Output() perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
+  @Input() perfil: Perfil = new Perfil();
   constructor(
     private mySesion: Sesion
   ) { }
@@ -19,27 +19,12 @@ export class MyRecordsComponent implements OnInit {
     this.mySesion.navegar(data);
   }
   obtenerPerfilConf(value: Perfil) {
-    this._perfil = value;
-    this._perfilEmit.emit(this._perfil);
+    this.perfil = value;
+    this.perfilEmit.emit(this.perfil);
   }
   @Output()
   get obtenerPerfil(): EventEmitter<Perfil> {
-    this._perfilEmit.emit(this._perfil);
-    return this._perfilEmit;
+    this.perfilEmit.emit(this.perfil);
+    return this.perfilEmit;
   }
-  @Input()
-  set perfil(value: Perfil) {
-    this._perfil = value;
-  }
-  get perfil(): Perfil {
-    return this._perfil;
-  }
-  public options = {
-    timeOut: 2000,
-    lastOnBottom: false,
-    showProgressBar: false,
-    pauseOnHover: true,
-    clickToClose: true,
-    maxLength: 200
-  };
 }

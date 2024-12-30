@@ -1,4 +1,7 @@
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 mx-auto text-left">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mx-auto text-left">
+  <div class="modal-header col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="showTitle">
+    <h4 class="modal-title" >Mis Metodos de Pago</h4>
+  </div>
   <div class="contenedor-h">
     <!-- Tarjeta -->
     <app-tarjeta class="contenedor w-100" [data]="metodoPagoForm.value" [isCollapsed]="isCollapsed" [frente]="frente">
@@ -68,8 +71,7 @@
 
       <div class="row w-100 mp-0">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 ml-auto">
-          <button class="btn btn-lg btn-outline-success btn-block ml-auto badge-pill" type="submit"
-            [disabled]="metodoPagoForm.invalid">
+          <button class="btn btn-lg btn-primary btn-block ml-auto" type="submit" [disabled]="metodoPagoForm.invalid">
             <i class="fa fa-save"></i> Guardar
           </button>
         </div>
@@ -81,7 +83,7 @@
     [class.contenedorAlertasDeac]="isCollapsed">
     <a class="list-group-item list-group-item-action flex-column align-items-start mt-1"
       [class.active]="metodo.is_default" [class.text-light]="metodo.is_default"
-      *ngFor="let metodo of lista; let i = index" >
+      *ngFor="let metodo of lista; let i = index">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{ (metodo.card_name || '') | uppercase }}</h5>
         <small>

@@ -1,8 +1,9 @@
 <div class="card mt-4">
   <div class="card-header d-flex">
-    <h5 class="w-50">{{ showForm ? (selectedLocality?.id ? 'Editar Localidad' : 'Agregar Localidad') : 'Administrador de localidades' }}</h5>
+    <h5 class="w-50">{{ showForm ? (selectedLocality?.id ? 'Editar Localidad' : 'Agregar Localidad') : 'Administrador de
+      localidades' }}</h5>
     <div class="text-right w-50" *ngIf="!showForm">
-      <button class="btn btn-info" (click)="addLocality()">Agregar Localidad</button>
+      <button class="btn btn-info" (click)="addLocality()"><i class="fa fa-plus"></i> Agregar Localidad</button>
     </div>
   </div>
   <div class="card-body">
@@ -15,8 +16,10 @@
               <p>{{ locality.description }}</p>
             </div>
             <div class="col-md-4 text-right">
-              <button class="btn btn-primary btn-sm" (click)="editLocality(locality)">Editar</button>
-              <button class="btn btn-danger btn-sm ml-2" (click)="deleteLocality(locality)">Eliminar</button>
+              <button class="btn btn-primary btn-sm" (click)="editLocality(locality)"><i class="fa fa-edit"></i>
+                Editar</button>
+              <button class="btn btn-danger btn-sm ml-2" (click)="deleteLocality(locality)"><i class="fa fa-times"></i>
+                Eliminar</button>
             </div>
           </div>
         </li>

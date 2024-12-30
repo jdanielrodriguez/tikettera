@@ -1,18 +1,21 @@
-<div class="container mt-4">
-  <h2 class="mb-4">Mis Entradas</h2>
-
+<div class="container">
+  <div class="row mb-4">
+    <div class="modal-header col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h4 class="modal-title">Mis Entradas</h4>
+    </div>
+  </div>
   <!-- Lista de entradas -->
   <ul class="list-group mb-4">
     <li class="list-group-item" *ngFor="let entry of paginatedEntries">
       <div class="row align-items-center">
         <!-- Imagen del evento -->
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center mx-0">
           <img [src]="entry.image || 'https://via.placeholder.com/150'" class="img-fluid rounded" alt="Evento"
             style="max-height: 100px;" />
         </div>
 
         <!-- Detalles del evento -->
-        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mx-">
           <h5 class="mb-1">{{ entry.eventName }}</h5>
           <p class="mb-0">
             <strong>Fecha:</strong> {{ entry.eventDate | date: 'mediumDate' }} <br />
@@ -23,7 +26,7 @@
         </div>
 
         <!-- Estado del evento -->
-        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 mx-0 text-center">
           <span class="badge" [ngClass]="{
               'bg-success': entry.status === 'Asistido',
               'bg-warning': entry.status === 'Próximo',

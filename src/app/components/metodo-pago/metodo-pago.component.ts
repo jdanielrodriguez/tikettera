@@ -13,6 +13,7 @@ import { Constantes } from '../../common/constant';
 })
 export class MetodoPagoComponent implements OnInit {
   @Input() perfil: Perfil = new Perfil();
+  @Input() showTitle: boolean = false;
   frente: boolean = false;
   isCollapsed: boolean = true;
   expDate: { months: string[], years: string[] } = { months: [], years: [] };

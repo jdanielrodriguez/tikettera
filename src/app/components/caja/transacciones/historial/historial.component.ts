@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { HistoricoCaja, Perfil } from '../../../../interfaces';
-import { ComisionesService } from '../../../../services/comisiones.service';
 
 @Component({
   selector: 'app-caja-historial',
@@ -24,7 +23,6 @@ export class HistorialComponent implements OnInit {
   dateInicial!: string;
   dateFinal!: string;
   constructor(
-    private comisionesService: ComisionesService
   ) { }
   public active = 1;
   ngOnInit(): void {
@@ -36,12 +34,12 @@ export class HistorialComponent implements OnInit {
       estado: 0,
       filter: 'historial&fechaInicial=' + this.fechaMin + '&fechaFinal=' + this.fechaMax
     };
-    this.comisionesService.getTransaccionesFilter(data)
-      .then((response: { status: number, detalle: HistoricoCaja[] }) => {
-        this.historico = response.detalle;
-      })
-      .catch(error => {
-      });
+    // this.comisionesService.getTransaccionesFilter(data)
+    //   .then((response: { status: number, detalle: HistoricoCaja[] }) => {
+    //     this.historico = response.detalle;
+    //   })
+    //   .catch(error => {
+    //   });
   }
   @Input()
   set modelFinal(value: NgbDateStruct) {

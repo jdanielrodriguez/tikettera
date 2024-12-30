@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { AuthServices } from '../../services/auth.service';
-import { ConfiguracionesService } from '../../services/configuraciones.service';
 import { NotificationsService } from 'angular2-notifications';
 import { ImagenesComponent } from '../imagenes/imagenes.component';
 import { Imagen, FilterGET, Configuracion } from '../../interfaces';
@@ -16,8 +14,6 @@ export class EncabezadoComponent implements OnInit, AfterViewInit {
   constructor(
     private mySesion: Sesion,
     private _service: NotificationsService,
-    private authService: AuthServices,
-    private mainService: ConfiguracionesService
   ) { }
    set titulo(value: string) {
     this._titulo = value;
@@ -86,11 +82,11 @@ export class EncabezadoComponent implements OnInit, AfterViewInit {
       estado: '1',
       filter: 'tipo',
     };
-    this.mainService.getAllFilter(data).then((response: Configuracion[]) => {
-      // this._configuracion = response.length > 0 ? response[0] : (new Configuracion(this._perfil.id, 1));
-      // this.sliders = this._configuracion.imagenes;
-      this.blockUI.stop();
-    });
+    // this.mainService.getAllFilter(data).then((response: Configuracion[]) => {
+    //   this._configuracion = response.length > 0 ? response[0] : (new Configuracion(this._perfil.id, 1));
+    //   this.sliders = this._configuracion.imagenes;
+    //   this.blockUI.stop();
+    // });
     this.blockUI.stop();
   }
   cargarImagen(resp: Imagen) {
@@ -144,16 +140,16 @@ export class EncabezadoComponent implements OnInit, AfterViewInit {
       // proveedor: this.mySesion.encriptar(JSON.stringify(this._perfil)),
       configuracion: this.mySesion.encriptar(JSON.stringify(this._configuracion)),
     };
-    this.mainService.create(data).then((response: { status: number, objeto: Configuracion }) => {
-      this._configuracion = response.objeto;
-      this.createSuccess('Los datos de su encabezado fueron actualizados');
-      this.blockUI.stop();
-      this.obtenerConfiguraciones();
-    }).catch(error => {
-      if (error.indexOf('401') >= 0) {
-        this.mySesion.navegar({ url: './logout' });
-      }
-    });
+    // this.mainService.create(data).then((response: { status: number, objeto: Configuracion }) => {
+    //   this._configuracion = response.objeto;
+    //   this.createSuccess('Los datos de su encabezado fueron actualizados');
+    //   this.blockUI.stop();
+    //   this.obtenerConfiguraciones();
+    // }).catch(error => {
+    //   if (error.indexOf('401') >= 0) {
+    //     this.mySesion.navegar({ url: './logout' });
+    //   }
+    // });
   }
   createSuccess(success: string) {
     this._service.success('¡Éxito!', success);

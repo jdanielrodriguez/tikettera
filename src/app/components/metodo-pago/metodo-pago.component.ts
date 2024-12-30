@@ -54,11 +54,12 @@ export class MetodoPagoComponent implements OnInit {
   }
 
   cargarMetodosPago(): void {
-    this.metodoPagoService.getAll(this.perfil.id, this.constantes.paymentTypes.credit_card).subscribe({
+    const request = this.metodoPagoService.getAll(this.perfil.id, this.constantes.paymentTypes.credit_card).subscribe({
       next: (data) => {
         this.lista = data.objeto || [];
       },
-      error: (err) => console.error('Error al cargar métodos de pago:', err)
+      error: (err) => console.error('Error al cargar métodos de pago:', err),
+      complete: () => { request.unsubscribe(); }
     });
   }
 
@@ -91,13 +92,14 @@ export class MetodoPagoComponent implements OnInit {
         is_default: formData.is_default || false,
       };
 
-      this.metodoPagoService.create(mappedData).subscribe({
+      const request = this.metodoPagoService.create(mappedData).subscribe({
         next: (response) => {
           this.lista.push(response.objeto);
           this.isCollapsed = true;
           this.metodoPagoForm.reset({ payment_type_id: 1, is_default: false });
         },
         error: (err) => console.error('Error al agregar método de pago:', err),
+        complete: () => { request.unsubscribe(); }
       });
     } else {
       this.metodoPagoForm.markAllAsTouched();
@@ -130,12 +132,13 @@ export class MetodoPagoComponent implements OnInit {
       user_id: this.perfil.id, // Extraer el ID del perfil del usuario
     };
 
-    this.metodoPagoService.setDefault(Number(metodo.id), payload).subscribe({
+    const request = this.metodoPagoService.setDefault(Number(metodo.id), payload).subscribe({
       next: () => {
         this.lista.forEach((metodo) => (metodo.is_default = false));
         metodo.is_default = true;
       },
       error: (err) => console.error('Error al marcar como predeterminado:', err),
+      complete: () => { request.unsubscribe(); }
     });
   }
 
@@ -167,11 +170,12 @@ export class MetodoPagoComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.metodoPagoService.delete(Number(metodo.id), this.perfil.id || 0).subscribe({
+        const request = this.metodoPagoService.delete(Number(metodo.id), this.perfil.id || 0).subscribe({
           next: () => {
             this.lista.splice(index, 1);
           },
-          error: (err) => console.error('Error al eliminar método de pago:', err)
+          error: (err) => console.error('Error al eliminar método de pago:', err),
+          complete: () => { request.unsubscribe(); }
         });
       }
     });

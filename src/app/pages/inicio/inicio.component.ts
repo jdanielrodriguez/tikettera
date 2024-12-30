@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { listaBusqueda, sliders } from './../../default';
 import { ListaBusqueda, Locality } from './../../interfaces';
 import { Sesion } from './../../common/sesion';
-import { LocalitiesService } from './../../services/localities.service';
-declare var $: any;
+import { EventsService } from './../../services/events.service';
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
@@ -12,7 +11,7 @@ declare var $: any;
 export class InicioComponent implements OnInit {
   constructor(
     private mySesion: Sesion,
-    private localitiesService: LocalitiesService
+    private mainService: EventsService
   ) { }
 
   set offset(value: number) {
@@ -41,7 +40,7 @@ export class InicioComponent implements OnInit {
 
   getMainList() {
     this.mySesion.loadingStart();
-    const request = this.localitiesService.getAllActive()
+    const request = this.mainService.getAllActive()
       .subscribe({
         next: (response: { status: number, count: number, objeto: Locality[] }) => {
           this.numReg = response.count;

@@ -17,26 +17,6 @@ export class LocalitiesService {
   private handleError(error: any): Observable<any> {
     return new Observable((observer) => { observer.error(error); });
   }
-  getAll(): Observable<any> {
-    this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/events`;
-    try {
-      const response = this.http.get(url, { headers: this.mySesion.headers });
-      return response;
-    } catch (error) {
-      return this.handleError(error);
-    }
-  }
-  getAllActive(): Observable<any> {
-    this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/events/active`;
-    try {
-      const response = this.http.get(url, { headers: this.mySesion.headers });
-      return response;
-    } catch (error) {
-      return this.handleError(error);
-    }
-  }
   getAllByEvent(slug: string): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/events/localities/${slug}`;

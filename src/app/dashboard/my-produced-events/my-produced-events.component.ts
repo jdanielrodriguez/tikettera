@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Perfil, Event, Menus } from '../../interfaces';
+import { Perfil, Event, Menus, ResponseEvent } from '../../interfaces';
 import { Sesion } from '../../common/sesion';
+import { EventsService } from '../../services/events.service';
+import { LocalitiesService } from '../../services/localities.service';
 
 @Component({
   selector: 'app-my-produced-events',
@@ -19,11 +21,15 @@ export class MyProducedEventsComponent implements OnInit {
   showForm: boolean = false;
   selectedEvent: Event | null = null;
 
-  constructor(private route: ActivatedRoute, private mySesion: Sesion) { }
+  constructor(
+    private route: ActivatedRoute,
+    private mySesion: Sesion,
+    private eventsService: EventsService,
+    private localitiesService: LocalitiesService
+  ) { }
 
   ngOnInit(): void {
     this.loadEvents();
-    this.updatePaginatedEvents();
     this.detectRoute();
   }
 
@@ -44,34 +50,16 @@ export class MyProducedEventsComponent implements OnInit {
   }
 
   loadEvents(): void {
-    this.events = [
-      {
-        id: 1,
-        name: 'Concierto de Rock',
-        description: 'Un concierto increíble de rock.',
-        address: 'Estadio Nacional',
-        lat: 14.6349,
-        lng: -90.5069,
-        date_start: '2024-12-25',
-        date_end: '2024-12-25',
-        picture: 'https://via.placeholder.com/150',
-        slug: 'concierto-de-rock',
-        localities: []
+    const request = this.eventsService.getAll().subscribe({
+      next: (response) => {
+        this.events = response.data || [];
+        this.updatePaginatedEvents();
       },
-      {
-        id: 2,
-        name: 'Obra de Teatro',
-        description: 'Una obra teatral fascinante.',
-        address: 'Teatro Municipal',
-        lat: 14.6359,
-        lng: -90.5079,
-        date_start: '2024-11-20',
-        date_end: '2024-11-20',
-        picture: 'https://via.placeholder.com/150',
-        slug: 'obra-de-teatro',
-        localities: []
-      }
-    ];
+      error: (err) => {
+        this.mySesion.createError('Error al cargar eventos');
+      },
+      complete: () => { request.unsubscribe(); }
+    });
   }
 
   updatePaginatedEvents(): void {
@@ -91,42 +79,85 @@ export class MyProducedEventsComponent implements OnInit {
   }
 
   editEventBySlug(slug: string): void {
-    const event = this.events.find(e => e.slug === slug);
-    if (event) {
-      this.showForm = false;
-      this.selectedEvent = { ...event };
-      this.showForm = true;
-    } else {
-      this.mySesion.createError('Evento no encontrado');
-      this.mySesion.navegar({ url: '../../dashboard/produced-events' });
-      this.detectRoute();
-    }
+    const request = this.localitiesService.getAllByEvent(this.mySesion.encriptar(JSON.stringify(slug)) || '').subscribe({
+      next: (response: ResponseEvent) => {
+        const event = response.cripto ? JSON.parse(this.mySesion.desencriptar(response.cripto)) : null;
+        if (event) {
+          this.selectedEvent = { ...event };
+          this.showForm = true;
+        } else {
+          this.mySesion.createError('Evento no encontrado');
+          this.navigateBackToEvents();
+        }
+      },
+      error: () => {
+        this.mySesion.createError('Error al cargar evento');
+        this.navigateBackToEvents();
+      },
+      complete: () => { request.unsubscribe(); }
+    });
   }
 
   editEvent(event: Event): void {
     this.mySesion.navegar({ url: `../../dashboard/produced-events-edit-${event.slug}` });
-    this.detectRoute();
   }
 
+  // Eliminar un evento
   deleteEvent(event: Event): void {
     if (confirm(`¿Estás seguro de eliminar el evento "${event.name}"?`)) {
-      this.events = this.events.filter(e => e.id !== event.id);
-      this.updatePaginatedEvents();
+      const request = this.eventsService.deleteEvent(event.id!).subscribe({
+        next: () => {
+          this.events = this.events.filter(e => e.id !== event.id);
+          this.updatePaginatedEvents();
+          this.mySesion.createSuccess('Evento eliminado con éxito');
+        },
+        error: () => {
+          this.mySesion.createError('Error al eliminar el evento');
+        },
+        complete: () => { request.unsubscribe(); }
+      });
     }
   }
 
+  // Guardar un nuevo evento o actualizar uno existente
   saveEvent(event: Event): void {
     if (event.id) {
-      const index = this.events.findIndex(e => e.id === event.id);
-      if (index !== -1) this.events[index] = event;
+      // Actualizar evento
+      const request = this.eventsService.updateEvent(event.id, event).subscribe({
+        next: (response) => {
+          const updatedEvent = response.objeto;
+          const index = this.events.findIndex(e => e.id === updatedEvent.id);
+          if (index !== -1) this.events[index] = updatedEvent;
+          this.updatePaginatedEvents();
+          this.mySesion.createSuccess('Evento actualizado con éxito');
+          this.closeEventForm();
+        },
+        error: () => {
+          this.mySesion.createError('Error al actualizar el evento');
+        },
+        complete: () => { request.unsubscribe(); }
+      });
     } else {
-      event.id = this.events.length + 1;
-      this.events.push(event);
+      // Crear evento
+      const request = this.eventsService.createEvent(event).subscribe({
+        next: (response) => {
+          this.events.push(response.objeto);
+          this.updatePaginatedEvents();
+          this.mySesion.createSuccess('Evento creado con éxito');
+          this.closeEventForm();
+        },
+        error: () => {
+          this.mySesion.createError('Error al crear el evento');
+        },
+        complete: () => { request.unsubscribe(); }
+      });
     }
+  }
+
+  // Navegar de regreso a la lista de eventos
+  navigateBackToEvents(): void {
     this.mySesion.navegar({ url: '../../dashboard/produced-events' });
-    this.detectRoute();
-    this.updatePaginatedEvents();
-    this.closeEventForm();
+    this.showForm = false;
   }
   navigate(data: Menus) {
     this.mySesion.navegar(data);
@@ -135,6 +166,6 @@ export class MyProducedEventsComponent implements OnInit {
 
   closeEventForm(): void {
     this.showForm = false;
-    this.mySesion.navegar({ url: '../../dashboard/produced-events' });
+    this.navigateBackToEvents();
   }
 }

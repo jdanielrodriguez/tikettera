@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { ComisionesService } from '../../services/comisiones.service';
 import { Perfil, Pasarela, Comision, Caja } from '../../interfaces';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { Constantes } from '../../common/constant';
@@ -32,7 +31,6 @@ export class CajaComponent implements OnInit {
   dateFinal!: string;
   constructor(
     private mySesion: Sesion,
-    private comisionesService: ComisionesService,
     private calendar: NgbCalendar,
     private constantes: Constantes
   ) { }
@@ -44,12 +42,12 @@ export class CajaComponent implements OnInit {
   }
   async cargarPasarelas() {
     this.blockUI.start();
-    this.pasarela = await this.comisionesService.cargarPasarelas();
+    // this.pasarela = await this.comisionesService.cargarPasarelas();
     this.blockUI.stop();
   }
   async cargarComisionRetiro(total: number) {
     this.blockUI.start();
-    this.retiro = await this.comisionesService.cargarComisionRetiro(total);
+    // this.retiro = await this.comisionesService.cargarComisionRetiro(total);
     this.blockUI.stop();
   }
   cargarCaja() {
@@ -58,13 +56,13 @@ export class CajaComponent implements OnInit {
       estado: 0,
       filter: 'totales&fechaInicial=' + this.fechaMin + '&fechaFinal=' + this.fechaMax
     };
-    this.comisionesService.getTransaccionesFilter(data)
-      .then((response: Caja) => {
-        this.caja = response;
-        this.cargarComisionRetiro(parseFloat(this.precioSIva));
-      })
-      .catch(error => {
-      });
+    // this.comisionesService.getTransaccionesFilter(data)
+    //   .then((response: Caja) => {
+    //     this.caja = response;
+    //     this.cargarComisionRetiro(parseFloat(this.precioSIva));
+    //   })
+    //   .catch(error => {
+    //   });
   }
   cargarFecha(iniciar: number) {
     if (iniciar === 1) {

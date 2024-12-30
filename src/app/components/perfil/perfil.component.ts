@@ -43,7 +43,7 @@ export class PerfilComponent implements OnInit {
 
   cargarDatosPerfil(): void {
     const id = this.mySesion.perfil.id ?? 0
-    this.usuariosService.getSingle(id).subscribe({
+    const request = this.usuariosService.getSingle(id).subscribe({
       next: (response: Response) => {
         const decryptedProfile = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
         if (decryptedProfile) {
@@ -59,7 +59,8 @@ export class PerfilComponent implements OnInit {
           }];
         }
       },
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
+      complete: () => { request.unsubscribe(); }
     });
   }
 
@@ -76,7 +77,7 @@ export class PerfilComponent implements OnInit {
         delete(payload.picture);
       }
       // Llamar al servicio para actualizar el perfil
-      this.usuariosService.updateProfile(payload).subscribe({
+      const request = this.usuariosService.updateProfile(payload).subscribe({
         next: (response: Response) => {
           const decryptedProfile = response.objeto ? JSON.parse(this.mySesion.desencriptar(response.objeto)) : null;
           if (decryptedProfile) {
@@ -88,7 +89,8 @@ export class PerfilComponent implements OnInit {
         error: (error) => {
           this.mySesion.loadingStop();
           this.mySesion.createError(error.error.msg || 'Error Actualizando Perfil');
-        }
+        },
+        complete: () => { request.unsubscribe(); }
       });
     }
   }

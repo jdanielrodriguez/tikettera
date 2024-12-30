@@ -54,7 +54,7 @@ export class AdvertisementsFormComponent implements OnInit {
       user_id: this.mySesion.perfil.id || null,
     };
 
-    this.advertisementsService.createAdvertisement(newAdvertisement).subscribe({
+    const request = this.advertisementsService.createAdvertisement(newAdvertisement).subscribe({
       next: (response: ResponseAdvertisement) => {
         const advertisement = response.objeto ?? null;
         if (advertisement) {
@@ -72,6 +72,7 @@ export class AdvertisementsFormComponent implements OnInit {
       error: () => {
         this.mySesion.createError("Error al crear el anuncio.");
       },
+      complete: () => { request.unsubscribe(); }
     });
   }
 
@@ -79,7 +80,7 @@ export class AdvertisementsFormComponent implements OnInit {
     const advertisement = this.advertisements.find((ad) => ad.url === imagen.url);
     if (!advertisement) return;
 
-    this.advertisementsService.deleteAdvertisement(advertisement.id!).subscribe({
+    const request = this.advertisementsService.deleteAdvertisement(advertisement.id!).subscribe({
       next: () => {
         this.advertisements = this.advertisements.filter((ad) => ad.id !== advertisement.id);
         this.sliders = this.sliders.filter((slider) => slider.url !== imagen.url);
@@ -88,6 +89,7 @@ export class AdvertisementsFormComponent implements OnInit {
       error: () => {
         this.mySesion.createError("Error al eliminar el anuncio.");
       },
+      complete: () => { request.unsubscribe(); }
     });
   }
 
@@ -105,7 +107,7 @@ export class AdvertisementsFormComponent implements OnInit {
 
 
   loadAdvertisements(): void {
-    this.advertisementsService.getAdvertisements().subscribe({
+    const request = this.advertisementsService.getAdvertisements().subscribe({
       next: (data) => {
         this.advertisements = data.objeto;
         this.sliders = this.advertisements.map((ad) => ({
@@ -118,6 +120,7 @@ export class AdvertisementsFormComponent implements OnInit {
       error: () => {
         this.mySesion.createError("Error al cargar los anuncios.");
       },
+      complete: () => { request.unsubscribe(); }
     });
   }
 }

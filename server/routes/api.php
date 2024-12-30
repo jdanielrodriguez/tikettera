@@ -24,6 +24,9 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('/payment-methods', [App\Http\Controllers\PaymentMethodController::class, 'store']);
     Route::put('/payment-methods/{id}/default', [App\Http\Controllers\PaymentMethodController::class, 'setDefault']);
     Route::delete('/payment-methods/{id}', [App\Http\Controllers\PaymentMethodController::class, 'destroy']);
+    Route::post('events', [App\Http\Controllers\EventsController::class, 'store']);
+    Route::put('events/{id}', [App\Http\Controllers\EventsController::class, 'update']);
+    Route::delete('events/{id}', [App\Http\Controllers\EventsController::class, 'destroy']);
 });
 Route::post('signup', [App\Http\Controllers\AuthenticationController::class, 'signUp']);
 Route::post('login', [App\Http\Controllers\AuthenticationController::class, 'login']);

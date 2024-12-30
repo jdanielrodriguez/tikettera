@@ -35,7 +35,6 @@ import { LocalidadesComponent } from './pages/localidades/localidades.component'
 import { PagoComponent } from './pages/pago/pago.component';
 import { AuthServices } from './services/auth.service';
 import { CategoriasService } from './services/categorias.service';
-import { ComisionesService } from './services/comisiones.service';
 import { LocalitiesService } from './services/localities.service';
 import { AdvertisementsService } from './services/advertisements.service';
 import { MetodoPagoService } from './services/metodo-pago.service';
@@ -98,7 +97,6 @@ import { AuthorizePromotersComponent } from './dashboard/authorize-promoters/aut
   providers: [
     AuthServices,
     CategoriasService,
-    ComisionesService,
     Constantes,
     Encript,
     Formatos,

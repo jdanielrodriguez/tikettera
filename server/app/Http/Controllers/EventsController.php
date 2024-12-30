@@ -73,7 +73,7 @@ class EventsController extends Controller
 
         $returnData = [
             'status' => $objectSee ? 200 : 404,
-            'msg' => $objectSee ?'Localities Returned' : 'No record found',
+            'msg' => $objectSee ? 'Localities Returned' : 'No record found',
             'cripto' => $objectSee ? $encript->encript(mb_convert_encoding(json_encode($objectSee), 'UTF-8', 'UTF-8')) : '',
             'objeto' => null
         ];
@@ -129,7 +129,33 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar los datos de entrada
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|unique:events,slug|max:255',
+            'description' => 'nullable|string',
+            'address' => 'nullable|string',
+            'time_start' => 'nullable|date_format:H:i:s',
+            'time_end' => 'nullable|date_format:H:i:s',
+            'date_start' => 'nullable|date',
+            'date_end' => 'nullable|date',
+            'lat' => 'nullable|numeric',
+            'lng' => 'nullable|numeric',
+            'reason_id' => 'nullable|integer|exists:events_reason,id',
+            'type_id' => 'nullable|integer|exists:events_type,id',
+            'state' => 'nullable|integer',
+            'picture' => 'nullable|string',
+        ]);
+
+        // Crear el evento
+        $event = Event::create($validatedData);
+
+        $returnData = [
+            'status' => 201,
+            'msg' => 'Event created successfully',
+            'objeto' => $event
+        ];
+        return new Response($returnData, $returnData['status']);
     }
 
     /**
@@ -160,7 +186,45 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validar los datos de entrada
+        $validatedData = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'slug' => 'nullable|string|unique:events,slug,' . $id . '|max:255',
+            'description' => 'nullable|string',
+            'address' => 'nullable|string',
+            'time_start' => 'nullable|date_format:H:i:s',
+            'time_end' => 'nullable|date_format:H:i:s',
+            'date_start' => 'nullable|date',
+            'date_end' => 'nullable|date',
+            'lat' => 'nullable|numeric',
+            'lng' => 'nullable|numeric',
+            'reason_id' => 'nullable|integer|exists:events_reason,id',
+            'type_id' => 'nullable|integer|exists:events_type,id',
+            'state' => 'nullable|integer',
+            'picture' => 'nullable|string',
+        ]);
+
+        // Buscar el evento
+        $event = Event::find($id);
+
+        if (!$event) {
+            $returnData = [
+                'status' => 404,
+                'msg' => 'Event not found',
+                'objeto' => null
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
+
+        // Actualizar el evento
+        $event->update($validatedData);
+
+        $returnData = [
+            'status' => 200,
+            'msg' => 'Event updated successfully',
+            'objeto' => $event
+        ];
+        return new Response($returnData, $returnData['status']);
     }
 
     /**
@@ -171,6 +235,27 @@ class EventsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Buscar el evento
+        $event = Event::find($id);
+
+        if (!$event) {
+            $returnData = [
+                'status' => 404,
+                'msg' => 'Event not found',
+                'objeto' => null
+            ];
+            return new Response($returnData, $returnData['status']);
+        }
+
+        // Marcar como eliminado (soft delete)
+        $event->state = 0; // O cualquier otro valor que uses para indicar eliminación lógica
+        $event->save();
+
+        $returnData = [
+            'status' => 200,
+            'msg' => 'Event deleted successfully',
+            'objeto' => null
+        ];
+        return new Response($returnData, $returnData['status']);
     }
 }

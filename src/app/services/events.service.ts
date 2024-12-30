@@ -9,14 +9,16 @@ import { Sesion } from './../common/sesion';
 })
 export class EventsService {
   private basePath: string = environment.url;
+
   constructor(
     private http: HttpClient,
     private mySesion: Sesion
-  ) {
-  }
+  ) { }
+
   private handleError(error: any): Observable<any> {
     return new Observable((observer) => { observer.error(error); });
   }
+
   getAll(): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/events`;
@@ -37,24 +39,37 @@ export class EventsService {
       return this.handleError(error);
     }
   }
-  getAllByEvent(slug: string): Observable<any> {
+
+  createEvent(eventData: any): Observable<any> {
     this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/events/localities/${slug}`;
+    const url = `${this.basePath}/api/events`;
+
     try {
-      const response = this.http.get(url, { headers: this.mySesion.headers });
+      const response = this.http.post(url, eventData, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);
     }
   }
-  getLocalityByEvent(slugs: string[]): Observable<any> {
-    if (slugs.length !== 2) {
-      return this.handleError("Necesita tenes dos parametros");
-    }
+
+  updateEvent(id: number, eventData: any): Observable<any> {
     this.mySesion.reloadToken();
-    const url = `${this.basePath}/api/events/${slugs[0]}/localities/${slugs[1]}`;
+    const url = `${this.basePath}/api/events/${id}`;
+
     try {
-      const response = this.http.get(url, { headers: this.mySesion.headers });
+      const response = this.http.put(url, eventData, { headers: this.mySesion.headers });
+      return response;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  deleteEvent(id: number): Observable<any> {
+    this.mySesion.reloadToken();
+    const url = `${this.basePath}/api/events/${id}`;
+
+    try {
+      const response = this.http.delete(url, { headers: this.mySesion.headers });
       return response;
     } catch (error) {
       return this.handleError(error);

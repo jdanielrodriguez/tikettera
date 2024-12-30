@@ -7,7 +7,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NavComponent } from './nav/nav.component';
 
-import { NgbAccordionModule, NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbDropdownModule, NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -124,6 +124,7 @@ const modules = [
     FroalaViewModule.forRoot(),
     NgbDropdownModule,
     NgbAccordionModule,
+    NgbDatepickerModule,
     ReactiveFormsModule,
     RouterModule,
     SimpleNotificationsModule.forRoot(),

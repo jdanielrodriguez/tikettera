@@ -24,12 +24,6 @@ export class LocalidadesComponent implements OnInit {
     this._offset = actual;
     return this._offset;
   }
-  get mainLista(): ListaBusqueda[] {
-    return this._mainList;
-  }
-  get mainListaAuxiliar(): ListaBusqueda[] {
-    return this._mainList;
-  }
 
   public numReg = 0;
   public limit = 10;
@@ -39,8 +33,8 @@ export class LocalidadesComponent implements OnInit {
   public galleryType = 'list';
   public active = 1;
   public sliders = sliders(0);
-  private _mainList: ListaBusqueda[] = listaBusqueda(4);
-  private _mainListAuxiliar: ListaBusqueda[] = this._mainList;
+  public mainLista: ListaBusqueda[] = listaBusqueda(4);
+  public mainListaAuxiliar: ListaBusqueda[] = this.mainLista;
 
   ngOnInit(): void {
     this.mySesion.scrollTop();
@@ -58,8 +52,8 @@ export class LocalidadesComponent implements OnInit {
     const request = this.localitiesService.getAllByEvent(slug)
       .subscribe({
         next: (response: ResponseEvent) => {
-          this._mainList.length = 0;
-          this._mainListAuxiliar.length = 0;
+          this.mainLista.length = 0;
+          this.mainListaAuxiliar.length = 0;
           if (!response.cripto) {
             this.mySesion.loadingStop();
             return;
@@ -85,9 +79,9 @@ export class LocalidadesComponent implements OnInit {
                 tasa_iva: element.tasa_iva || 0,
                 tasa_cambio: element.tasa_cambio || 0,
               };
-              this._mainList.push(datas);
+              this.mainLista.push(datas);
             });
-            this._mainListAuxiliar = this._mainList;
+            this.mainListaAuxiliar = this.mainLista;
           } catch (exception) {
             console.log(exception);
           } finally {

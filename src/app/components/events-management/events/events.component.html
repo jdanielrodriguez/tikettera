@@ -6,10 +6,15 @@
     <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Nombre del Evento</label>
-        <input type="text" id="name" class="form-control" formControlName="name" required />
+        <input type="text" id="name" class="form-control" formControlName="name" (input)="generateSlug()" required />
         <div *ngIf="eventForm.get('name')?.invalid && eventForm.get('name')?.touched" class="text-danger">
           El nombre del evento es obligatorio.
         </div>
+      </div>
+
+      <div class="form-group">
+        <label for="slug">Slug</label>
+        <small class="form-text text-muted">Vista previa del slug: <strong>{{ slugPreview }}</strong></small>
       </div>
 
       <div class="form-group">
@@ -39,12 +44,12 @@
 
       <div class="form-group">
         <label for="lat">Coordenadas (Latitud)</label>
-        <input type="number" id="lat" class="form-control" formControlName="lat" step="0.000001" />
+        <input type="number" id="lat" class="form-control" formControlName="lat" step="0.000001" readonly />
       </div>
 
       <div class="form-group">
         <label for="lng">Coordenadas (Longitud)</label>
-        <input type="number" id="lng" class="form-control" formControlName="lng" step="0.000001" />
+        <input type="number" id="lng" class="form-control" formControlName="lng" step="0.000001" readonly />
       </div>
 
       <div class="form-group text-right">

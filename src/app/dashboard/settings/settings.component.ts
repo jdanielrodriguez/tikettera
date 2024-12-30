@@ -42,7 +42,7 @@ export class SettingsComponent implements OnInit {
     const tabMap: { [key: string]: number } = {
       'profile': 1,
       'advertisements': 2,
-      'metodos-pago': 3,
+      'credit-cards': 3,
       'encabezado': 4,
       'correos': 5,
       'password': 6,

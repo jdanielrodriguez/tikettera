@@ -201,7 +201,7 @@ export class NavComponent implements OnInit, AfterViewInit {
           {
             sesion: true,
             select: false,
-            url: '../dashboard/credit-cards',
+            url: '../dashboard/payment-methods',
             evento: null,
             rol: this.constantes.roles.promoter,
             nombre: 'Mis Tarjetas'

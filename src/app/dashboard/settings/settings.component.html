@@ -16,8 +16,8 @@
           <app-advertisements></app-advertisements>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/settings/metodos-pago'})">
-        <a ngbNavLink>Metodos de Pago</a>
+      <li [ngbNavItem]="3" (click)="navegar({url:'./dashboard/settings/credit-cards'})">
+        <a ngbNavLink>Tarjetas de Credito</a>
         <ng-template ngbNavContent>
           <app-metodo-pago [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"></app-metodo-pago>
         </ng-template>

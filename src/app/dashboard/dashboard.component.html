@@ -26,7 +26,7 @@
             <app-my-entries [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-entries>
           </ng-template>
         </li>
-        <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/credit-cards'})" [class.d-none]="(rol>rolProducer)">
+        <li [ngbNavItem]="4" (click)="navegar({url:'./dashboard/payment-methods'})" [class.d-none]="(rol>rolProducer)">
           <a ngbNavLink>Mis Metodos de Pago</a>
           <ng-template ngbNavContent>
             <app-my-cards [perfil]="perfil" (obtenerPerfil)="obtenerPerfilConf($event)"> </app-my-cards>

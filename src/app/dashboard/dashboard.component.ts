@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
       'information': 1,
       'produced-events': 2,
       'entries': 3,
-      'credit-cards': 4,
+      'payment-methods': 4,
       'bills': 5,
       'settings': 6,
       'autorizar-promotores': 7
@@ -54,8 +54,8 @@ export class DashboardComponent implements OnInit {
     if (this.type?.startsWith('produced-events')) {
       return tabMap['produced-events'];
     }
-    if (this.type?.startsWith('credit-cards')) {
-      return tabMap['credit-cards'];
+    if (this.type?.startsWith('payment-methods')) {
+      return tabMap['payment-methods'];
     }
     if (this.type?.startsWith('bills')) {
       return tabMap['bills'];

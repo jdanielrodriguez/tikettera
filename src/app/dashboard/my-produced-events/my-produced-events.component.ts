@@ -4,6 +4,7 @@ import { Perfil, Event, Menus, ResponseEvent } from '../../interfaces';
 import { Sesion } from '../../common/sesion';
 import { EventsService } from '../../services/events.service';
 import { LocalitiesService } from '../../services/localities.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-my-produced-events',
@@ -12,14 +13,13 @@ import { LocalitiesService } from '../../services/localities.service';
 })
 export class MyProducedEventsComponent implements OnInit {
   @Input() perfil: Perfil = new Perfil();
+  @Input() selectedEvent: Event | null = null;
   @Output() perfilEmit: EventEmitter<Perfil> = new EventEmitter<Perfil>();
-
   events: Event[] = [];
   paginatedEvents: Event[] = [];
   page: number = 1;
   pageSize: number = 5;
   showForm: boolean = false;
-  selectedEvent: Event | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -104,19 +104,33 @@ export class MyProducedEventsComponent implements OnInit {
 
   // Eliminar un evento
   deleteEvent(event: Event): void {
-    if (confirm(`¿Estás seguro de eliminar el evento "${event.name}"?`)) {
-      const request = this.eventsService.deleteEvent(event.id!).subscribe({
-        next: () => {
-          this.events = this.events.filter(e => e.id !== event.id);
-          this.updatePaginatedEvents();
-          this.mySesion.createSuccess('Evento eliminado con éxito');
-        },
-        error: () => {
-          this.mySesion.createError('Error al eliminar el evento');
-        },
-        complete: () => { request.unsubscribe(); }
-      });
-    }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Esto eliminará el evento "${event.name}".`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const request = this.eventsService.deleteEvent(event.id!).subscribe({
+          next: () => {
+            this.events = this.events.filter(e => e.id !== event.id);
+            this.updatePaginatedEvents();
+            this.mySesion.createSuccess('Evento eliminado con éxito');
+          },
+          error: () => {
+            this.mySesion.createError('Error al eliminar el evento');
+          },
+          complete: () => { request.unsubscribe(); }
+        });
+        Swal.fire(
+          'Eliminado',
+          `El evento "${event.name}" ha sido eliminado.`,
+          'success'
+        );
+      }
+    });
   }
 
   // Guardar un nuevo evento o actualizar uno existente

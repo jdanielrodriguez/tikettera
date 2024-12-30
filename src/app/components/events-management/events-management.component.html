@@ -22,15 +22,8 @@
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <div class="card mt-4">
-          <div class="card-header">
-            <h5>Administrador de localidades</h5>
-          </div>
-          <div class="card-body">
-            <app-localities-list [eventId]="selectedEvent?.id" (save)="onLocalitySaved($event)"
-              (delete)="onLocalityDeleted($event)"></app-localities-list>
-          </div>
-        </div>
+        <app-localities-list [localities]="selectedEvent?.localities || []" (save)="onLocalitySaved($event)"
+          (delete)="onLocalityDeleted($event)"></app-localities-list>
       </ng-template>
     </li>
 

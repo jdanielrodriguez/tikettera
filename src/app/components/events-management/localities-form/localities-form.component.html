@@ -1,25 +1,14 @@
-<div class="card mt-4">
-  <div class="card-header">
-    <h5>{{ locality?.id ? 'Editar Localidad' : 'Agregar Nueva Localidad' }}</h5>
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="name">Nombre de la Localidad</label>
+    <input type="text" id="name" class="form-control" [(ngModel)]="localityData.name" name="name" required />
   </div>
-  <div class="card-body">
-    <form [formGroup]="localityForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">Nombre de la Localidad</label>
-        <input type="text" id="name" class="form-control" formControlName="name" required />
-      </div>
-      <div class="form-group">
-        <label for="description">Descripción</label>
-        <textarea id="description" class="form-control" formControlName="description" rows="3"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="price">Precio</label>
-        <input type="number" id="price" class="form-control" formControlName="price" required />
-      </div>
-      <div class="form-group text-right">
-        <button class="btn btn-primary" type="submit">Guardar</button>
-        <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">Cancelar</button>
-      </div>
-    </form>
+  <div class="form-group">
+    <label for="price">Precio</label>
+    <input type="number" id="price" class="form-control" [(ngModel)]="localityData.price" name="price" required />
   </div>
-</div>
+  <div class="form-group text-right">
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-secondary ml-2" type="button" (click)="close.emit()">Cancelar</button>
+  </div>
+</form>

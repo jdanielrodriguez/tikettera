@@ -17,7 +17,7 @@ export class EventsManagementComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  onChangeStep(step: number) {
+  onChangeStep(step: number): void {
     this.step = step;
   }
 
@@ -28,5 +28,15 @@ export class EventsManagementComponent implements OnInit {
 
   handleClose(): void {
     this.closeEmit.emit();
+  }
+
+  onLocalitySaved(locality: any): void {
+    console.log('Localidad guardada:', locality);
+    // Aquí puedes agregar lógica adicional si es necesario
+  }
+
+  onLocalityDeleted(locality: any): void {
+    console.log('Localidad eliminada:', locality);
+    // Aquí puedes agregar lógica adicional si es necesario
   }
 }

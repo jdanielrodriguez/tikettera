@@ -8,9 +8,11 @@
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">
-        <app-events [event]="selectedEvent" (save)="handleSave($event)" (close)="handleClose()"></app-events>
+        <app-events [event]="selectedEvent" [shouldRefreshMap]="step === 1" (save)="handleSave($event)"
+          (close)="handleClose()"></app-events>
       </ng-template>
     </li>
+
     <div class="line"></div>
     <li [ngbNavItem]="2" class="step">
       <a ngbNavLink>
@@ -25,16 +27,19 @@
             <h5>Administrador de localidades</h5>
           </div>
           <div class="card-body">
+            <app-localities-list [eventId]="selectedEvent?.id" (save)="onLocalitySaved($event)"
+              (delete)="onLocalityDeleted($event)"></app-localities-list>
           </div>
         </div>
       </ng-template>
     </li>
+
     <div class="line"></div>
     <li [ngbNavItem]="3" class="step">
       <a ngbNavLink>
         <button class="step-trigger">
           <span class="bs-stepper-circle">3</span>
-          <span class="bs-stepper-label">Distribucion de Boletos</span>
+          <span class="bs-stepper-label">Distribución de Boletos</span>
         </button>
       </a>
       <ng-template ngbNavContent class="w-100 d-flex">

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
@@ -9,21 +9,30 @@ import { Event } from '../../../interfaces';
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss']
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnChanges {
   @Input() event: Event | null = null;
+  @Input() shouldRefreshMap: boolean = false;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<Event>();
 
   eventForm!: FormGroup;
   map!: L.Map;
   marker!: L.Marker;
-  slugPreview: string = ''; // Para mostrar el slug en tiempo real
+  slugPreview: string = '';
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initializeForm();
     this.initializeMap();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['shouldRefreshMap'] && changes['shouldRefreshMap'].currentValue) {
+      setTimeout(() => {
+        this.map.invalidateSize();
+      }, 300);
+    }
   }
 
   initializeForm(): void {
@@ -111,7 +120,6 @@ export class EventsComponent implements OnInit {
         });
       });
 
-    // Forzar el ajuste del tamaño del mapa
     setTimeout(() => {
       this.map.invalidateSize();
     }, 0);

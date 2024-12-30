@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="text-right mb-3" *ngIf="!showForm">
+    <button class="btn btn-info" (click)="showLocalityForm()">Agregar Nueva Localidad</button>
+  </div>
+  <div *ngIf="!showForm">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let locality of localities">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h5>{{ locality.name }}</h5>
+            <p>{{ locality.description }}</p>
+          </div>
+          <div class="col-md-4 text-right">
+            <button class="btn btn-primary btn-sm" (click)="editLocality(locality)">Editar</button>
+            <button class="btn btn-danger btn-sm ml-2" (click)="deleteLocality(locality)">Eliminar</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="showForm">
+    <app-localities-form [locality]="selectedLocality" (save)="onSaveLocality($event)"
+      (cancel)="onCancelForm()"></app-localities-form>
+  </div>
+</div>

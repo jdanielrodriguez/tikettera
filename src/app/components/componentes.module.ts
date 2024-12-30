@@ -55,6 +55,8 @@ import { CorreosComponent } from './correos/correos.component';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { EventsManagementComponent } from './events-management/events-management.component';
 import { EventsComponent } from './events-management/events/events.component';
+import { LocalitiesListComponent } from './events-management/localities-list/localities-list.component';
+import { LocalitiesFormComponent } from './events-management/localities-form/localities-form.component';
 
 // Steppers
 import { StepperComponent } from './stepper/stepper.component';
@@ -69,6 +71,8 @@ const modules = [
   EncabezadoComponent,
   EventsComponent,
   EventsManagementComponent,
+  LocalitiesListComponent,
+  LocalitiesFormComponent,
   AdvertisementsFormComponent,
   BusquedaComponent,
   NavComponent,

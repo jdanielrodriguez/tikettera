@@ -150,9 +150,7 @@ export class EventsComponent implements OnInit, OnChanges {
         const { year, month, day } = formValue.date_start;
         formValue.date_start = new Date(year, month - 1, day).toISOString(); // Convertir a ISO 8601
       }
-      if (formValue.state === 2 && this.event?.state === 2) {
-        formValue.state = 1;
-      }
+      // Convertir time_start (de NgbDateStruct) a un string
       if (formValue.time_start) {
         const { hour, minute } = formValue.time_start;
         formValue.time_start = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;

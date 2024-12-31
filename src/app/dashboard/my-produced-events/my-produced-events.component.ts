@@ -106,7 +106,6 @@ export class MyProducedEventsComponent implements OnInit {
 
   // Eliminar un evento
   deleteEvent(event: Event): void {
-    this.mySesion.loadingStart();
     Swal.fire({
       title: '¿Estás seguro?',
       text: `Esto eliminará el evento "${event.name}".`,
@@ -116,6 +115,7 @@ export class MyProducedEventsComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.mySesion.loadingStart();
         const request = this.eventsService.deleteEvent(event.id!).subscribe({
           next: () => {
             this.events = this.events.filter(e => e.id !== event.id);
@@ -152,6 +152,7 @@ export class MyProducedEventsComponent implements OnInit {
         },
         error: () => {
           this.mySesion.createError('Error al actualizar el evento');
+          this.mySesion.loadingStop();
         },
         complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
@@ -166,10 +167,43 @@ export class MyProducedEventsComponent implements OnInit {
         },
         error: () => {
           this.mySesion.createError('Error al crear el evento');
+          this.mySesion.loadingStop();
         },
         complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
     }
+  }
+
+  toggleEventStatus(event: Event): void {
+    const newState = event.state === 1 ? 2 : 1;
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Esto cambiará el estado del evento "${event.name}" a ${newState === 1 ? 'Activo' : 'Inactivo'}.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cambiar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed && event.id) {
+        this.mySesion.loadingStart();
+        const request = this.eventsService.updateEvent(event.id, {id: event.id, state: newState}).subscribe({
+          next: (response) => {
+            event.state = newState;
+            this.mySesion.createSuccess(
+              `El evento "${event.name}" ahora está ${newState === 1 ? 'Activo' : 'Inactivo'}.`
+            );
+          },
+          error: () => {
+            this.mySesion.loadingStop();
+            this.mySesion.createError('Error al cambiar el estado del evento');
+          },
+          complete: () => {
+            this.mySesion.loadingStop();
+            request.unsubscribe();
+          }
+        });
+      }
+    });
   }
 
   // Navegar de regreso a la lista de eventos

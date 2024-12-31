@@ -231,7 +231,7 @@ class EventsController extends Controller
         ]);
 
         // Buscar el evento
-        $event = Event::find($id)->with('localities')->first();
+        $event = Event::with('localities')->find($id);
 
         if (!$event) {
             $returnData = [
@@ -263,7 +263,6 @@ class EventsController extends Controller
     {
         // Buscar el evento
         $event = Event::find($id);
-
         if (!$event) {
             $returnData = [
                 'status' => 404,
@@ -272,15 +271,11 @@ class EventsController extends Controller
             ];
             return new Response($returnData, $returnData['status']);
         }
-
-        // Marcar como eliminado (soft delete)
-        $event->state = 0; // O cualquier otro valor que uses para indicar eliminación lógica
-        $event->save();
-
+        $event->delete();
         $returnData = [
             'status' => 200,
             'msg' => 'Event deleted successfully',
-            'objeto' => null
+            'objeto' => $event
         ];
         return new Response($returnData, $returnData['status']);
     }

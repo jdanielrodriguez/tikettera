@@ -34,7 +34,7 @@ class EventsSeeder extends Seeder
             'id' => 1,
             'name' => 'Inauguración Jardin y Salon de Eventos Martisa',
             'slug' => $this->clean('Inauguración Jardin y Salon de Eventos Martisa'),
-            'picture' => 'https://scontent.faqb1-1.fna.fbcdn.net/v/t39.30808-6/314409566_113849668192137_947743175572885139_n.jpg',
+            'picture' => 'https://butacaenanfiteatro.wordpress.com/wp-content/uploads/2016/10/enredos-cartel.jpg?w=395&h=558',
             'description' => 'Inauguración Jardin y Salon de Eventos Martisa Klaric',
             'address' => 'Los 3 Huitecos',
             'start' => '2025-12-04 20:00:00',
@@ -58,7 +58,7 @@ class EventsSeeder extends Seeder
             'description' => 'Los 3 Huitecos',
             'state' => 1,
             'event_id' => 1,
-            'url' => 'https://scontent.faqb1-1.fna.fbcdn.net/v/t39.30808-6/314409566_113849668192137_947743175572885139_n.jpg',
+            'url' => 'https://butacaenanfiteatro.wordpress.com/wp-content/uploads/2016/10/enredos-cartel.jpg?w=395&h=558',
             'created_at' => Carbon::now($timeZone),
             'updated_at' => Carbon::now($timeZone),
         ]);

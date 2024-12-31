@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Event, Locality } from '../../interfaces';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-events-management',
@@ -32,8 +31,8 @@ export class EventsManagementComponent implements OnInit {
   }
 
   onLocalitySaved(locality: Locality): void {
-    if (this.selectedEvent && this.selectedEvent.localities?.length) {
-      const index = this.selectedEvent.localities.findIndex(l => l.id === locality.id);
+    if (this.selectedEvent) {
+      const index = this.selectedEvent.localities?.findIndex(l => l.id === locality.id);
       if (index !== -1) {
         this.selectedEvent.localities[index] = locality; // Actualizar localidad existente
       } else {
@@ -45,22 +44,8 @@ export class EventsManagementComponent implements OnInit {
 
   // Manejar cuando se elimina una localidad desde el hijo
   onLocalityDeleted(locality: Locality): void {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: `Esto eliminará la localidad "${locality.name}" del evento.`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed && this.selectedEvent) {
-        this.selectedEvent.localities = this.selectedEvent.localities.filter(l => l.id !== locality.id);
-        Swal.fire(
-          'Eliminado',
-          `La localidad "${locality.name}" ha sido eliminada del evento.`,
-          'success'
-        );
-      }
-    });
+    if (this.selectedEvent) {
+      this.selectedEvent.localities = this.selectedEvent.localities.filter(l => l.id !== locality.id);
+    }
   }
 }

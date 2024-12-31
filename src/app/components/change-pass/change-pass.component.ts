@@ -110,7 +110,7 @@ export class ChangePassComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.mySesion.createError(error);
+        this.mySesion.createError(error.error.message);
         this.mySesion.loadingStop();
       },
       complete: () => {

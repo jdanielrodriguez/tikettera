@@ -164,7 +164,6 @@ export class MetodoPagoComponent implements OnInit {
   }
 
   eliminarMetodo(metodo: MetodoPago, index: number): void {
-    this.mySesion.loadingStart();
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esto eliminará el método de pago seleccionado.',
@@ -173,6 +172,7 @@ export class MetodoPagoComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
+      this.mySesion.loadingStart();
       if (result.isConfirmed) {
         const request = this.metodoPagoService.delete(Number(metodo.id), this.perfil.id || 0).subscribe({
           next: () => {

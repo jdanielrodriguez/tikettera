@@ -82,10 +82,12 @@ class AdvertisementController extends Controller
             $path = $s3Controller->uploadImage($validated['pictureBase64'], 'advertisements');
 
             if (!$path) {
-                return response()->json([
+                $returnData = [
                     'status' => 500,
                     'msg' => 'Error uploading image',
-                ], 500);
+                    'objeto' => null
+                ];
+                return new Response($returnData, $returnData['status']);
             }
 
             // Creación del anuncio
@@ -101,14 +103,14 @@ class AdvertisementController extends Controller
                 'objeto' => $advertisement
             ];
 
-            return response()->json($returnData, 201);
+            return new Response($returnData, $returnData['status']);
         } catch (\Exception $e) {
-            // Manejo de errores generales
-            return response()->json([
+            $returnData = [
                 'status' => 500,
-                'msg' => 'An error occurred while creating the advertisement',
-                'error' => $e->getMessage()
-            ], 500);
+                'msg' => $e->getMessage(),
+                'objeto' => $advertisement
+            ];
+            return new Response($returnData, $returnData['status']);
         }
     }
 

@@ -1,8 +1,9 @@
 <div class="container w-100 mx-0">
   <div class="row mb-3 " *ngIf="!showForm">
     <div class="modal-header col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <h4 class="modal-title" >Mis Eventos Producidos</h4>
-      <button class="btn btn-success" *ngIf="!showForm" (click)="navigate({url: '../../dashboard/produced-events-new'})"><i class="fa fa-plus"></i> Crear Nuevo
+      <h4 class="modal-title">Mis Eventos Producidos</h4>
+      <button class="btn btn-success" *ngIf="!showForm"
+        (click)="navigate({url: '../../dashboard/produced-events-new'})"><i class="fa fa-plus"></i> Crear Nuevo
         Evento</button>
     </div>
   </div>
@@ -11,20 +12,33 @@
     <ul class="list-group mb-4">
       <li class="list-group-item" *ngFor="let event of paginatedEvents">
         <div class="row align-items-center w-100">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center">
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center mx-0">
             <img [src]="event.picture || 'https://via.placeholder.com/150'" class="img-fluid rounded" alt="Evento"
               style="max-height: 100px;" />
           </div>
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
+          <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 mx-auto">
             <h5 class="mb-1">{{ event.name }}</h5>
             <p>
               <strong>Fecha:</strong> {{ event.date_start | date: 'mediumDate' }} <br />
               <strong>Dirección:</strong> {{ event.address }}
             </p>
           </div>
-          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-            <button class="btn btn-primary btn-sm" (click)="editEvent(event)"><i class="fa fa-edit"></i> Editar</button>
-            <button class="btn btn-danger btn-sm ml-2" (click)="deleteEvent(event)"><i class="fa fa-times"></i> Eliminar</button>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center row mx-0 ">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex align-items-center">
+              <button class="btn btn-primary btn-sm mt-auto" (click)="editEvent(event)">
+                <i class="fa fa-edit"></i> Editar
+              </button>
+              <button class="btn btn-danger btn-sm ml-2 mt-auto" (click)="deleteEvent(event)">
+                <i class="fa fa-times"></i> Eliminar
+              </button>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex flex-column align-items-center mt-2">
+              <label for="eventStatus{{ event.id }}" class="form-label">Mostrar Evento</label>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="eventStatus{{ event.id }}"
+                  [checked]="event.state == 1" (change)="toggleEventStatus(event)" />
+              </div>
+            </div>
           </div>
         </div>
       </li>

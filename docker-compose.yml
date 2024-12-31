@@ -126,7 +126,7 @@ services:
       - "9001:9001"
     environment:
       MINIO_ROOT_USER: tikettera
-      MINIO_ROOT_PASSWORD: 676f8178051bc
+      MINIO_ROOT_PASSWORD: tikettera
     volumes:
       - tikettera_minio_data:/data
       - ./docker/minio/init:/docker-entrypoint-init.d

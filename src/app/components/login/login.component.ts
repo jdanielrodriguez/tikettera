@@ -99,7 +99,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         this.mySesion.createError('Error iniciando sesión');
         this.mySesion.loadingStop();
       },
-      complete: () => authServ.unsubscribe(),
+      complete: () => { this.mySesion.loadingStop(); authServ.unsubscribe() },
     });
   }
 
@@ -120,7 +120,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         this.mySesion.createError(`Error iniciando sesión: ${e.error.msg}`);
         this.mySesion.loadingStop();
       },
-      complete: () => authServ.unsubscribe(),
+      complete: () => { this.mySesion.loadingStop(); authServ.unsubscribe() },
     });
   }
   ngOnInit() {
@@ -148,6 +148,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     const data = {
       user: this.mySesion.encriptar(JSON.stringify(perfil))
     };
+    this.mySesion.loadingStart();
     const request = this.userService.create(data).subscribe({
       next: (response: { status: number, objeto: Perfil, msg?: string }) => {
         if (response.status >= 400) {
@@ -172,7 +173,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         console.log(error);
         this.mySesion.loadingStop();
       },
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 

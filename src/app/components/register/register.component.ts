@@ -121,6 +121,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   async simpleSignUp(perfil: Perfil) {
+    this.mySesion.loadingStart();
     let validateCaptcha = await this.mySesion.validateCaptcha('signup');
     if (!validateCaptcha) {
       this.mySesion.createError("Error validando Captcha.");
@@ -146,7 +147,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.mySesion.createError('Error iniciando sesion');
           this.mySesion.loadingStop();
         },
-        complete: () => { authServ.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); authServ.unsubscribe(); }
       });
   }
   registrar(perfil: Perfil, social: boolean = false) {
@@ -196,7 +197,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.mySesion.createError("Error desconocido, por favor trate otra vez");
           }
         },
-        complete: () => { request.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
   }
   closeModal() {

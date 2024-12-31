@@ -69,6 +69,7 @@ export class ChangePassComponent implements OnInit {
         this.mySesion.loadingStop();
       },
       complete: () => {
+        this.mySesion.loadingStop();
         authServ.unsubscribe();
       },
     });
@@ -113,6 +114,7 @@ export class ChangePassComponent implements OnInit {
         this.mySesion.loadingStop();
       },
       complete: () => {
+        this.mySesion.loadingStop();
         authServ.unsubscribe();
       },
     });

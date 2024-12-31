@@ -35,7 +35,7 @@ export class AuthComponent implements OnInit {
 
   restore(uuid: string) {
     const dat: any = { uuid: btoa(uuid) };
-
+    this.mySesion.loadingStart();
     const authServ = this.authServices.recovery(dat).subscribe({
       next: (response: Response) => {
         if (response.status !== 200) {
@@ -54,6 +54,7 @@ export class AuthComponent implements OnInit {
         this.handleError('No se encuentra el usuario ingresado, es posible que el token ya haya sido utilizado');
       },
       complete: () => {
+        this.mySesion.loadingStop();
         authServ.unsubscribe();
       }
     });

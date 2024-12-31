@@ -13,6 +13,7 @@ export class LogoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.mySesion.loadingStart();
     this.localSt.clear('currentPerfil');
     this.localSt.clear('lastLink');
     this.localSt.clear('currentAvatar');
@@ -25,6 +26,7 @@ export class LogoutComponent implements OnInit {
     if (!this.mySesion.validarSesion()) {
       this.mySesion.navegar({ url: `./` });
     }
+    this.mySesion.loadingStop();
   }
 
 }

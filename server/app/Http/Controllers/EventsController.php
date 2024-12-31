@@ -191,7 +191,7 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-        $objectSee = Event::find($id);
+        $objectSee = Event::find($id)->with('localities')->first();
 
 
         $returnData = [
@@ -231,7 +231,7 @@ class EventsController extends Controller
         ]);
 
         // Buscar el evento
-        $event = Event::find($id);
+        $event = Event::find($id)->with('localities')->first();
 
         if (!$event) {
             $returnData = [

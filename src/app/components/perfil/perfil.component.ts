@@ -42,6 +42,7 @@ export class PerfilComponent implements OnInit {
   }
 
   cargarDatosPerfil(): void {
+    this.mySesion.loadingStart();
     const id = this.mySesion.perfil.id ?? 0
     const request = this.usuariosService.getSingle(id).subscribe({
       next: (response: Response) => {
@@ -60,7 +61,7 @@ export class PerfilComponent implements OnInit {
         }
       },
       error: (error) => console.error(error),
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 
@@ -90,7 +91,7 @@ export class PerfilComponent implements OnInit {
           this.mySesion.loadingStop();
           this.mySesion.createError(error.error.msg || 'Error Actualizando Perfil');
         },
-        complete: () => { request.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
     }
   }

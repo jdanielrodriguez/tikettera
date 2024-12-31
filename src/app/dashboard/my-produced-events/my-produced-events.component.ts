@@ -50,6 +50,7 @@ export class MyProducedEventsComponent implements OnInit {
   }
 
   loadEvents(): void {
+    this.mySesion.loadingStart();
     const request = this.eventsService.getAllByUser(this.mySesion.perfil.id || 0).subscribe({
       next: (response) => {
         this.events = response.data || [];
@@ -58,7 +59,7 @@ export class MyProducedEventsComponent implements OnInit {
       error: (err) => {
         this.mySesion.createError('Error al cargar eventos');
       },
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 
@@ -79,6 +80,7 @@ export class MyProducedEventsComponent implements OnInit {
   }
 
   editEventBySlug(slug: string): void {
+    this.mySesion.loadingStart();
     const request = this.localitiesService.getAllByEvent(this.mySesion.encriptar(JSON.stringify(slug)) || '').subscribe({
       next: (response: ResponseEvent) => {
         const event = response.cripto ? JSON.parse(this.mySesion.desencriptar(response.cripto)) : null;
@@ -94,7 +96,7 @@ export class MyProducedEventsComponent implements OnInit {
         this.mySesion.createError('Error al cargar evento');
         this.navigateBackToEvents();
       },
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 
@@ -104,6 +106,7 @@ export class MyProducedEventsComponent implements OnInit {
 
   // Eliminar un evento
   deleteEvent(event: Event): void {
+    this.mySesion.loadingStart();
     Swal.fire({
       title: '¿Estás seguro?',
       text: `Esto eliminará el evento "${event.name}".`,
@@ -122,7 +125,7 @@ export class MyProducedEventsComponent implements OnInit {
           error: () => {
             this.mySesion.createError('Error al eliminar el evento');
           },
-          complete: () => { request.unsubscribe(); }
+          complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
         });
         Swal.fire(
           'Eliminado',
@@ -135,6 +138,7 @@ export class MyProducedEventsComponent implements OnInit {
 
   // Guardar un nuevo evento o actualizar uno existente
   saveEvent(event: Event): void {
+    this.mySesion.loadingStart();
     if (event.id) {
       // Actualizar evento
       const request = this.eventsService.updateEvent(event.id, event).subscribe({
@@ -149,7 +153,7 @@ export class MyProducedEventsComponent implements OnInit {
         error: () => {
           this.mySesion.createError('Error al actualizar el evento');
         },
-        complete: () => { request.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
     } else {
       // Crear evento
@@ -163,7 +167,7 @@ export class MyProducedEventsComponent implements OnInit {
         error: () => {
           this.mySesion.createError('Error al crear el evento');
         },
-        complete: () => { request.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
     }
   }

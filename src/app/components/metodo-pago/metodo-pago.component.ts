@@ -55,12 +55,13 @@ export class MetodoPagoComponent implements OnInit {
   }
 
   cargarMetodosPago(): void {
+    this.mySesion.loadingStart();
     const request = this.metodoPagoService.getAll(this.perfil.id, this.constantes.paymentTypes.credit_card).subscribe({
       next: (data) => {
         this.lista = data.objeto || [];
       },
       error: (err) => console.error('Error al cargar métodos de pago:', err),
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 
@@ -78,6 +79,7 @@ export class MetodoPagoComponent implements OnInit {
 
   agregar(): void {
     if (this.metodoPagoForm.valid) {
+      this.mySesion.loadingStart();
       // Obtener los datos del formulario
       const formData = this.metodoPagoForm.value;
       formData.expiration_date = `${formData.exp_montTC}/${formData.exp_yearTC}`;
@@ -100,7 +102,7 @@ export class MetodoPagoComponent implements OnInit {
           this.metodoPagoForm.reset({ payment_type_id: 1, is_default: false });
         },
         error: (err) => console.error('Error al agregar método de pago:', err),
-        complete: () => { request.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
     } else {
       this.metodoPagoForm.markAllAsTouched();
@@ -162,6 +164,7 @@ export class MetodoPagoComponent implements OnInit {
   }
 
   eliminarMetodo(metodo: MetodoPago, index: number): void {
+    this.mySesion.loadingStart();
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esto eliminará el método de pago seleccionado.',
@@ -176,7 +179,7 @@ export class MetodoPagoComponent implements OnInit {
             this.lista.splice(index, 1);
           },
           error: (err) => console.error('Error al eliminar método de pago:', err),
-          complete: () => { request.unsubscribe(); }
+          complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
         });
       }
     });

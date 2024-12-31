@@ -87,7 +87,7 @@ export class RecoveryComponent implements OnInit, OnDestroy {
           this.mySesion.createError('Error validando captcha.');
           this.mySesion.loadingStop();
         },
-        complete: () => { authServ.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); authServ.unsubscribe(); }
       });
   }
   restore(email: string) {
@@ -114,7 +114,7 @@ export class RecoveryComponent implements OnInit, OnDestroy {
           this.mySesion.createError('No se encuentra el usuario ingresado');
           this.mySesion.loadingStop();
         },
-        complete: () => { authServ.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); authServ.unsubscribe(); }
       });
   }
   closeModal() {

@@ -92,7 +92,7 @@ export class LocalidadesComponent implements OnInit {
           this.mySesion.loadingStop();
           this.mySesion.createError(error);
         },
-        complete: () => { request.unsubscribe(); }
+        complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
   }
 

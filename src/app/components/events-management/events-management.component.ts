@@ -32,7 +32,7 @@ export class EventsManagementComponent implements OnInit {
   }
 
   onLocalitySaved(locality: Locality): void {
-    if (this.selectedEvent) {
+    if (this.selectedEvent && this.selectedEvent.localities?.length) {
       const index = this.selectedEvent.localities.findIndex(l => l.id === locality.id);
       if (index !== -1) {
         this.selectedEvent.localities[index] = locality; // Actualizar localidad existente

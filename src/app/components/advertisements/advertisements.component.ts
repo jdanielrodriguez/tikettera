@@ -40,7 +40,7 @@ export class AdvertisementsFormComponent implements OnInit {
       this.mySesion.createError("Por favor, complete todos los campos del formulario.");
       return;
     }
-
+    this.mySesion.loadingStart();
     const newAdvertisement: Advertisement = {
       id: null,
       name: this.formAdvertisement.name,
@@ -72,14 +72,14 @@ export class AdvertisementsFormComponent implements OnInit {
       error: () => {
         this.mySesion.createError("Error al crear el anuncio.");
       },
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 
   eliminarFoto(imagen: Imagen): void {
     const advertisement = this.advertisements.find((ad) => ad.url === imagen.url);
     if (!advertisement) return;
-
+    this.mySesion.loadingStart();
     const request = this.advertisementsService.deleteAdvertisement(advertisement.id!).subscribe({
       next: () => {
         this.advertisements = this.advertisements.filter((ad) => ad.id !== advertisement.id);
@@ -89,7 +89,7 @@ export class AdvertisementsFormComponent implements OnInit {
       error: () => {
         this.mySesion.createError("Error al eliminar el anuncio.");
       },
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 
@@ -107,6 +107,7 @@ export class AdvertisementsFormComponent implements OnInit {
 
 
   loadAdvertisements(): void {
+    this.mySesion.loadingStart();
     const request = this.advertisementsService.getAdvertisements().subscribe({
       next: (data) => {
         this.advertisements = data.objeto;
@@ -120,7 +121,7 @@ export class AdvertisementsFormComponent implements OnInit {
       error: () => {
         this.mySesion.createError("Error al cargar los anuncios.");
       },
-      complete: () => { request.unsubscribe(); }
+      complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
     });
   }
 }

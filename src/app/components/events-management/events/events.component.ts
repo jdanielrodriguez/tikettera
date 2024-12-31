@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
 import { Event } from '../../../interfaces';
+import { Sesion } from '../../../common/sesion';
 
 @Component({
   selector: 'app-events',
@@ -20,7 +21,7 @@ export class EventsComponent implements OnInit, OnChanges {
   marker!: L.Marker;
   slugPreview: string = '';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private mySesion: Sesion) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -40,14 +41,21 @@ export class EventsComponent implements OnInit, OnChanges {
     const initialDate: NgbDateStruct | null = this.event?.date_start
       ? this.parseDate(this.event.date_start)
       : null;
+    const initialTime: { hour: number; minute: number } | null = this.event?.time_start
+      ? this.parseTime(this.event.time_start)
+      : { hour: 12, minute: 0 };
     this.slugPreview = initialSlug;
     this.eventForm = this.fb.group({
       name: [this.event?.name || '', [Validators.required]],
       id: [this.event?.id || null],
+      state: [this.event?.state || 2],
       localities: [this.event?.localities || []],
       description: [this.event?.description || ''],
+      address: [this.event?.address || ''],
       slug: [initialSlug, [Validators.required]],
       date_start: [initialDate || '', [Validators.required]],
+      time_start: [initialTime, [Validators.required]],
+      user_id: [this.mySesion.perfil.id || null, [Validators.required]],
       lat: [this.event?.lat || 14.6349, [Validators.required]], // Coordenada inicial
       lng: [this.event?.lng || -90.5069, [Validators.required]] // Coordenada inicial
     });
@@ -66,6 +74,11 @@ export class EventsComponent implements OnInit, OnChanges {
       month: date.getMonth() + 1,
       day: date.getDate() + 1,
     };
+  }
+
+  parseTime(timeString: string): { hour: number; minute: number } {
+    const [hour, minute] = timeString.split(':').map(Number);
+    return { hour, minute };
   }
 
   // Genera el slug automáticamente basado en el nombre
@@ -136,6 +149,13 @@ export class EventsComponent implements OnInit, OnChanges {
       if (formValue.date_start) {
         const { year, month, day } = formValue.date_start;
         formValue.date_start = new Date(year, month - 1, day).toISOString(); // Convertir a ISO 8601
+      }
+      if (formValue.state === 2 && this.event?.state === 2) {
+        formValue.state = 1;
+      }
+      if (formValue.time_start) {
+        const { hour, minute } = formValue.time_start;
+        formValue.time_start = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
       }
 
       // Emitir el formulario con el valor transformado

@@ -10,13 +10,24 @@ use App\Models\Locality;
 class EventsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource filtered by user_id.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $objectList = Event::where('state', 1)->get();
+        $validatedData = $request->validate([
+            'user_id' => 'nullable|integer|exists:users,id',
+        ]);
+
+        $query = Event::query();
+
+        if (isset($validatedData['user_id'])) {
+            $query->where('user_id', $validatedData['user_id']);
+        }
+
+        $objectList = $query->get();
         $count = $objectList->count();
 
         $returnData = [
@@ -25,6 +36,7 @@ class EventsController extends Controller
             'count' => $count,
             'data' => $objectList
         ];
+
         return new Response($returnData, $returnData['status']);
     }
 
@@ -53,9 +65,11 @@ class EventsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param string $slug
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function getLocalities($slug)
+    public function getLocalities($slug, Request $request)
     {
         $encript = new Encripter();
         $id = $slug ? json_decode(mb_convert_encoding($encript->desencript($slug), 'UTF-8', 'UTF-8')) : null;
@@ -69,7 +83,17 @@ class EventsController extends Controller
             return new Response($returnData, $returnData['status']);
         }
 
-        $objectSee = Event::where('slug', $id)->where('state', 1)->with('localities')->first();
+        $validatedData = $request->validate([
+            'state' => 'nullable|integer',
+        ]);
+
+        $query = Event::where('slug', $id);
+
+        if (isset($validatedData['state'])) {
+            $query->where('state', $validatedData['state']);
+        }
+
+        $objectSee = $query->with('localities')->first();
 
         $returnData = [
             'status' => $objectSee ? 200 : 404,
@@ -141,6 +165,7 @@ class EventsController extends Controller
             'date_end' => 'nullable|date',
             'lat' => 'nullable|numeric',
             'lng' => 'nullable|numeric',
+            'user_id' => 'nullable|numeric|exists:users,id',
             'reason_id' => 'nullable|integer|exists:events_reason,id',
             'type_id' => 'nullable|integer|exists:events_type,id',
             'state' => 'nullable|integer',
@@ -196,6 +221,7 @@ class EventsController extends Controller
             'time_end' => 'nullable|date_format:H:i:s',
             'date_start' => 'nullable|date',
             'date_end' => 'nullable|date',
+            'user_id' => 'nullable|numeric|exists:users,id',
             'lat' => 'nullable|numeric',
             'lng' => 'nullable|numeric',
             'reason_id' => 'nullable|integer|exists:events_reason,id',

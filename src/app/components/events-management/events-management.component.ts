@@ -24,7 +24,7 @@ export class EventsManagementComponent implements OnInit {
 
   handleSave(event: any): void {
     this.saveEmit.emit(event);
-    this.handleClose();
+    this.onChangeStep(2);
   }
 
   handleClose(): void {
@@ -39,6 +39,7 @@ export class EventsManagementComponent implements OnInit {
       } else {
         this.selectedEvent.localities.push(locality); // Agregar nueva localidad
       }
+      this.onChangeStep(3);
     }
   }
 

@@ -17,6 +17,7 @@ class Event extends Model
         'time_end',
         'date_start',
         'date_end',
+        'user_id',
         'lat',
         'lng',
         'reason_id',

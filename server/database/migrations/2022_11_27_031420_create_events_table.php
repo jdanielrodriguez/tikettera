@@ -32,6 +32,8 @@ return new class extends Migration
             $table->foreign('reason_id')->references('id')->on('events_reason')->onDelete('cascade');
             $table->unsignedInteger('type_id')->nullable();
             $table->foreign('type_id')->references('id')->on('events_type')->onDelete('cascade');
+            $table->unsignedInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('state')->default(1);
             $table->timestamps();
         });

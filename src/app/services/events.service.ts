@@ -19,6 +19,17 @@ export class EventsService {
     return new Observable((observer) => { observer.error(error); });
   }
 
+  getAllByUser(userId: number): Observable<any> {
+    this.mySesion.reloadToken();
+    const url = `${this.basePath}/api/events?user_id=${userId}`;
+    try {
+      const response = this.http.get(url, { headers: this.mySesion.headers });
+      return response;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
   getAll(): Observable<any> {
     this.mySesion.reloadToken();
     const url = `${this.basePath}/api/events`;

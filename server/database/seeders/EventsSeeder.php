@@ -45,6 +45,7 @@ class EventsSeeder extends Seeder
             'time_end' => '23:00:00',
             'lat' => 0,
             'lng' => 0,
+            'user_id' => 1,
             'state' => 1,
             'reason_id' => 1,
             'created_at' => Carbon::now($timeZone),

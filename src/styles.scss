@@ -767,3 +767,11 @@ app-lista-producto {
     border: none !important;
   }
 }
+.hour-component{
+  .ngb-tp-hour {
+    margin-left: auto;
+  }
+  .ngb-tp-minute {
+    margin-right: auto;
+  }
+}

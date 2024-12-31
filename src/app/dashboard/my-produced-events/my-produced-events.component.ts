@@ -50,7 +50,7 @@ export class MyProducedEventsComponent implements OnInit {
   }
 
   loadEvents(): void {
-    const request = this.eventsService.getAll().subscribe({
+    const request = this.eventsService.getAllByUser(this.mySesion.perfil.id || 0).subscribe({
       next: (response) => {
         this.events = response.data || [];
         this.updatePaginatedEvents();
@@ -144,7 +144,7 @@ export class MyProducedEventsComponent implements OnInit {
           if (index !== -1) this.events[index] = updatedEvent;
           this.updatePaginatedEvents();
           this.mySesion.createSuccess('Evento actualizado con éxito');
-          this.closeEventForm();
+          this.selectedEvent = { ...updatedEvent };
         },
         error: () => {
           this.mySesion.createError('Error al actualizar el evento');
@@ -158,7 +158,7 @@ export class MyProducedEventsComponent implements OnInit {
           this.events.push(response.objeto);
           this.updatePaginatedEvents();
           this.mySesion.createSuccess('Evento creado con éxito');
-          this.closeEventForm();
+          this.selectedEvent = { ...response.objeto };
         },
         error: () => {
           this.mySesion.createError('Error al crear el evento');

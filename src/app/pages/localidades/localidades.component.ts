@@ -102,6 +102,10 @@ export class LocalidadesComponent implements OnInit {
   }
 
   needMax() {
-    return (this.sliders.length === 0 && ((this.mainLista.length <= 4 && this.galleryType === 'grid') || (this.mainLista.length < 4 && this.galleryType === 'list')))
+    return (this.sliders.length === 0 && ((this.mainLista.length <= 4 && this.galleryType === 'grid') || (this.mainLista.length < 3 && this.galleryType === 'list')))
+  }
+
+  needFit() {
+    return this.sliders.length === 0
   }
 }

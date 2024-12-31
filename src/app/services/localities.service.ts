@@ -40,4 +40,24 @@ export class LocalitiesService {
       return this.handleError(error);
     }
   }
+  createLocality(locality: any, eventId: number): Observable<any> {
+    this.mySesion.reloadToken();
+    const url = `${this.basePath}/api/events/${eventId}/localities`;
+    try {
+      const response = this.http.post(url, locality, { headers: this.mySesion.headers });
+      return response;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  updateLocality(locality: any, eventId: number): Observable<any> {
+    this.mySesion.reloadToken();
+    const url = `${this.basePath}/api/events/${eventId}/localities/${locality.id}`;
+    try {
+      const response = this.http.put(url, locality, { headers: this.mySesion.headers });
+      return response;
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
 }

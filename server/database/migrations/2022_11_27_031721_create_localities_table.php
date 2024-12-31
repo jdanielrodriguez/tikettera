@@ -22,6 +22,7 @@ return new class extends Migration
             $table->double('iva')->nullable();
             $table->double('tasa_iva')->nullable();
             $table->double('comision')->nullable();
+            $table->double('ticket')->nullable();
             $table->double('price');
             $table->integer('sold')->default(0);
             $table->integer('withdrawall')->default(0);

@@ -66,7 +66,7 @@ export class InicioComponent implements OnInit {
         },
         error: (error) => {
           this.mySesion.loadingStop();
-          this.mySesion.createError(error.error.message);
+          this.mySesion.createError(error.error.message || 'Error al cargar eventos');
         },
         complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });

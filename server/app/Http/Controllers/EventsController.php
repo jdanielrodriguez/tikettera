@@ -279,4 +279,82 @@ class EventsController extends Controller
         ];
         return new Response($returnData, $returnData['status']);
     }
+
+    public function storeLocalities(Request $request, $eventId)
+    {
+        // Validar los datos de entrada
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'slug' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'tasa_cambio' => 'required|numeric|min:0',
+            'iva' => 'required|numeric|min:0',
+            'tasa_iva' => 'required|numeric|min:0',
+            'comision' => 'required|numeric|min:0',
+            'state' => 'required|integer',
+        ]);
+
+        // Verificar que el evento exista
+        $event = Event::find($eventId);
+        if (!$event) {
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Event not found',
+                'objeto' => null,
+            ], 404);
+        }
+
+        // Crear la nueva localidad asociada al evento
+        $locality = new Locality($validatedData);
+        $locality->event_id = $eventId;
+        $locality->save();
+
+        return response()->json([
+            'status' => 201,
+            'msg' => 'Locality created successfully',
+            'objeto' => $locality,
+        ], 201);
+    }
+
+    public function updateLocalities(Request $request, $eventId, $localityId)
+    {
+        // Validar los datos de entrada
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'slug' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'state' => 'required|integer',
+        ]);
+
+        // Verificar que el evento exista
+        $event = Event::find($eventId);
+        if (!$event) {
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Event not found',
+                'objeto' => null,
+            ], 404);
+        }
+
+        // Verificar que la localidad exista
+        $locality = Locality::where('id', $localityId)->where('event_id', $eventId)->first();
+        if (!$locality) {
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Locality not found',
+                'objeto' => null,
+            ], 404);
+        }
+
+        // Actualizar la localidad
+        $locality->update($validatedData);
+
+        return response()->json([
+            'status' => 200,
+            'msg' => 'Locality updated successfully',
+            'objeto' => $locality,
+        ], 200);
+    }
 }

@@ -1,15 +1,52 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="localityForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="name">Nombre de la Localidad</label>
-    <input type="text" id="name" class="form-control" [(ngModel)]="localityData.name" name="name" required />
+    <input type="text" id="name" class="form-control" formControlName="name" (input)="generateSlug()" required />
+    <div *ngIf="localityForm.get('name')?.invalid && localityForm.get('name')?.touched" class="text-danger">
+      El nombre de la localidad es obligatorio.
+    </div>
   </div>
+
   <div class="form-group">
     <label for="price">Precio</label>
-    <input type="number" id="price" class="form-control" [(ngModel)]="localityData.price" name="price" required />
+    <input type="number" id="price" class="form-control" formControlName="price" min="0" required />
+    <div *ngIf="localityForm.get('price')?.invalid && localityForm.get('price')?.touched" class="text-danger">
+      El precio es obligatorio y debe ser mayor o igual a 0.
+    </div>
   </div>
+
+  <div class="form-group">
+    <label for="tasa_cambio">Tasa de Cambio</label>
+    <input type="number" id="tasa_cambio" readonly class="form-control" formControlName="tasa_cambio" step="0.01" />
+  </div>
+
+  <div class="form-group">
+    <label for="iva">IVA</label>
+    <input type="number" id="iva" readonly class="form-control" formControlName="iva" step="0.01" />
+  </div>
+
+  <div class="form-group">
+    <label for="tasa_iva">Tasa de IVA</label>
+    <input type="number" id="tasa_iva" readonly class="form-control" formControlName="tasa_iva" step="0.01" />
+  </div>
+
+  <div class="form-group">
+    <label for="comision">Comisión</label>
+    <input type="number" id="comision" readonly class="form-control" formControlName="comision" step="0.01" />
+  </div>
+
+  <div class="form-group">
+    <label for="slug">Slug</label>
+    <input type="text" id="slug" class="form-control" formControlName="slug" readonly />
+    <small class="form-text text-muted">El slug se genera automáticamente.</small>
+  </div>
+
   <div class="form-group text-right">
-    <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
-    <button class="btn btn-secondary ml-2" type="button" (click)="close.emit()"><i class="fa fa-times"></i>
-      Cancelar</button>
+    <button class="btn btn-primary" type="submit" [disabled]="localityForm.invalid">
+      <i class="fa fa-save"></i> Guardar
+    </button>
+    <button class="btn btn-secondary ml-2" type="button" (click)="close.emit()">
+      <i class="fa fa-times"></i> Cancelar
+    </button>
   </div>
 </form>

@@ -81,4 +81,8 @@ export class BoletosComponent implements OnInit {
         complete: () => { this.mySesion.loadingStop(); request.unsubscribe(); }
       });
   }
+
+  needFit() {
+    return this.sliders.length === 0
+  }
 }

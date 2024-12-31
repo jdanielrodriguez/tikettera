@@ -24,6 +24,7 @@ export class EventsComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private mySesion: Sesion) { }
 
   ngOnInit(): void {
+    this.mySesion.scrollTop();
     this.initializeForm();
     this.initializeMap();
   }
